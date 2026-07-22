@@ -1,0 +1,74 @@
+---
+interface Item {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map(({ q, a }) => (
+      <div class="faq__item">
+        <button class="faq__q" type="button">
+          {q}
+          <span class="faq__icon">+</span>
+        </button>
+        <div class="faq__a">
+          <p>{a}</p>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .faq { max-width: 720px; margin: 0 auto; }
+  .faq__item { border-bottom: 1px solid var(--border); }
+  .faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 20px 4px;
+    font-family: var(--font-ui);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .faq__icon {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--teal-deep);
+    transition: transform var(--transition);
+    flex-shrink: 0;
+  }
+  .faq__a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .faq__a p { color: var(--muted); font-size: 15.5px; padding: 0 4px 20px; margin: 0; }
+  .faq__item.open .faq__icon { transform: rotate(45deg); }
+  .faq__item.open .faq__a { max-height: 300px; }
+</style>
+
+<script>
+  document.querySelectorAll('.faq__item').forEach((item) => {
+    item.querySelector('.faq__q')?.addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq__item.open').forEach((open) => open.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>

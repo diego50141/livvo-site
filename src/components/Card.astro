@@ -1,0 +1,28 @@
+---
+interface Props {
+  variant?: 'default' | 'accent';
+  class?: string;
+}
+
+const { variant = 'default', class: className } = Astro.props;
+---
+
+<div class:list={['card', `card--${variant}`, className]}>
+  <slot />
+</div>
+
+<style>
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+    transition: box-shadow var(--transition), border-color var(--transition);
+  }
+  .card:hover { box-shadow: var(--shadow-hover); }
+  .card--accent {
+    background: rgba(0, 199, 180, 0.06);
+    border-color: rgba(0, 199, 180, 0.3);
+  }
+</style>

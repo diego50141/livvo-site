@@ -1,0 +1,232 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import Section from '../components/Section.astro';
+import StatBox from '../components/StatBox.astro';
+import ChatMockup from '../components/ChatMockup.astro';
+import PricingCard from '../components/PricingCard.astro';
+import FAQ from '../components/FAQ.astro';
+import Footer from '../components/Footer.astro';
+
+const DEMO_URL = 'https://meetings.hubspot.com/daar5014';
+
+const chatMessages = [
+  { from: 'user' as const, text: 'Buenas! Me interesa un apartamento de 2 alcobas cerca al norte 🏠', time: '9:03 am' },
+  { from: 'agent' as const, text: '¡Hola! Con gusto te ayudo. Cuéntame, ¿cuál es tu presupuesto aproximado y si buscas para vivir o invertir?', time: '9:03 am' },
+  { from: 'user' as const, text: 'Para vivir. Presupuesto hasta $400 millones', time: '9:04 am' },
+  { from: 'agent' as const, text: 'Perfecto. Tengo 3 opciones que se ajustan muy bien. ¿Puedo agendar una cita con un asesor esta semana? 📅', time: '9:04 am' },
+];
+
+const stats = [
+  { value: '<1 min', label: 'Tiempo de respuesta' },
+  { value: '100%', label: 'Leads atendidos' },
+  { value: '+40%', label: 'Citas el primer mes' },
+  { value: '24/7', label: 'Cobertura total' },
+];
+
+const plans = [
+  {
+    name: 'Gratis',
+    price: '$0',
+    tagline: 'Empieza gratis y prueba la IA sin riesgo',
+    features: [
+      'Hasta 10 propiedades publicadas',
+      'Descripciones con IA',
+      'CRM (leads + propietarios)',
+      'Calendario de citas',
+      'Analíticas y reportes',
+    ],
+    featured: false,
+    ctaLabel: 'Empezar gratis',
+  },
+  {
+    name: 'Básico',
+    price: '$200.000',
+    tagline: 'Para arrancar con ventas automáticas en WhatsApp',
+    features: [
+      'Hasta 25 propiedades',
+      '500 conversaciones/mes',
+      'CRM (leads + propietarios)',
+      'Calendario de citas',
+      'Analíticas y reportes',
+      'Todo lo del plan Gratis',
+    ],
+    featured: true,
+    ctaLabel: 'Agendar demo →',
+  },
+  {
+    name: 'Pro',
+    price: '$507.000',
+    tagline: 'Para escalar tu operación comercial',
+    features: [
+      'Hasta 50 propiedades',
+      '1.500 conversaciones/mes',
+      'CRM (leads + propietarios)',
+      'Calendario de citas',
+      'Analíticas y reportes',
+      'Todo lo del plan Básico',
+    ],
+    featured: false,
+    ctaLabel: 'Agendar demo',
+  },
+];
+
+const faqItems = [
+  {
+    q: '¿Qué hace exactamente Livvo?',
+    a: 'Livvo es un agente de IA que conversa con tus leads por WhatsApp, los califica según presupuesto, zona y capacidad de pago, y les recomienda inmuebles personalizados. El objetivo es eliminar el trabajo operativo de tu equipo y aumentar tu tasa de cierre.',
+  },
+  {
+    q: '¿Se necesita un CRM previo?',
+    a: 'No. Livvo incluye un portal donde puedes hacer seguimiento a tus leads y monitorear tus métricas comerciales. Si ya tienes un CRM, también nos integramos con él.',
+  },
+  {
+    q: '¿Cuánto tiempo toma implementarlo?',
+    a: 'Entre 1 y 3 días dependiendo de la personalización. Incluye entrenamiento del agente y conexión con WhatsApp Business API.',
+  },
+  {
+    q: '¿Y si el bot suena robótico y espanta a mis clientes?',
+    a: 'Livvo usa IA conversacional que se adapta al tono de tu inmobiliaria. Entrenamos el agente con el lenguaje real de tu equipo y del sector. Si en la demo no te convence cómo suena, no pagas nada.',
+  },
+  {
+    q: '¿Qué pasa si quiero cancelar?',
+    a: 'No hay contrato de permanencia — cancelas cuando quieras, sin penalidades. Te acompañamos durante la implementación para asegurarnos de que veas resultados desde el primer mes.',
+  },
+];
+---
+
+<Base>
+  <Navbar />
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container-site hero__inner">
+      <div class="fade-up">
+        <Badge variant="outline">IA para inmobiliarias</Badge>
+        <h1 class="hero__title">
+          Automatiza tu proceso comercial y <em class="grad-text">vende más.</em>
+        </h1>
+        <p class="hero__sub">
+          Responde, precalifica y agenda leads por WhatsApp para que tu equipo se enfoque en cerrar
+          ventas. Catálogo, CRM y citas en una sola plataforma.
+        </p>
+        <div class="hero__ctas">
+          <Button href={DEMO_URL} target="_blank" size="lg" id="hero-demo-cta">Agendar demo →</Button>
+          <Button href="#precios" variant="ghost" size="lg">Ver planes</Button>
+        </div>
+        <p class="hero__trust">✓ Implementación en 1–3 días · Sin cambios en tu proceso actual</p>
+      </div>
+      <div class="hero__visual fade-up">
+        <ChatMockup title="WhatsApp · Livvo Agent" messages={chatMessages} />
+      </div>
+    </div>
+  </header>
+
+  <!-- IMPACTO -->
+  <Section id="impacto" eyebrow="Impacto medible" title="Números, no promesas." alt>
+    <div class="stats-grid fade-up">
+      {stats.map(({ value, label }) => <StatBox {value} {label} />)}
+    </div>
+  </Section>
+
+  <!-- PRECIOS -->
+  <Section id="precios" eyebrow="Planes" title="Empieza gratis. Escala cuando quieras.">
+    <div class="pricing-grid fade-up">
+      {
+        plans.map((plan) => (
+          <PricingCard
+            name={plan.name}
+            price={plan.price}
+            tagline={plan.tagline}
+            features={plan.features}
+            featured={plan.featured}
+            ctaLabel={plan.ctaLabel}
+            ctaHref={DEMO_URL}
+            ctaTarget="_blank"
+          />
+        ))
+      }
+    </div>
+    <div class="pricing-terms fade-up">
+      <span>Prueba gratuita de 7 días</span>
+      <span>Sin tarjeta de crédito</span>
+      <span>Facturación en pesos colombianos</span>
+    </div>
+  </Section>
+
+  <!-- FAQ -->
+  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" alt>
+    <div class="fade-up">
+      <FAQ items={faqItems} />
+    </div>
+  </Section>
+
+  <!-- CTA FINAL -->
+  <Section id="contacto">
+    <div class="cta-final fade-up">
+      <span class="eyebrow">Empieza hoy</span>
+      <h2>¿Listo para dejar de perder leads?</h2>
+      <p>
+        Agenda una demo de 15 minutos y mira a Livvo responder, calificar y agendar con propiedades
+        reales de tu portafolio.
+      </p>
+      <Button href={DEMO_URL} target="_blank" size="lg" id="final-demo-cta">Agendar demo →</Button>
+    </div>
+  </Section>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero { padding: 88px 0 80px; background: var(--white); }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero__title {
+    font-size: clamp(38px, 4.5vw, 60px);
+    letter-spacing: -1px;
+    margin: var(--space-6) 0;
+  }
+  .hero__title em { font-style: normal; }
+  .hero__sub { font-size: 18px; color: var(--muted); max-width: 480px; margin-bottom: var(--space-8); }
+  .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+  .hero__trust { margin-top: var(--space-6); font-size: 13px; color: var(--muted); }
+  .hero__visual { display: flex; justify-content: center; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+  .pricing-terms {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+    margin-top: var(--space-12);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .cta-final { text-align: center; max-width: 620px; margin: 0 auto; }
+  .cta-final h2 { font-size: clamp(28px, 3vw, 40px); margin: var(--space-4) 0; }
+  .cta-final p { color: var(--muted); margin-bottom: var(--space-8); }
+
+  @media (max-width: 1024px) {
+    .hero__inner { grid-template-columns: 1fr; gap: 48px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-inline: auto; }
+  }
+</style>

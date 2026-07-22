@@ -1,0 +1,108 @@
+---
+interface Message {
+  from: 'user' | 'agent';
+  text: string;
+  time: string;
+}
+
+interface Props {
+  title?: string;
+  messages: Message[];
+}
+
+const { title = 'Livvo Agent', messages } = Astro.props;
+---
+
+<div class="chat">
+  <div class="chat__header">
+    <div class="chat__avatar">L</div>
+    <div>
+      <div class="chat__title">{title}</div>
+      <div class="chat__status"><span class="chat__dot"></span>en línea</div>
+    </div>
+  </div>
+  <div class="chat__body">
+    {
+      messages.map(({ from, text, time }) => (
+        <div class:list={['chat__msg', `chat__msg--${from}`]}>
+          <div class="chat__bubble">{text}</div>
+          <div class="chat__time">
+            {time}
+            {from === 'agent' && <span class="chat__check"> ✓✓</span>}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .chat {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    max-width: 420px;
+  }
+  .chat__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: #0d1424; /* navy fijo: el header del mockup no cambia con el tema */
+    padding: var(--space-4) 20px;
+  }
+  .chat__avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--grad-cta);
+    color: #fff;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+  }
+  .chat__title { color: #fff; font-size: 14px; font-weight: 600; }
+  .chat__status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+  }
+  .chat__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .chat__body { padding: 20px; }
+  .chat__msg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  .chat__msg:last-child { margin-bottom: 0; }
+  .chat__bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 82%;
+  }
+  .chat__msg--user { align-items: flex-end; }
+  .chat__msg--user .chat__bubble {
+    background: #dcfce7;
+    color: #111;
+    border-bottom-right-radius: 4px;
+  }
+  .chat__msg--agent .chat__bubble {
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+  }
+  .chat__time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    padding: 0 4px;
+  }
+  .chat__check { color: var(--teal); }
+</style>

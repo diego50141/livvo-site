@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Livvo Design System — tokens
+   Fuente: Documents/design_handoff_livvo_ds/tokens.css
+   El tema claro es el handoff literal; el bloque dark es la
+   asignación derivada (no existe en el handoff).
+   ============================================================ */
+:root {
+  /* Brand */
+  --teal:        #00C7B4;  /* acento primario · único color de CTA */
+  --teal-deep:   #0099A8;  /* teal legible sobre blanco (texto pequeño) */
+  --blue:        #3B9EFF;  /* secundario · links · gráficos */
+  --blue-mid:    #A8D4FF;
+  --blue-light:  #DEEEFF;
+  --violet:      #6C63FF;  /* EXCLUSIVO Luisa IA */
+  --violet-deep: #4A44CC;
+
+  /* Neutrals */
+  --navy:        #0D1424;  /* títulos / texto fuerte */
+  --dark:        #070B14;
+  --text:        #111111;  /* texto de cuerpo */
+  --muted:       #6B7280;  /* texto secundario, labels */
+  --white:       #FFFFFF;  /* fondo primario / cards */
+  --gray-bg:     #F8FAFC;  /* secciones alternas */
+  --surface:     #F1F3F8;  /* inputs, filas, hover */
+  --border:      #E5E7EB;
+
+  /* Semantic */
+  --green:       #22C55E;
+  --gold:        #FFB547;
+  --red:         #FF5470;
+
+  /* Gradients */
+  --grad-cta:    linear-gradient(135deg, #00C7B4 0%, #0099A8 100%);
+  --grad-flow:   linear-gradient(135deg, #00C7B4 0%, #3B9EFF 100%);
+  --grad-violet: linear-gradient(135deg, #6C63FF 0%, #4A44CC 100%);
+
+  /* Spacing scale */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px;
+
+  /* Radius */
+  --radius-btn:  9px;
+  --radius-card: 16px;
+
+  /* Elevation */
+  --shadow-sm:   0 2px 8px rgba(13,20,36,0.08);
+  --shadow-md:   0 6px 20px rgba(13,20,36,0.12);
+  --shadow-glow: 0 6px 20px rgba(13,20,36,0.1), 0 0 20px rgba(0,199,180,0.18);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.07);
+
+  /* Typography */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif; /* titulares */
+  --font-ui:      'Instrument Sans', system-ui, sans-serif;     /* UI / texto */
+  --font-mono:    'Geist Mono', ui-monospace, monospace;        /* datos */
+
+  --transition:  0.2s ease;
+  --max-w:       1280px;
+}
+
+/* Tema oscuro — derivado de los neutrales de marca (navy/dark)
+   y de la landing dark Finto-style. Teal y violet no cambian. */
+[data-theme="dark"] {
+  --white:      #0D1424;  /* fondo primario / cards → navy de marca */
+  --gray-bg:    #070B14;  /* secciones alternas → dark de marca */
+  --surface:    #1B2438;  /* inputs, filas, hover */
+  --border:     #232F47;
+  --navy:       #F2F5FA;  /* títulos ahora claros */
+  --text:       #E4E8F0;
+  --muted:      #97A1B5;
+  --teal-deep:  #2BD9C8;  /* teal legible sobre fondo oscuro */
+  --blue-light: #12253C;  /* fondos tintados azules */
+  --blue-mid:   #2C4A6E;
+  --shadow-sm:    0 2px 8px rgba(0,0,0,0.45);
+  --shadow-md:    0 6px 20px rgba(0,0,0,0.5);
+  --shadow-glow:  0 6px 20px rgba(0,0,0,0.45), 0 0 20px rgba(0,199,180,0.22);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.55);
+}
+
+/* Colores y fuentes expuestos como utilidades Tailwind
+   (bg-teal, text-muted, font-display, …). `inline` hace que
+   resuelvan la variable al usarse, así el toggle dark aplica. */
+@theme inline {
+  --color-teal:      var(--teal);
+  --color-teal-deep: var(--teal-deep);
+  --color-brandblue: var(--blue);
+  --color-navy:      var(--navy);
+  --color-ink:       var(--text);
+  --color-muted:     var(--muted);
+  --color-paper:     var(--white);
+  --color-graybg:    var(--gray-bg);
+  --color-surface:   var(--surface);
+  --color-line:      var(--border);
+  --color-success:   var(--green);
+  --color-warning:   var(--gold);
+  --color-danger:    var(--red);
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-sans:    'Instrument Sans', system-ui, sans-serif;
+  --font-mono:    'Geist Mono', ui-monospace, monospace;
+}
+
+/* Bases del design system */
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--font-ui);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  color: var(--navy);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+h3 { font-family: var(--font-ui); font-weight: 600; color: var(--navy); }
+
+a { color: var(--teal-deep); }
+a:hover { color: var(--blue); }
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* Utilidades del sistema */
+.container-site {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: 40px;
+}
+@media (max-width: 768px) {
+  .container-site { padding-inline: 20px; }
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+}
+
+.grad-text {
+  background: var(--grad-flow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: none; }

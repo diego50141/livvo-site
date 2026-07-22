@@ -1,0 +1,41 @@
+---
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  alt?: boolean; // fondo alterno (--gray-bg)
+}
+
+const { id, eyebrow, title, alt = false } = Astro.props;
+---
+
+<section {id} class:list={['section', { 'section--alt': alt }]}>
+  <div class="container-site">
+    {
+      (eyebrow || title) && (
+        <div class="section__head fade-up">
+          {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+          {title && <h2>{title}</h2>}
+        </div>
+      )
+    }
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section { padding: 96px 0; background: var(--white); transition: background-color var(--transition); }
+  .section--alt { background: var(--gray-bg); }
+  .section__head {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto var(--space-12);
+  }
+  .section__head h2 {
+    font-size: clamp(28px, 3vw, 40px);
+    margin-top: var(--space-4);
+  }
+  @media (max-width: 768px) {
+    .section { padding: 64px 0; }
+  }
+</style>

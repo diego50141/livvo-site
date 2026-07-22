@@ -1,0 +1,107 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  name: string;
+  price: string;
+  tagline: string;
+  features: string[];
+  featured?: boolean;
+  ctaLabel: string;
+  ctaHref: string;
+  ctaTarget?: string;
+}
+
+const { name, price, tagline, features, featured = false, ctaLabel, ctaHref, ctaTarget } =
+  Astro.props;
+---
+
+<div class:list={['pricing', { 'pricing--featured': featured }]}>
+  {featured && <div class="pricing__badge">Recomendado</div>}
+  <div class="pricing__name">{name}</div>
+  <p class="pricing__tagline">{tagline}</p>
+  <div class="pricing__price">{price}<span> /mes</span></div>
+  <hr class="pricing__divider" />
+  <ul class="pricing__features">
+    {
+      features.map((feature) => (
+        <li>
+          <span class="pricing__check">✓</span>
+          {feature}
+        </li>
+      ))
+    }
+  </ul>
+  <div class="pricing__cta">
+    <Button variant={featured ? 'primary' : 'outline'} href={ctaHref} target={ctaTarget}>
+      {ctaLabel}
+    </Button>
+  </div>
+</div>
+
+<style>
+  .pricing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-8);
+  }
+  .pricing--featured {
+    border: 2px solid var(--teal);
+    box-shadow: var(--shadow-glow);
+  }
+  .pricing__badge {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--grad-cta);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .pricing__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .pricing__tagline { font-size: 14px; color: var(--muted); margin-top: var(--space-1); }
+  .pricing__price {
+    font-family: var(--font-mono);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: var(--space-4);
+    letter-spacing: -1px;
+  }
+  .pricing__price span {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+  .pricing__divider { border: none; border-top: 1px solid var(--border); margin: var(--space-6) 0; }
+  .pricing__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    font-size: 14.5px;
+    flex: 1;
+  }
+  .pricing__features li { display: flex; gap: var(--space-2); }
+  .pricing__check { color: var(--teal); font-weight: 700; }
+  .pricing__cta :global(.btn) { width: 100%; }
+</style>

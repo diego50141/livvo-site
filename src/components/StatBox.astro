@@ -1,0 +1,38 @@
+---
+interface Props {
+  value: string;
+  label: string;
+}
+
+const { value, label } = Astro.props;
+---
+
+<div class="statbox">
+  <div class="statbox__value">{value}</div>
+  <div class="statbox__label">{label}</div>
+</div>
+
+<style>
+  .statbox {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    text-align: center;
+  }
+  .statbox__value {
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--teal-deep);
+    letter-spacing: -0.5px;
+  }
+  .statbox__label {
+    margin-top: var(--space-2);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>

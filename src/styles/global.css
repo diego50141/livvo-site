@@ -10,9 +10,9 @@
   /* Brand */
   --teal:        #00C7B4;  /* acento primario · único color de CTA */
   --teal-deep:   #0099A8;  /* teal legible sobre blanco (texto pequeño) */
-  --blue:        #3B9EFF;  /* secundario · links · gráficos */
-  --blue-mid:    #A8D4FF;
-  --blue-light:  #DEEEFF;
+  --blue:        #3B7EFF;  /* secundario · links · gráficos (azul oficial de marca) */
+  --blue-mid:    #A8C4FF;
+  --blue-light:  #DEE9FF;
   --violet:      #6C63FF;  /* EXCLUSIVO Luisa IA */
   --violet-deep: #4A44CC;
 
@@ -33,7 +33,7 @@
 
   /* Gradients */
   --grad-cta:    linear-gradient(135deg, #00C7B4 0%, #0099A8 100%);
-  --grad-flow:   linear-gradient(135deg, #00C7B4 0%, #3B9EFF 100%);
+  --grad-flow:   linear-gradient(135deg, #00C7B4 0%, #3B7EFF 100%);
   --grad-violet: linear-gradient(135deg, #6C63FF 0%, #4A44CC 100%);
 
   /* Spacing scale */
@@ -59,19 +59,20 @@
   --max-w:       1280px;
 }
 
-/* Tema oscuro — derivado de los neutrales de marca (navy/dark)
-   y de la landing dark Finto-style. Teal y violet no cambian. */
+/* Tema oscuro — alineado con el skill livvo-designer
+   ("Dark-First · Teal Core") para que web oscura y piezas de
+   marketing usen exactamente los mismos valores. */
 [data-theme="dark"] {
-  --white:      #0D1424;  /* fondo primario / cards → navy de marca */
-  --gray-bg:    #070B14;  /* secciones alternas → dark de marca */
-  --surface:    #1B2438;  /* inputs, filas, hover */
-  --border:     #232F47;
-  --navy:       #F2F5FA;  /* títulos ahora claros */
-  --text:       #E4E8F0;
-  --muted:      #97A1B5;
-  --teal-deep:  #2BD9C8;  /* teal legible sobre fondo oscuro */
-  --blue-light: #12253C;  /* fondos tintados azules */
-  --blue-mid:   #2C4A6E;
+  --white:      #0D1424;  /* Surface 1 → fondo primario / cards */
+  --gray-bg:    #070B14;  /* Background → secciones alternas */
+  --surface:    #111827;  /* Surface 2 → inputs, filas, hover */
+  --border:     #1A2240;  /* Surface 3 / Line */
+  --navy:       #F0F4FF;  /* texto primario sobre oscuro */
+  --text:       #F0F4FF;
+  --muted:      #8B96AF;
+  --teal-deep:  #00C7B4;  /* sobre oscuro el teal va directo, sin variante */
+  --blue-light: #10203E;  /* fondos tintados azules */
+  --blue-mid:   #27406E;
   --shadow-sm:    0 2px 8px rgba(0,0,0,0.45);
   --shadow-md:    0 6px 20px rgba(0,0,0,0.5);
   --shadow-glow:  0 6px 20px rgba(0,0,0,0.45), 0 0 20px rgba(0,199,180,0.22);

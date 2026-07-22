@@ -9,7 +9,7 @@ const year = new Date().getFullYear();
         <polyline points="24,20 43,80 62,20" fill="none" stroke="currentColor" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
         <polyline points="40,20 59,80 78,20" fill="none" stroke="#00C7B4" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      livv<span>o</span><span>·</span>
+      <span class="footer__wordmark">livv<span class="footer__teal">o</span><span class="footer__teal">·</span></span>
     </a>
     <div class="footer__links">
       <a href="#producto">Producto</a>
@@ -45,7 +45,8 @@ const year = new Date().getFullYear();
     text-decoration: none;
   }
   .footer__symbol { height: 22px; width: auto; display: block; }
-  .footer__logo span { color: var(--teal); }
+  .footer__wordmark { color: var(--navy); line-height: 1; }
+  .footer__teal { color: var(--teal); }
   .footer__links { display: flex; gap: var(--space-6); flex-wrap: wrap; }
   .footer__links a {
     font-size: 14px;

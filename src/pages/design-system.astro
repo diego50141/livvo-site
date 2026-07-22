@@ -1,0 +1,283 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Section from '../components/Section.astro';
+import Button from '../components/Button.astro';
+import Badge from '../components/Badge.astro';
+import Card from '../components/Card.astro';
+import StatBox from '../components/StatBox.astro';
+import ChatMockup from '../components/ChatMockup.astro';
+import PricingCard from '../components/PricingCard.astro';
+import FAQ from '../components/FAQ.astro';
+import Footer from '../components/Footer.astro';
+
+const brand = [
+  { token: '--teal', label: 'Teal', role: 'Acento primario · único color de CTA' },
+  { token: '--teal-deep', label: 'Teal Deep', role: 'Texto teal pequeño sobre claro' },
+  { token: '--blue', label: 'Blue', role: 'Secundario · links · gráficos' },
+  { token: '--blue-mid', label: 'Blue Mid', role: 'Tintes intermedios' },
+  { token: '--blue-light', label: 'Blue Light', role: 'Fondos tintados' },
+  { token: '--violet', label: 'Violet', role: 'EXCLUSIVO Luisa IA' },
+];
+const neutrals = [
+  { token: '--navy', label: 'Navy', role: 'Títulos / texto fuerte' },
+  { token: '--text', label: 'Text', role: 'Texto de cuerpo' },
+  { token: '--muted', label: 'Muted', role: 'Texto secundario, labels' },
+  { token: '--white', label: 'White', role: 'Fondo primario / cards' },
+  { token: '--gray-bg', label: 'Gray BG', role: 'Secciones alternas' },
+  { token: '--surface', label: 'Surface', role: 'Inputs, filas, hover' },
+  { token: '--border', label: 'Border', role: 'Bordes, separadores' },
+];
+const semantic = [
+  { token: '--green', label: 'Green', role: 'Éxito, online, WhatsApp' },
+  { token: '--gold', label: 'Gold', role: 'Warning, pendiente' },
+  { token: '--red', label: 'Red', role: 'Error, destructivo' },
+];
+const gradients = [
+  { token: '--grad-cta', label: 'CTA', role: 'Botones, badges' },
+  { token: '--grad-flow', label: 'Flow', role: 'Hero, palabra destacada' },
+  { token: '--grad-violet', label: 'Luisa', role: 'Solo Luisa IA' },
+];
+
+const chatMessages = [
+  { from: 'user' as const, text: '¿Tienen apartamentos en el norte?', time: '9:03 am' },
+  { from: 'agent' as const, text: '¡Claro! ¿Cuál es tu presupuesto aproximado? 🏠', time: '9:03 am' },
+];
+
+const faqItems = [
+  { q: '¿Cómo funciona este acordeón?', a: 'Un ítem abierto a la vez; el ícono + rota 45° al abrir. La apertura se registra en PostHog como faq_opened.' },
+  { q: '¿De dónde salen estos estilos?', a: 'De src/components/FAQ.astro — el mismo componente que usa la landing de producción.' },
+];
+---
+
+<Base title="Livvo — Design System" description="Biblioteca de diseño viva de Livvo" noindex>
+  <Navbar />
+
+  <header class="ds-hero">
+    <div class="container-site">
+      <span class="eyebrow">Biblioteca de diseño</span>
+      <h1>Design <em class="grad-text">System</em></h1>
+      <p>
+        Documentación viva: cada muestra usa los tokens y componentes reales de producción.
+        Cambia el tema con el botón del navbar para ver ambas asignaciones.
+      </p>
+    </div>
+  </header>
+
+  <Section id="color" eyebrow="Fundaciones" title="Color" alt>
+    <div class="ds-group"><h3>Marca</h3></div>
+    <div class="swatches">
+      {brand.map(({ token, label, role }) => (
+        <div class="swatch">
+          <div class="swatch__chip" style={`background: var(${token})`}></div>
+          <div class="swatch__name">{label} <code>{token}</code></div>
+          <div class="swatch__role">{role}</div>
+        </div>
+      ))}
+    </div>
+    <div class="ds-group"><h3>Neutrales <span class="ds-note">(cambian con el tema)</span></h3></div>
+    <div class="swatches">
+      {neutrals.map(({ token, label, role }) => (
+        <div class="swatch">
+          <div class="swatch__chip" style={`background: var(${token})`}></div>
+          <div class="swatch__name">{label} <code>{token}</code></div>
+          <div class="swatch__role">{role}</div>
+        </div>
+      ))}
+    </div>
+    <div class="ds-group"><h3>Semánticos</h3></div>
+    <div class="swatches">
+      {semantic.map(({ token, label, role }) => (
+        <div class="swatch">
+          <div class="swatch__chip" style={`background: var(${token})`}></div>
+          <div class="swatch__name">{label} <code>{token}</code></div>
+          <div class="swatch__role">{role}</div>
+        </div>
+      ))}
+    </div>
+    <div class="ds-group"><h3>Gradientes</h3></div>
+    <div class="swatches">
+      {gradients.map(({ token, label, role }) => (
+        <div class="swatch">
+          <div class="swatch__chip" style={`background: var(${token})`}></div>
+          <div class="swatch__name">{label} <code>{token}</code></div>
+          <div class="swatch__role">{role}</div>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section id="tipografia" eyebrow="Fundaciones" title="Tipografía">
+    <div class="type-specimens">
+      <div class="specimen">
+        <div class="specimen__label">Bricolage Grotesque · Display / titulares</div>
+        <div class="specimen__sample" style="font-family: var(--font-display); font-weight: 800; font-size: 40px; letter-spacing: -1px; color: var(--navy)">Automatiza y vende más.</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen__label">Instrument Sans · UI / cuerpo</div>
+        <div class="specimen__sample" style="font-family: var(--font-ui); font-size: 17px; color: var(--text)">Responde, precalifica y agenda leads por WhatsApp para que tu equipo se enfoque en cerrar ventas.</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen__label">Geist Mono · Datos / métricas</div>
+        <div class="specimen__sample" style="font-family: var(--font-mono); font-weight: 700; font-size: 28px; color: var(--teal-deep)">&lt;1 min · 24/7 · +40%</div>
+      </div>
+    </div>
+    <p class="ds-rule">Regla: Bricolage solo display · Instrument solo UI · Geist Mono solo datos. Nunca otras fuentes.</p>
+  </Section>
+
+  <Section id="logo" eyebrow="Marca" title="Logo" alt>
+    <div class="logo-row">
+      <div class="logo-cell">
+        <svg class="logo-symbol" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="24,20 43,80 62,20" fill="none" stroke="currentColor" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="40,20 59,80 78,20" fill="none" stroke="#00C7B4" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="swatch__role">Símbolo VV · <code>Livvo_symbol.svg</code></div>
+      </div>
+      <div class="logo-cell">
+        <span class="logo-wordmark">livv<span class="t">o</span><span class="t">·</span></span>
+        <div class="swatch__role">Wordmark · <code>Livvo_logo.svg</code> · el punto nunca se omite</div>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="botones" eyebrow="Componentes" title="Botones">
+    <div class="demo-row">
+      <Button>Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+    </div>
+    <div class="demo-row">
+      <Button size="sm">Small</Button>
+      <Button size="md">Medium</Button>
+      <Button size="lg">Large</Button>
+    </div>
+    <div class="demo-row">
+      <Badge>Badge solid</Badge>
+      <Badge variant="outline">Badge outline</Badge>
+    </div>
+  </Section>
+
+  <Section id="cards" eyebrow="Componentes" title="Cards y datos" alt>
+    <div class="demo-grid">
+      <Card>
+        <h3>Card default</h3>
+        <p style="color: var(--muted); font-size: 15px">Superficie base con borde, radio 16px y sombra al hover.</p>
+      </Card>
+      <Card variant="accent">
+        <h3>Card accent</h3>
+        <p style="color: var(--muted); font-size: 15px">Tinte teal para destacar contenido del sistema.</p>
+      </Card>
+      <StatBox value="<1 min" label="Tiempo de respuesta" />
+      <StatBox value="+40%" label="Citas el primer mes" />
+    </div>
+  </Section>
+
+  <Section id="producto" eyebrow="Componentes" title="Componentes de producto">
+    <div class="product-grid">
+      <ChatMockup title="WhatsApp · Livvo Agent" messages={chatMessages} />
+      <PricingCard
+        name="Básico"
+        price="$200.000"
+        tagline="Para arrancar con ventas automáticas"
+        features={['Hasta 25 propiedades', '500 conversaciones/mes', 'CRM + calendario']}
+        featured
+        ctaLabel="Agendar demo →"
+        ctaHref="#"
+      />
+    </div>
+    <div class="faq-demo">
+      <FAQ items={faqItems} />
+    </div>
+  </Section>
+
+  <Footer />
+</Base>
+
+<style>
+  .ds-hero { padding: 88px 0 32px; background: var(--white); }
+  .ds-hero h1 {
+    font-size: clamp(40px, 5vw, 64px);
+    letter-spacing: -1.5px;
+    margin: var(--space-4) 0;
+  }
+  .ds-hero h1 em { font-style: normal; }
+  .ds-hero p { color: var(--muted); max-width: 560px; }
+
+  .ds-group { margin: var(--space-8) 0 var(--space-4); }
+  .ds-group:first-of-type { margin-top: 0; }
+  .ds-note { font-weight: 400; color: var(--muted); font-size: 14px; }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-4);
+  }
+  .swatch {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+  }
+  .swatch__chip {
+    height: 56px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: var(--space-2);
+  }
+  .swatch__name { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .swatch__name code, .swatch__role code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .swatch__role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .type-specimens { display: flex; flex-direction: column; gap: var(--space-8); }
+  .specimen__label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--teal-deep);
+    margin-bottom: var(--space-2);
+  }
+  .ds-rule {
+    margin-top: var(--space-8);
+    font-size: 14px;
+    color: var(--muted);
+    border-left: 3px solid var(--teal);
+    padding-left: var(--space-4);
+  }
+
+  .logo-row { display: flex; gap: var(--space-12); flex-wrap: wrap; align-items: flex-end; }
+  .logo-cell { display: flex; flex-direction: column; gap: var(--space-3); }
+  .logo-symbol { height: 72px; width: auto; color: var(--navy); }
+  .logo-wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 56px;
+    letter-spacing: -1px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .logo-wordmark .t { color: var(--teal); }
+
+  .demo-row {
+    display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: center;
+    margin-bottom: var(--space-6);
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-6);
+    align-items: start;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-12);
+    align-items: start;
+    margin-bottom: var(--space-12);
+  }
+  .faq-demo { max-width: 720px; }
+</style>

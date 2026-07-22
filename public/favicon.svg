@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <circle cx="26" cy="32" r="17" fill="none" stroke="#00C7B4" stroke-width="11"/>
-  <circle cx="54" cy="45" r="7" fill="#00C7B4"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Símbolo VV de Livvo. La primera V se adapta al tema del navegador
+       (navy en pestañas claras, blanco en oscuras); la segunda siempre teal. -->
+  <style>
+    .v1 { stroke: #0D1424; }
+    @media (prefers-color-scheme: dark) {
+      .v1 { stroke: #F0F4FF; }
+    }
+  </style>
+  <polyline class="v1" points="24,20 43,80 62,20" fill="none"
+            stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="40,20 59,80 78,20" fill="none" stroke="#00C7B4"
+            stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

@@ -95,6 +95,7 @@ const faqItems = [
 
   <!-- ESCENA HERO + CONVERSACIÓN — anillos concéntricos como escenario común -->
   <div class="hero-scene">
+    <div id="hero-particles" class="hero-scene__particles" aria-hidden="true"></div>
     <header class="hero">
       <div class="container-site hero__inner">
         <div class="hero__content" id="hero-content">
@@ -192,6 +193,51 @@ const faqItems = [
 </Base>
 
 <script>
+  // Partículas teal del DS: pocas, pequeñas, deriva lenta y parpadeo sutil.
+  // Sin top-level await: si algo falla o se cuelga, no bloquea el módulo.
+  import { tsParticles } from '@tsparticles/engine';
+  import { loadSlim } from '@tsparticles/slim';
+
+  const initParticles = async () => {
+    await loadSlim(tsParticles);
+    await tsParticles.load({
+      id: 'hero-particles',
+      options: {
+        fullScreen: { enable: false },
+        background: { color: 'transparent' },
+        fpsLimit: 60,
+        detectRetina: true,
+        particles: {
+          number: { value: 18, density: { enable: false } },
+          color: { value: '#00C7B4' },
+          shape: { type: 'circle' },
+          opacity: {
+            value: { min: 0.12, max: 0.55 },
+            animation: { enable: true, speed: 0.5, sync: false },
+          },
+          size: { value: { min: 2, max: 4 } },
+          move: {
+            enable: true,
+            speed: 0.35,
+            direction: 'none',
+            random: true,
+            straight: false,
+            outModes: { default: 'out' },
+          },
+        },
+        interactivity: {
+          events: { onHover: { enable: false }, onClick: { enable: false }, resize: { enable: true } },
+        },
+      },
+    });
+  };
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    initParticles().catch((e) => console.error('[particles] error:', e));
+  }
+</script>
+
+<script>
   // Escena hero → teléfono ligada al scroll (estilo useplaza):
   // el teléfono asoma en la primera pantalla y sube/escala mientras
   // el texto del hero se desvanece. Sin librerías: scroll + rAF.
@@ -250,6 +296,14 @@ const faqItems = [
     overflow: hidden;
     background: var(--white);
     transition: background-color var(--transition);
+  }
+
+  /* Partículas teal (patrón del DS: dispersas, energía ambiental) */
+  .hero-scene__particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
   }
 
   .hero {

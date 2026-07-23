@@ -93,39 +93,48 @@ const faqItems = [
 <Base>
   <Navbar />
 
-  <!-- HERO — pantalla completa, solo texto -->
-  <header class="hero">
-    <div class="container-site hero__inner">
-      <div class="hero__content" id="hero-content">
-        <h1 class="hero__title">
-          Automatiza tu proceso comercial y <em class="grad-text">vende más.</em>
-        </h1>
-        <p class="hero__sub">
-          Descubre cómo Luisa, la inteligencia artificial de Livvo, precalifica y agenda leads 24/7
-          aumentando citas y disminuyendo trabajo manual.
-        </p>
-        <div class="hero__ctas">
-          <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Conversar con Livvo →</Button>
+  <!-- ESCENA HERO + CONVERSACIÓN — anillos concéntricos como escenario común -->
+  <div class="hero-scene">
+    <header class="hero">
+      <div class="container-site hero__inner">
+        <div class="hero__content" id="hero-content">
+          <h1 class="hero__title">
+            Automatiza tu proceso comercial y <em class="grad-text">vende más.</em>
+          </h1>
+          <p class="hero__sub">
+            Descubre cómo Luisa, la inteligencia artificial de Livvo, precalifica y agenda leads
+            24/7 aumentando citas y disminuyendo trabajo manual.
+          </p>
+          <div class="hero__ctas">
+            <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Conversar con Livvo →</Button>
+          </div>
         </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- CONVERSACIÓN ANIMADA — asoma en la primera pantalla y sube con el scroll -->
-  <section class="hero-chat">
-    <div class="container-site hero-chat__inner">
-      <div class="hero-chat__stage" id="chat-stage">
-        <iframe
-          src="/livvo-whatsapp.html"
-          width="424"
-          height="740"
-          loading="lazy"
-          scrolling="no"
-          title="Conversación de WhatsApp con Luisa, la IA de Livvo"
-          class="hero-chat__frame"></iframe>
+    <section class="hero-chat">
+      <div class="hero-chat__bg" id="chat-rings" aria-hidden="true">
+        <svg class="hero-chat__circles" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+          <circle cx="100" cy="100" r="90" stroke-width="0.35" stroke-dasharray="2 3" />
+          <circle cx="100" cy="100" r="68" stroke-width="0.35" />
+          <circle cx="100" cy="100" r="46" stroke-width="0.4" stroke-dasharray="1 2" />
+          <circle cx="100" cy="100" r="24" stroke-width="0.5" stroke="#00C7B4" opacity="0.35" />
+        </svg>
       </div>
-    </div>
-  </section>
+      <div class="container-site hero-chat__inner">
+        <div class="hero-chat__stage" id="chat-stage">
+          <iframe
+            src="/livvo-whatsapp.html"
+            width="424"
+            height="740"
+            loading="lazy"
+            scrolling="no"
+            title="Conversación de WhatsApp con Luisa, la IA de Livvo"
+            class="hero-chat__frame"></iframe>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <!-- IMPACTO -->
   <Section id="impacto" eyebrow="Impacto medible" title="Números, no promesas." alt>
@@ -188,6 +197,7 @@ const faqItems = [
   // el texto del hero se desvanece. Sin librerías: scroll + rAF.
   const stage = document.getElementById('chat-stage');
   const heroContent = document.getElementById('hero-content');
+  const rings = document.getElementById('chat-rings');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (stage && heroContent && !reducedMotion) {
@@ -203,6 +213,12 @@ const faqItems = [
 
       heroContent.style.opacity = String(1 - eased * 0.9);
       heroContent.style.transform = `translateY(${-eased * 40}px)`;
+
+      // los anillos ganan presencia y se expanden levemente con el scroll
+      if (rings) {
+        rings.style.opacity = String(0.4 + eased * 0.6);
+        rings.style.transform = `translate(-50%, -50%) scale(${0.92 + eased * 0.08})`;
+      }
     };
 
     addEventListener('scroll', () => {
@@ -227,12 +243,23 @@ const faqItems = [
 </script>
 
 <style>
+  /* La escena contiene hero + chat y aporta el fondo; los anillos
+     pueden desbordar entre secciones sin salirse de la escena */
+  .hero-scene {
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    transition: background-color var(--transition);
+  }
+
   .hero {
     /* deja ~30vh libres al fondo de la primera pantalla para que el teléfono asome */
     min-height: calc(70vh - 68px);
     display: flex;
     align-items: flex-start;
-    background: var(--white);
+    background: transparent;
+    position: relative;
+    z-index: 2;
     padding: 14vh 0 0;
   }
   .hero__inner { width: 100%; }
@@ -263,15 +290,47 @@ const faqItems = [
   }
   .hero__ctas { display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap; }
 
-  .hero-chat { padding: 24px 0 96px; background: var(--white); overflow: hidden; }
-  .hero-chat__inner { display: flex; justify-content: center; }
+  .hero-chat { padding: 24px 0 96px; background: transparent; position: relative; }
+  .hero-chat__inner { display: flex; justify-content: center; position: relative; z-index: 1; }
   .hero-chat__stage {
     transform-origin: top center;
     will-change: transform, opacity;
   }
   .hero-chat__frame { border: 0; max-width: 100%; display: block; }
+
+  /* Anillos concéntricos (patrón del DS) centrados donde aterriza el teléfono */
+  .hero-chat__bg {
+    position: absolute;
+    left: 50%;
+    top: 44%;
+    width: min(1100px, 170vw);
+    height: min(1100px, 170vw);
+    transform: translate(-50%, -50%);
+    color: var(--border);
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform, opacity;
+  }
+  /* máscara radial: los anillos se desvanecen hacia los bordes */
+  .hero-chat__bg::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: radial-gradient(circle at center, transparent 30%, var(--white) 78%);
+  }
+  .hero-chat__circles {
+    width: 100%;
+    height: 100%;
+    display: block;
+    animation: rings-spin 140s linear infinite;
+  }
+  @keyframes rings-spin {
+    to { transform: rotate(360deg); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero__content { animation: none; }
+    .hero-chat__circles { animation: none; }
   }
 
   .stats-grid {

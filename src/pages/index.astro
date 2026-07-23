@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
 import StatBox from '../components/StatBox.astro';
-import ChatMockup from '../components/ChatMockup.astro';
 import PricingCard from '../components/PricingCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
@@ -12,13 +11,6 @@ import Footer from '../components/Footer.astro';
 const DEMO_URL = 'https://meetings.hubspot.com/daar5014';
 const WHATSAPP_URL =
   'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo');
-
-const chatMessages = [
-  { from: 'user' as const, text: 'Buenas! Me interesa un apartamento de 2 alcobas cerca al norte 🏠', time: '9:03 am' },
-  { from: 'agent' as const, text: '¡Hola! Con gusto te ayudo. Cuéntame, ¿cuál es tu presupuesto aproximado y si buscas para vivir o invertir?', time: '9:03 am' },
-  { from: 'user' as const, text: 'Para vivir. Presupuesto hasta $400 millones', time: '9:04 am' },
-  { from: 'agent' as const, text: 'Perfecto. Tengo 3 opciones que se ajustan muy bien. ¿Puedo agendar una cita con un asesor esta semana? 📅', time: '9:04 am' },
-];
 
 const stats = [
   { value: '<1 min', label: 'Tiempo de respuesta' },
@@ -119,10 +111,17 @@ const faqItems = [
     </div>
   </header>
 
-  <!-- CONVERSACIÓN — debajo del primer scroll -->
+  <!-- CONVERSACIÓN ANIMADA — debajo del primer scroll -->
   <section class="hero-chat">
     <div class="container-site hero-chat__inner fade-up">
-      <ChatMockup title="WhatsApp · Livvo Agent" messages={chatMessages} />
+      <iframe
+        src="/livvo-whatsapp.html"
+        width="424"
+        height="740"
+        loading="lazy"
+        scrolling="no"
+        title="Conversación de WhatsApp con Luisa, la IA de Livvo"
+        class="hero-chat__frame"></iframe>
     </div>
   </section>
 
@@ -213,6 +212,7 @@ const faqItems = [
 
   .hero-chat { padding: 32px 0 96px; background: var(--white); }
   .hero-chat__inner { display: flex; justify-content: center; }
+  .hero-chat__frame { border: 0; max-width: 100%; }
 
   .stats-grid {
     display: grid;

@@ -113,29 +113,30 @@ background: linear-gradient(135deg, rgba(0, 199, 180, 0.06) 0%, rgba(59, 126, 25
 
 ### Typography
 
-Livvo uses **three font families** with strict, non-negotiable roles. Always import all three:
+Livvo uses **two font families** (decisión de marca 22-jul-2026 — Open Sans reemplazó a
+Bricolage Grotesque e Instrument Sans en toda la marca; jerarquía por peso, tipo Zillow,
+por credibilidad con compradores inmobiliarios LATAM). Always import both:
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&family=Geist+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Geist+Mono:wght@400;700&display=swap" rel="stylesheet">
 ```
 
 | Family | Role | Never use for |
 |--------|------|---------------|
-| **Bricolage Grotesque** | Display & Headlines — wordmark, hero titles, section headers | Body copy, labels, data |
-| **Instrument Sans** | UI & Body — buttons, labels, body copy, navigation | Headlines, metrics |
+| **Open Sans** | Todo el texto — titulares (700), labels (600), cuerpo (400) | Metrics, data |
 | **Geist Mono** | Code & Data — metrics, IDs, timestamps, stats, technical values | Any flowing prose |
 
 | Element | Size | Weight | Family | Color (dark bg) | Letter Spacing |
 |---------|------|--------|--------|-----------------|----------------|
-| Hero / Display | 56–80px | 800 | Bricolage Grotesque | `#F0F4FF` | -1px |
-| H1 | 36–48px | 800 | Bricolage Grotesque | `#F0F4FF` | -0.5px |
-| H2 | 24–32px | 700 | Bricolage Grotesque | `#F0F4FF` | 0 |
-| H3 | 18–22px | 600 | Instrument Sans | `#F0F4FF` | 0 |
-| Body Large | 16–18px | 400 | Instrument Sans | `#8B96AF` | 0 |
-| Body Regular | 13–15px | 400 | Instrument Sans | `#8B96AF` | 0 |
-| Label / Tag | 10–13px | 700 | Instrument Sans | `#00C7B4` | 1.5–2px |
+| Hero / Display | 56–72px | 700 | Open Sans | `#F0F4FF` | -1px |
+| H1 | 36–48px | 700 | Open Sans | `#F0F4FF` | -0.5px |
+| H2 | 24–32px | 700 | Open Sans | `#F0F4FF` | -0.5px |
+| H3 | 18–22px | 600 | Open Sans | `#F0F4FF` | 0 |
+| Body Large | 16–18px | 400 | Open Sans | `#8B96AF` | 0 |
+| Body Regular | 13–15px | 400 | Open Sans | `#8B96AF` | 0 |
+| Label / Tag | 10–13px | 600 | Open Sans | `#00C7B4` | 0.5–1px |
 | Metric / Stat | 20–40px | 700 | Geist Mono | `#F0F4FF` or `#00C7B4` | 0 |
 | Caption / Code | 11–12px | 400 | Geist Mono | `#8B96AF` | 0.5px |
 
@@ -176,14 +177,14 @@ Every Livvo design is a single self-contained HTML file:
   <meta name="viewport" content="width={WIDTH}, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&family=Geist+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Geist+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       width: {WIDTH}px;
       height: {HEIGHT}px;
       overflow: hidden;
-      font-family: 'Instrument Sans', system-ui, sans-serif;
+      font-family: 'Open Sans', system-ui, sans-serif;
       background: #070B14;
       position: relative;
     }
@@ -378,7 +379,7 @@ Teal lines define hierarchy — they are not ornamental. Use sparingly.
   color: #070B14;
   padding: 8px 20px;
   border-radius: 20px;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -433,7 +434,7 @@ Teal lines define hierarchy — they are not ornamental. Use sparingly.
   color: #00C7B4; line-height: 1;
 }
 .stat-label {
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 11px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 1.5px;
   color: #8B96AF; margin-top: 6px;
@@ -469,7 +470,7 @@ Teal lines define hierarchy — they are not ornamental. Use sparingly.
   display: inline-flex; align-items: center; gap: 8px;
   background: #111827; border: 1px solid #1A2240;
   border-radius: 8px; padding: 8px 14px;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 12px; font-weight: 600; color: #F0F4FF;
 }
 .channel-dot {
@@ -485,8 +486,8 @@ Teal lines define hierarchy — they are not ornamental. Use sparingly.
   width: 64px; height: 64px; border-radius: 50%;
   background: linear-gradient(135deg, #6C63FF 0%, #4A44CC 100%);
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 24px; font-weight: 800; color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px; font-weight: 700; color: #FFFFFF;
   box-shadow:
     0 0 0 6px rgba(108, 99, 255, 0.2),
     0 0 0 12px rgba(108, 99, 255, 0.1),
@@ -500,7 +501,7 @@ Teal lines define hierarchy — they are not ornamental. Use sparingly.
 .btn-primary {
   background: linear-gradient(135deg, #00C7B4 0%, #0099A8 100%);
   color: #070B14; border: none; border-radius: 8px;
-  padding: 12px 24px; font-family: 'Instrument Sans', sans-serif;
+  padding: 12px 24px; font-family: 'Open Sans', sans-serif;
   font-size: 14px; font-weight: 700;
   box-shadow: 0 4px 16px rgba(0, 199, 180, 0.35);
   letter-spacing: 0.3px;
@@ -508,7 +509,7 @@ Teal lines define hierarchy — they are not ornamental. Use sparingly.
 .btn-secondary {
   background: #111827; color: #F0F4FF;
   border: 1px solid #1A2240; border-radius: 8px;
-  padding: 12px 24px; font-family: 'Instrument Sans', sans-serif;
+  padding: 12px 24px; font-family: 'Open Sans', sans-serif;
   font-size: 14px; font-weight: 600;
 }
 ```
@@ -571,7 +572,7 @@ Same SVG — replace `fill="#F0F4FF"` with `fill="#070B14"` on the first `<g>`.
 #### HTML Wordmark (pure CSS — use when SVG alignment is tricky)
 
 ```html
-<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800;
+<div style="font-family: 'Open Sans', sans-serif; font-weight: 700;
             display: inline-flex; align-items: baseline; line-height: 1;">
   <span style="color: #F0F4FF; letter-spacing: -0.5px;">livv</span>
   <span style="color: #00C7B4; letter-spacing: -0.5px;">o</span>
@@ -620,13 +621,13 @@ Minimum 16px clearance around wordmark at all times.
 
 **LinkedIn Banner (1584×396)**:
 Dark base. Dot grid. Teal glow bleeding off top-right corner. Logo top-left (28px). Teal bar bottom.
-Left 55%: 2–3 line headline (Bricolage Grotesque 42px, one word teal gradient) + subtitle (Muted).
+Left 55%: 2–3 line headline (Open Sans 42px, one word teal gradient) + subtitle (Muted).
 Right 45%: 2–3 stat boxes or channel pills stacked vertically. Separator between columns.
 
 **LinkedIn Page Banner (1128×191)**:
 Tiny canvas — every pixel counts. Dark base, dot grid. Logo top-left (20px). Teal bar bottom (3px).
-Single centered headline (Bricolage Grotesque 28px, one word teal gradient).
-Tagline below (Instrument Sans 12px, Muted). 1–2 teal badge pills. Minimal orbs.
+Single centered headline (Open Sans 28px, one word teal gradient).
+Tagline below (Open Sans 12px, Muted). 1–2 teal badge pills. Minimal orbs.
 
 **LinkedIn Post / OG Image (1200×627)**:
 Dark base. Logo top-right (28px). Teal badge pill (UPPERCASE label) top area.
@@ -641,14 +642,14 @@ Keep consistent layout across all slides in the series.
 
 **Presentation Slide (1920×1080)**:
 Logo top-left (36px). Slide number top-right (Geist Mono, Muted).
-Section label (Instrument Sans, UPPERCASE, Teal, 11px) above headline.
+Section label (Open Sans, UPPERCASE, Teal, 11px) above headline.
 Two-column: text left (40–45%), visual/stats right (55–60%).
 Teal vertical accent line as column divider.
 Full-bleed dot grid. Teal glow top-left, blue glow bottom-right.
 
 **WhatsApp Story (1080×1920)**:
 Full dark background. Logo top-left (30px). Teal badge pill below.
-Large bold title center (Bricolage Grotesque 72–80px, teal gradient on key word).
+Large bold title center (Open Sans 72–80px, teal gradient on key word).
 Supporting stats row in Geist Mono.
 CTA button (teal primary) + livvo.tech URL in Geist Mono bottom.
 Concentric rings behind the title as a single decorative accent.
@@ -668,7 +669,7 @@ Bottom accent bar. High-impact teal glow top-left.
 - Never use Luisa Violet (`#6C63FF`) outside of Luisa IA specific content
 - Never use more than 3 chromatic colors simultaneously in one composition
 - Never apply the teal gradient text to body copy (headlines and key words only)
-- Never use fonts other than Bricolage Grotesque, Instrument Sans, or Geist Mono
+- Never use fonts other than Open Sans or Geist Mono
 - Never center the logo on a horizontal banner (top-left or top-right only)
 - Never omit the teal dot (·) after "livvo" in the wordmark
 - Never place the wordmark on a low-contrast background
@@ -774,7 +775,7 @@ Nota de marca (jul-2026): el azul oficial es `#3B7EFF` y el dominio es **livvo.t
 Before finalizing, verify every point:
 
 - [ ] Body dimensions match the chosen viewport preset exactly
-- [ ] Google Fonts import for Bricolage Grotesque + Instrument Sans + Geist Mono is present
+- [ ] Google Fonts import for Open Sans + Geist Mono is present
 - [ ] Background uses layered radial gradients — not a flat `#070B14`
 - [ ] Dot grid layer is present with correct spacing and color for the canvas size
 - [ ] At least 2 teal/blue glow orbs positioned bleeding off canvas edges
@@ -958,3 +959,4 @@ Does the teal gradient on that one headline word create hierarchy, or just noise
 
 Tighten anything loose. This should look like the output of a team that builds their product
 with the same care they put into their brand — because Livvo does.
+

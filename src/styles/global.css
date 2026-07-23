@@ -50,10 +50,22 @@
   --shadow-glow: 0 6px 20px rgba(13,20,36,0.1), 0 0 20px rgba(0,199,180,0.18);
   --shadow-hover: 0 8px 32px rgba(0,0,0,0.07);
 
-  /* Typography */
-  --font-display: 'Bricolage Grotesque', system-ui, sans-serif; /* titulares */
-  --font-ui:      'Instrument Sans', system-ui, sans-serif;     /* UI / texto */
-  --font-mono:    'Geist Mono', ui-monospace, monospace;        /* datos */
+  /* Typography — Open Sans (jerarquía tipo Zillow) + Geist Mono para datos */
+  --font-display: 'Open Sans', system-ui, sans-serif;  /* titulares */
+  --font-ui:      'Open Sans', system-ui, sans-serif;  /* UI / texto */
+  --font-mono:    'Geist Mono', ui-monospace, monospace; /* solo métricas/datos */
+
+  /* Escala tipográfica */
+  --text-h1:    32px;
+  --text-h2:    24px;
+  --text-h3:    20px;
+  --text-body:  16px;
+  --text-small: 14px;
+  --lh-heading: 1.2;
+  --lh-body:    1.5;
+  --lh-relaxed: 1.8;
+  --ls-heading: -0.5px;
+  --ls-label:   0.5px;
 
   --transition:  0.2s ease;
   --max-w:       1280px;
@@ -96,8 +108,8 @@
   --color-success:   var(--green);
   --color-warning:   var(--gold);
   --color-danger:    var(--red);
-  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-sans:    'Instrument Sans', system-ui, sans-serif;
+  --font-display: 'Open Sans', system-ui, sans-serif;
+  --font-sans:    'Open Sans', system-ui, sans-serif;
   --font-mono:    'Geist Mono', ui-monospace, monospace;
 }
 
@@ -108,20 +120,30 @@ body {
   background: var(--white);
   color: var(--text);
   font-family: var(--font-ui);
-  line-height: 1.7;
+  font-size: var(--text-body);
+  line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
   transition: background-color var(--transition), color var(--transition);
 }
 
-h1, h2 {
+h1, h2, h3 {
   font-family: var(--font-display);
   color: var(--navy);
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  line-height: 1.15;
+  font-weight: 700;
+  line-height: var(--lh-heading);
 }
+h1 { font-size: var(--text-h1); letter-spacing: var(--ls-heading); }
+h2 { font-size: var(--text-h2); letter-spacing: var(--ls-heading); }
+h3 { font-size: var(--text-h3); }
+small { font-size: var(--text-small); }
 
-h3 { font-family: var(--font-ui); font-weight: 600; color: var(--navy); }
+@media (max-width: 768px) {
+  :root {
+    --text-h1: 24px;
+    --text-h2: 20px;
+    --text-body: 15px;
+  }
+}
 
 a { color: var(--teal-deep); }
 a:hover { color: var(--blue); }
@@ -144,8 +166,8 @@ a:hover { color: var(--blue); }
 .eyebrow {
   display: inline-block;
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+  font-weight: 600;
+  letter-spacing: var(--ls-label);
   text-transform: uppercase;
   color: var(--teal-deep);
 }

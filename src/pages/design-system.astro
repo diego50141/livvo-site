@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
 import Navbar from '../components/Navbar.astro';
 import Section from '../components/Section.astro';
 import Button from '../components/Button.astro';
@@ -110,19 +111,23 @@ const faqItems = [
   <Section id="tipografia" eyebrow="Fundaciones" title="Tipografía">
     <div class="type-specimens">
       <div class="specimen">
-        <div class="specimen__label">Bricolage Grotesque · Display / titulares</div>
-        <div class="specimen__sample" style="font-family: var(--font-display); font-weight: 800; font-size: 40px; letter-spacing: -1px; color: var(--navy)">Automatiza y vende más.</div>
+        <div class="specimen__label">Open Sans 700 · Titulares (H1 32 / H2 24 / H3 20)</div>
+        <div class="specimen__sample" style="font-family: var(--font-display); font-weight: 700; font-size: var(--text-h1); letter-spacing: var(--ls-heading); line-height: var(--lh-heading); color: var(--navy)">Automatiza y vende más.</div>
       </div>
       <div class="specimen">
-        <div class="specimen__label">Instrument Sans · UI / cuerpo</div>
-        <div class="specimen__sample" style="font-family: var(--font-ui); font-size: 17px; color: var(--text)">Responde, precalifica y agenda leads por WhatsApp para que tu equipo se enfoque en cerrar ventas.</div>
+        <div class="specimen__label">Open Sans 400 · Cuerpo (16px / lh 1.5)</div>
+        <div class="specimen__sample" style="font-family: var(--font-ui); font-size: var(--text-body); line-height: var(--lh-body); color: var(--text)">Responde, precalifica y agenda leads por WhatsApp para que tu equipo se enfoque en cerrar ventas.</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen__label">Open Sans 600 · Labels (uppercase, ls 0.5px)</div>
+        <div class="specimen__sample" style="font-family: var(--font-ui); font-weight: 600; font-size: 12px; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--teal-deep)">Impacto medible · Planes · FAQ</div>
       </div>
       <div class="specimen">
         <div class="specimen__label">Geist Mono · Datos / métricas</div>
         <div class="specimen__sample" style="font-family: var(--font-mono); font-weight: 700; font-size: 28px; color: var(--teal-deep)">&lt;1 min · 24/7 · +40%</div>
       </div>
     </div>
-    <p class="ds-rule">Regla: Bricolage solo display · Instrument solo UI · Geist Mono solo datos. Nunca otras fuentes.</p>
+    <p class="ds-rule">Regla: Open Sans para titulares (700), labels (600) y cuerpo (400) · Geist Mono solo para datos y métricas. Nunca otras fuentes.</p>
   </Section>
 
   <Section id="logo" eyebrow="Marca" title="Logo" alt>
@@ -135,8 +140,8 @@ const faqItems = [
         <div class="swatch__role">Símbolo VV · <code>Livvo_symbol.svg</code></div>
       </div>
       <div class="logo-cell">
-        <span class="logo-wordmark">livv<span class="t">o</span><span class="t">·</span></span>
-        <div class="swatch__role">Wordmark · <code>Livvo_logo.svg</code> · el punto nunca se omite</div>
+        <Logo size={44} />
+        <div class="swatch__role">Lockup canónico (vectorial, no depende de la fuente) · <code>Livvo_logo.svg</code> · el punto nunca se omite</div>
       </div>
     </div>
   </Section>
@@ -198,8 +203,6 @@ const faqItems = [
 <style>
   .ds-hero { padding: 88px 0 32px; background: var(--white); }
   .ds-hero h1 {
-    font-size: clamp(40px, 5vw, 64px);
-    letter-spacing: -1.5px;
     margin: var(--space-4) 0;
   }
   .ds-hero h1 em { font-style: normal; }
@@ -237,7 +240,7 @@ const faqItems = [
 
   .type-specimens { display: flex; flex-direction: column; gap: var(--space-8); }
   .specimen__label {
-    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    font-size: 11px; font-weight: 600; letter-spacing: var(--ls-label);
     text-transform: uppercase; color: var(--teal-deep);
     margin-bottom: var(--space-2);
   }
@@ -252,15 +255,6 @@ const faqItems = [
   .logo-row { display: flex; gap: var(--space-12); flex-wrap: wrap; align-items: flex-end; }
   .logo-cell { display: flex; flex-direction: column; gap: var(--space-3); }
   .logo-symbol { height: 72px; width: auto; color: var(--navy); }
-  .logo-wordmark {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 56px;
-    letter-spacing: -1px;
-    color: var(--navy);
-    line-height: 1;
-  }
-  .logo-wordmark .t { color: var(--teal); }
 
   .demo-row {
     display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: center;

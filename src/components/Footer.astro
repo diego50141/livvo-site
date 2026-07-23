@@ -1,15 +1,13 @@
 ---
+import Logo from './Logo.astro';
+
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
   <div class="container-site footer__inner">
-    <a href="/" class="footer__logo">
-      <svg class="footer__symbol" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <polyline points="24,20 43,80 62,20" fill="none" stroke="currentColor" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <polyline points="40,20 59,80 78,20" fill="none" stroke="#00C7B4" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="footer__wordmark">livv<span class="footer__teal">o</span><span class="footer__teal">·</span></span>
+    <a href="/" class="footer__logo" aria-label="Livvo — inicio">
+      <Logo size={22} />
     </a>
     <div class="footer__links">
       <a href="#producto">Producto</a>
@@ -34,19 +32,7 @@ const year = new Date().getFullYear();
     gap: var(--space-6);
     flex-wrap: wrap;
   }
-  .footer__logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--navy);
-    text-decoration: none;
-  }
-  .footer__symbol { height: 22px; width: auto; display: block; }
-  .footer__wordmark { color: var(--navy); line-height: 1; }
-  .footer__teal { color: var(--teal); }
+  .footer__logo { display: inline-flex; text-decoration: none; }
   .footer__links { display: flex; gap: var(--space-6); flex-wrap: wrap; }
   .footer__links a {
     font-size: 14px;

@@ -11,6 +11,8 @@ import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
 
 const DEMO_URL = 'https://meetings.hubspot.com/daar5014';
+const WHATSAPP_URL =
+  'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo');
 
 const chatMessages = [
   { from: 'user' as const, text: 'Buenas! Me interesa un apartamento de 2 alcobas cerca al norte 🏠', time: '9:03 am' },
@@ -109,12 +111,11 @@ const faqItems = [
           Automatiza tu proceso comercial y <em class="grad-text">vende más.</em>
         </h1>
         <p class="hero__sub">
-          Descubre cómo Lucía, la inteligencia artificial de Livvo, precalifica y agenda leads 24/7
+          Descubre cómo Luisa, la inteligencia artificial de Livvo, precalifica y agenda leads 24/7
           aumentando citas y disminuyendo trabajo manual.
         </p>
         <div class="hero__ctas">
-          <Button href={DEMO_URL} target="_blank" size="lg" id="hero-demo-cta">Agendar demo →</Button>
-          <Button href="#precios" variant="ghost" size="lg">Ver planes</Button>
+          <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Conversar con Livvo →</Button>
         </div>
         <p class="hero__trust">✓ Implementación en 1–3 días · Sin cambios en tu proceso actual</p>
       </div>

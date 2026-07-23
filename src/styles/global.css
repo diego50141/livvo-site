@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* La variante dark de Tailwind responde al toggle del sitio (data-theme) */
+@custom-variant dark (&:is([data-theme="dark"] *));
+
 /* ============================================================
    Livvo Design System — tokens
    Fuente: Documents/design_handoff_livvo_ds/tokens.css
@@ -112,6 +115,24 @@
   --font-display: 'Open Sans', system-ui, sans-serif;
   --font-sans:    'Open Sans', system-ui, sans-serif;
   --font-mono:    'Geist Mono', ui-monospace, monospace;
+  --animate-marquee:        marquee var(--duration) infinite linear;
+  --animate-marquee-vertical:        marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+  from {
+    transform:        translateX(0);
+    }
+  to {
+    transform:        translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform:        translateY(0);
+    }
+  to {
+    transform:        translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
 
 /* Bases del design system */

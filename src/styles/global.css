@@ -56,6 +56,7 @@
   --font-mono:    'Geist Mono', ui-monospace, monospace; /* solo métricas/datos */
 
   /* Escala tipográfica */
+  --text-display: 52px; /* solo heros / portadas */
   --text-h1:    32px;
   --text-h2:    24px;
   --text-h3:    20px;
@@ -139,6 +140,7 @@ small { font-size: var(--text-small); }
 
 @media (max-width: 768px) {
   :root {
+    --text-display: 34px;
     --text-h1: 24px;
     --text-h2: 20px;
     --text-body: 15px;

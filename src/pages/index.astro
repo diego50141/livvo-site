@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
-import StatBox from '../components/StatBox.astro';
 import PricingCard from '../components/PricingCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
@@ -12,12 +11,105 @@ const DEMO_URL = 'https://meetings.hubspot.com/daar5014';
 const WHATSAPP_URL =
   'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo');
 
-const stats = [
-  { value: '<1 min', label: 'Tiempo de respuesta' },
-  { value: '100%', label: 'Leads atendidos' },
-  { value: '+40%', label: 'Citas el primer mes' },
-  { value: '24/7', label: 'Cobertura total' },
+// Pantallas fijas que rotan con el scroll (patrón useplaza): la sección mide
+// varias alturas de viewport y el contenido queda "pegado" mientras los
+// pasos 01 → 02 → 03 se cruzan con fade + desplazamiento.
+const steps = [
+  {
+    n: '01',
+    title: 'Luisa responde preguntas',
+    desc: 'Luisa responde preguntas en 15 segundos, recopila datos y califica automáticamente los clientes potenciales, directamente en WhatsApp, en cualquier momento.',
+    ctaLabel: 'Conversar con Livvo →',
+    ctaHref: WHATSAPP_URL,
+    ctaVariant: 'primary',
+  },
+  {
+    n: '02',
+    title: 'Servicio inteligente',
+    desc: 'Luisa recomienda propiedades según el perfil del cliente potencial y analiza su solvencia, incluso antes de la visita. Servicio rápido y eficaz, listo para cerrar el trato.',
+    ctaLabel: 'Ver las funciones',
+    ctaHref: '#funcionalidades',
+    ctaVariant: 'outline',
+  },
+  {
+    n: '03',
+    title: 'Clientes potenciales listos para cerrar',
+    desc: 'Atiende y resuelve: el 90 % de las solicitudes de servicio se resuelven sin intervención humana, ya sea con inquilinos o propietarios. Luisa continúa brindando soporte después de la firma del contrato sin depender de tu equipo.',
+    ctaLabel: 'Más información sobre integraciones',
+    ctaHref: '#integraciones',
+    ctaVariant: 'outline',
+  },
+] as const;
+
+// Dos tipos de funcionalidades (patrón useplaza): el servicio de atención
+// al cliente que presta Luisa, y las herramientas de administración.
+const featureTypes = {
+  luisa: 'Luisa · Atención al cliente',
+  admin: 'Luisa · Admin',
+} as const;
+
+const features = [
+  {
+    type: 'luisa',
+    icon: 'chat',
+    title: 'Atención al cliente 24/7 con IA',
+    desc: 'Luisa responde en segundos, con el tono de tu inmobiliaria a inquilinos y propietarios en cualquier momento.',
+  },
+  {
+    type: 'luisa',
+    icon: 'target',
+    title: 'Priorización de clientes potenciales',
+    desc: 'Antes de derivar la solicitud a un agente inmobiliario, identifica quién realmente desea alquilar o comprar.',
+  },
+  {
+    type: 'luisa',
+    icon: 'filter',
+    title: 'Calificación automática de leads',
+    desc: 'Luisa detecta presupuesto, zona de interés y liquidez y te entrega solo los leads listos para avanzar.',
+  },
+  {
+    type: 'luisa',
+    icon: 'home',
+    title: 'Recomendación de inmuebles',
+    desc: 'Cada lead recibe propiedades de tu portafolio que encajan con lo que busca, directo en el chat.',
+  },
+  {
+    type: 'luisa',
+    icon: 'calendar',
+    title: 'Agendamiento de visitas',
+    desc: 'Luisa coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
+  },
+  {
+    type: 'admin',
+    icon: 'link',
+    title: 'Integración con CRM y ERP',
+    desc: 'Luisa ya está integrada con los principales sistemas del mercado inmobiliario. Todo conectado, en un solo lugar.',
+  },
+  {
+    type: 'admin',
+    icon: 'calendar-check',
+    title: 'Calendario de citas del equipo',
+    desc: 'Todas las visitas que agenda Luisa quedan organizadas en el calendario de tus asesores.',
+  },
+  {
+    type: 'luisa',
+    icon: 'chart',
+    title: 'Informes y métricas',
+    desc: 'Realiza un seguimiento del rendimiento en tiempo real con datos sobre conversaciones, atención al cliente, tasas de conversión y productividad.',
+  },
 ];
+
+const featureIcons: Record<string, string> = {
+  chat: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+  filter: '<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  home: '<path d="M3 9.5 12 3l9 6.5"/><path d="M5 8.5V21h14V8.5"/><path d="M9 21v-6h6v6"/>',
+  calendar:
+    '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>',
+  'calendar-check':
+    '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 15h3M8 18h6"/>',  link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  chart: '<path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/>',
+};
 
 const plans = [
   {
@@ -64,6 +156,28 @@ const plans = [
     featured: false,
     ctaLabel: 'Agendar demo',
   },
+];
+
+// Integraciones — CONFIRMAR la lista real antes de publicar.
+// Dos cintas: herramientas generales (arriba) y sistemas del sector
+// inmobiliario (abajo). `mark` es el monograma del pill y `color` un
+// aproximado del color de marca (solo tiñe el monograma).
+const integrationRows = [
+  [
+    { name: 'WhatsApp Business API', cat: 'Canal oficial', mark: 'W', color: '#25D366' },
+    { name: 'HubSpot', cat: 'CRM', mark: 'H', color: '#FF7A59' },
+    { name: 'Salesforce', cat: 'CRM', mark: 'S', color: '#00A1E0' },
+    { name: 'Zoho CRM', cat: 'CRM', mark: 'Z', color: '#E42527' },
+    { name: 'Pipedrive', cat: 'CRM', mark: 'P', color: '#017737' },
+    { name: 'Google Calendar', cat: 'Agenda', mark: 'G', color: '#4285F4' },
+  ],
+  [
+    { name: 'Wasi', cat: 'CRM inmobiliario', mark: 'W', color: '#00B398' },
+    { name: 'Simi', cat: 'ERP inmobiliario', mark: 'S', color: '#2E5BFF' },
+    { name: 'Fincaraíz', cat: 'Portal', mark: 'F', color: '#6BBE45' },
+    { name: 'Metrocuadrado', cat: 'Portal', mark: 'm²', color: '#F5A800' },
+    { name: 'Ciencuadras', cat: 'Portal', mark: 'C', color: '#0B5ED7' },
+  ],
 ];
 
 const faqItems = [
@@ -137,10 +251,104 @@ const faqItems = [
     </section>
   </div>
 
-  <!-- IMPACTO -->
-  <Section id="impacto" eyebrow="Impacto medible" title="Números, no promesas." alt>
-    <div class="stats-grid fade-up">
-      {stats.map(({ value, label }) => <StatBox {value} {label} />)}
+  <!-- CÓMO FUNCIONA — pantallas fijas que pasan con el scroll (estilo useplaza) -->
+  <section id="como-funciona" class="steps" aria-label="Cómo funciona Luisa">
+    <div class="steps__sticky">
+      <div class="container-site steps__inner">
+        <div class="steps__nav" aria-hidden="true">
+          {steps.map(({ n }, i) => (
+            <span class:list={['steps__nav-item', { 'is-active': i === 0 }]} data-step-dot>
+              {n}
+            </span>
+          ))}
+        </div>
+        <div class="steps__panels">
+          {steps.map(({ n, title, desc, ctaLabel, ctaHref, ctaVariant }, i) => (
+            <article class:list={['step-panel', { 'is-active': i === 0 }]} data-step-panel>
+              <span class="step-panel__num">{n}</span>
+              <h2 class="step-panel__title">{title}</h2>
+              <p class="step-panel__desc">{desc}</p>
+              <div>
+                <Button
+                  href={ctaHref}
+                  variant={ctaVariant}
+                  size="lg"
+                  target={ctaHref.startsWith('http') ? '_blank' : undefined}
+                >
+                  {ctaLabel}
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUNCIONALIDADES -->
+  <Section
+    id="funcionalidades"
+    eyebrow="Funcionalidades"
+    title="La inteligencia artificial más completa del mercado inmobiliario"
+  >
+    <div class="features-grid fade-up">
+      {
+        features.map(({ type, icon, title, desc }) => (
+          <article class:list={['feature-card', `feature-card--${type}`]}>
+            <span class="feature-card__badge">{featureTypes[type as keyof typeof featureTypes]}</span>
+            <span class="feature-card__icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                set:html={featureIcons[icon]}
+              />
+            </span>
+            <h3 class="feature-card__title">{title}</h3>
+            <p class="feature-card__desc">{desc}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- INTEGRACIONES -->
+  <Section
+    id="integraciones"
+    eyebrow="Integraciones"
+    title="Luisa está conectada con los sistemas que ya usas."
+    subtitle="Integración con los principales CRMs, portales y ERPs del mercado inmobiliario."
+    alt
+  >
+    <div class="integrations fade-up">
+      {integrationRows.map((row, i) => (
+        <div class="integrations__marquee">
+          <div class:list={['integrations__track', { 'integrations__track--reverse': i % 2 === 1 }]}>
+            {[0, 1].map((copy) => (
+              <div class="integrations__group" aria-hidden={copy === 1 ? 'true' : undefined}>
+                {row.map(({ name, cat, mark, color }) => (
+                  <span class="integration-pill" style={`--brand: ${color}`}>
+                    <span class="integration-pill__mark" aria-hidden="true">{mark}</span>
+                    <span class="integration-pill__body">
+                      <span class="integration-pill__name">{name}</span>
+                      <span class="integration-pill__cat">{cat}</span>
+                    </span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+      <p class="integrations__note">
+        ¿Usas otro sistema? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Cuéntanos</a> —
+        Luisa se conecta vía API con el stack que ya tienes.
+      </p>
     </div>
   </Section>
 
@@ -235,6 +443,51 @@ const faqItems = [
 
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     initParticles().catch((e) => console.error('[particles] error:', e));
+  }
+</script>
+
+<script>
+  // Sección "cómo funciona": el contenedor mide 300vh y el contenido queda
+  // sticky; el progreso de scroll decide qué paso está activo y los paneles
+  // se cruzan con fade + desplazamiento (transiciones CSS → fluido).
+  const stepsSection = document.getElementById('como-funciona');
+  const stepPanels = Array.from(document.querySelectorAll('[data-step-panel]'));
+  const stepDots = Array.from(document.querySelectorAll('[data-step-dot]'));
+  const stepsReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (stepsSection && stepPanels.length && stepsReduced) {
+    // sin animación: pasos apilados, todos visibles
+    stepsSection.classList.add('steps--static');
+  } else if (stepsSection && stepPanels.length) {
+    let stepsTicking = false;
+
+    const updateSteps = () => {
+      stepsTicking = false;
+      const rect = stepsSection.getBoundingClientRect();
+      const scrollable = rect.height - innerHeight;
+      if (scrollable <= 0) return;
+      const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
+      // reparte el progreso en tramos iguales por paso
+      const idx = Math.min(stepPanels.length - 1, Math.floor(progress * stepPanels.length));
+
+      stepPanels.forEach((panel, i) => {
+        panel.classList.toggle('is-active', i === idx);
+        panel.classList.toggle('is-past', i < idx);
+      });
+      stepDots.forEach((dot, i) => dot.classList.toggle('is-active', i === idx));
+    };
+
+    addEventListener(
+      'scroll',
+      () => {
+        if (!stepsTicking) {
+          stepsTicking = true;
+          requestAnimationFrame(updateSteps);
+        }
+      },
+      { passive: true }
+    );
+    updateSteps();
   }
 </script>
 
@@ -388,10 +641,294 @@ const faqItems = [
     .hero-chat__circles { animation: none; }
   }
 
-  .stats-grid {
+  /* ---- Cómo funciona: pantallas sticky que pasan con el scroll ---- */
+  .steps {
+    position: relative;
+    height: 300vh; /* 100vh por paso: define cuánto scroll dura la escena */
+    background: var(--gray-bg);
+    transition: background-color var(--transition);
+  }
+  .steps__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .steps__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    width: 100%;
+  }
+  .steps__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .steps__nav-item {
+    opacity: 0.45;
+    transition: opacity 0.4s ease, color 0.4s ease, transform 0.4s ease;
+  }
+  .steps__nav-item.is-active {
+    opacity: 1;
+    color: var(--teal-deep);
+    font-weight: 700;
+    transform: scale(1.25);
+  }
+  .steps__panels {
+    position: relative;
+    flex: 1;
+    height: min(520px, 72vh);
+  }
+  .step-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateY(70px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+  .step-panel.is-active {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .step-panel.is-past {
+    transform: translateY(-70px);
+  }
+  .step-panel__num {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal-deep);
+    margin-bottom: var(--space-4);
+  }
+  /* mismo tamaño de título y subtítulo que el resto de secciones */
+  .step-panel__title {
+    font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: -1px;
+    margin: 0 0 var(--space-6);
+    max-width: 720px;
+  }
+  .step-panel__desc {
+    font-size: var(--text-h2);
+    line-height: var(--lh-body);
+    color: var(--muted);
+    max-width: 680px;
+    margin: 0 0 var(--space-8);
+  }
+
+  /* Fallback sin animación (prefers-reduced-motion): pasos apilados */
+  .steps--static { height: auto; }
+  .steps--static .steps__sticky { position: static; height: auto; padding: 96px 0; }
+  .steps--static .steps__nav { display: none; }
+  .steps--static .steps__panels { height: auto; }
+  .steps--static .step-panel {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    padding: var(--space-12) 0;
+  }
+
+  .features-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-6);
+  }
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+    transition: box-shadow var(--transition), border-color var(--transition),
+      background-color var(--transition), transform var(--transition);
+  }
+  .feature-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .feature-card__badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: var(--space-4);
+    border: 1px solid;
+  }
+  .feature-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    margin-bottom: var(--space-4);
+    transition: background-color var(--transition), color var(--transition);
+  }
+  .feature-card__title {
+    font-size: var(--text-h3);
+    margin: 0 0 var(--space-2);
+  }
+  .feature-card__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+
+  /* Tipo: Luisa · Atención al cliente — violeta (exclusivo de Luisa IA en el DS) */
+  .feature-card--luisa .feature-card__badge {
+    color: var(--violet);
+    border-color: rgba(108, 99, 255, 0.4);
+    background: rgba(108, 99, 255, 0.08);
+  }
+  .feature-card--luisa .feature-card__icon {
+    background: rgba(108, 99, 255, 0.1);
+    color: var(--violet);
+  }
+  .feature-card--luisa:hover {
+    background: rgba(108, 99, 255, 0.07);
+    border-color: rgba(108, 99, 255, 0.45);
+  }
+  .feature-card--luisa:hover .feature-card__icon {
+    background: var(--grad-violet);
+    color: #fff;
+  }
+
+  /* Tipo: Administración — teal (acento primario del DS) */
+  .feature-card--admin .feature-card__badge {
+    color: var(--teal-deep);
+    border-color: rgba(0, 199, 180, 0.4);
+    background: rgba(0, 199, 180, 0.08);
+  }
+  .feature-card--admin .feature-card__icon {
+    background: rgba(0, 199, 180, 0.1);
+    color: var(--teal-deep);
+  }
+  .feature-card--admin:hover {
+    background: rgba(0, 199, 180, 0.07);
+    border-color: rgba(0, 199, 180, 0.45);
+  }
+  .feature-card--admin:hover .feature-card__icon {
+    background: var(--grad-cta);
+    color: #fff;
+  }
+
+  /* ---- Integraciones: dos cintas contra-rotantes de sistemas ---- */
+  .integrations {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .integrations__marquee {
+    overflow: hidden;
+    /* desvanecer en los bordes */
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+  .integrations__track {
+    display: flex;
+    gap: var(--space-6);
+    width: max-content;
+    padding-block: var(--space-2); /* aire para la sombra de las pills */
+    animation: integrations-scroll 40s linear infinite;
+  }
+  .integrations__track--reverse {
+    animation-direction: reverse;
+    animation-duration: 48s; /* velocidad distinta: se siente orgánico */
+  }
+  .integrations__group {
+    display: flex;
+    gap: var(--space-6);
+  }
+  .integrations__marquee:hover .integrations__track {
+    animation-play-state: paused;
+  }
+  @keyframes integrations-scroll {
+    /* -50% menos medio gap: el loop se repite sin salto */
+    to { transform: translateX(calc(-50% - var(--space-3))); }
+  }
+  .integration-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+    padding: 8px 22px 8px 10px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+  .integration-pill:hover {
+    border-color: color-mix(in srgb, var(--brand) 50%, transparent);
+    transform: translateY(-2px);
+  }
+  .integration-pill__mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--brand);
+    background: color-mix(in srgb, var(--brand) 14%, transparent);
+  }
+  .integration-pill__body {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .integration-pill__name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .integration-pill__cat {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .integrations__note {
+    text-align: center;
+    font-size: var(--text-small);
+    color: var(--muted);
+    margin-top: var(--space-2);
+  }
+  .integrations__note a {
+    color: var(--teal-deep);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .integrations__note a:hover {
+    text-decoration: underline;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .integrations__track {
+      animation: none;
+      width: auto;
+    }
+    .integrations__track,
+    .integrations__group {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* sin animación no hace falta la copia duplicada */
+    .integrations__group[aria-hidden='true'] { display: none; }
+    .integrations__marquee { mask-image: none; -webkit-mask-image: none; }
   }
 
   .pricing-grid {
@@ -411,11 +948,26 @@ const faqItems = [
   }
 
   .cta-final { text-align: center; max-width: 620px; margin: 0 auto; }
-  .cta-final h2 { margin: var(--space-4) 0; }
-  .cta-final p { color: var(--muted); margin-bottom: var(--space-8); }
+  .cta-final h2 {
+    margin: var(--space-4) 0;
+    font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: -1px;
+  }
+  .cta-final p {
+    color: var(--muted);
+    font-size: var(--text-h2);
+    line-height: var(--lh-body);
+    margin-bottom: var(--space-8);
+  }
 
   @media (max-width: 1024px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .feature-card { padding: var(--space-6) var(--space-4); }
     .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-inline: auto; }
+  }
+  @media (max-width: 640px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .steps__nav { display: none; }
+    .step-panel__desc { font-size: var(--text-body); }
   }
 </style>

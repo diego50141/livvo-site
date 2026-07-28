@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -73,6 +74,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         autocapture:       false,
       });
     </script>
+
+    <!-- Vercel Web Analytics -->
+    <Analytics />
   </head>
   <body>
     <slot />

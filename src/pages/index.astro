@@ -6,10 +6,7 @@ import Section from '../components/Section.astro';
 import PricingCard from '../components/PricingCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
-
-const DEMO_URL = 'https://meetings.hubspot.com/daar5014';
-const WHATSAPP_URL =
-  'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo');
+import { WHATSAPP_URL, DEMO_URL } from '../config';
 
 // Pantallas fijas que rotan con el scroll (patrón useplaza): la sección mide
 // varias alturas de viewport y el contenido queda "pegado" mientras los
@@ -203,7 +200,7 @@ const faqItems = [
   },
 ];
 
-const faqSubtitle = 'Más información sobre Maya';
+const faqSubtitle = 'Más información sobre Luisa';
 ---
 
 <Base>

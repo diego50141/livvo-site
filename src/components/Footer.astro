@@ -1,44 +1,144 @@
 ---
 import Logo from './Logo.astro';
+import Button from './Button.astro';
 
-const year = new Date().getFullYear();
+const WHATSAPP_URL =
+  'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo');
 ---
 
 <footer class="footer">
-  <div class="container-site footer__inner">
-    <a href="/" class="footer__logo" aria-label="Livvo — inicio">
-      <Logo size={22} />
-    </a>
-    <div class="footer__links">
-      <a href="#producto">Producto</a>
-      <a href="#precios">Precios</a>
-      <a href="#faq">FAQ</a>
-      <a href="https://meetings.hubspot.com/daar5014" target="_blank" rel="noopener">Agendar demo</a>
+  <div class="container-site">
+    <div class="footer__main">
+      <!-- Izquierda -->
+      <div class="footer__col footer__col--left">
+        <Logo />
+        <p class="footer__desc">
+          Aumenta tu tasa de conversión de clientes potenciales con IA diseñada específicamente para el mercado inmobiliario.
+        </p>
+        <Button href={WHATSAPP_URL} target="_blank" variant="primary" size="sm">
+          Conversar con Livvo →
+        </Button>
+      </div>
+
+      <!-- Centro -->
+      <div class="footer__col footer__col--center">
+        <nav class="footer__nav">
+          <h3 class="footer__nav-title">Menu</h3>
+          <ul>
+            <li><a href="#funcionalidades">Funcionalidades</a></li>
+            <li><a href="#integraciones">Integraciones</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Derecha -->
+      <div class="footer__col footer__col--right">
+        <nav class="footer__nav">
+          <ul>
+            <li><a href="/terminos-de-uso" target="_blank">Términos de uso</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    <div class="footer__copy">© {year} Livvo · livvo.tech</div>
+
+    <!-- Bottom -->
+    <div class="footer__bottom">
+      <p>
+        Livvo tecnologia Ltda - RUT 1121923287-1 Bogotá, Colombia ©2026 Livvo - Todos los derechos reservados
+      </p>
+    </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    border-top: 1px solid var(--border);
-    padding: var(--space-12) 0;
-    background: var(--gray-bg);
+    background: var(--navy);
+    color: var(--white);
+    padding: var(--space-16) 0;
+    transition: background-color var(--transition);
   }
-  .footer__inner {
+
+  .footer__main {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+  }
+
+  .footer__col {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .footer__col--left {
     gap: var(--space-6);
-    flex-wrap: wrap;
   }
-  .footer__logo { display: inline-flex; text-decoration: none; }
-  .footer__links { display: flex; gap: var(--space-6); flex-wrap: wrap; }
-  .footer__links a {
+
+  .footer__desc {
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .footer__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .footer__nav-title {
     font-size: 14px;
-    color: var(--muted);
-    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-2);
   }
-  .footer__links a:hover { color: var(--navy); }
-  .footer__copy { font-size: 13px; color: var(--muted); font-family: var(--font-mono); }
+
+  .footer__nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .footer__nav a {
+    font-size: var(--text-small);
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .footer__nav a:hover {
+    color: var(--white);
+  }
+
+  .footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: var(--space-8);
+    text-align: center;
+  }
+
+  .footer__bottom p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .footer__main {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+      text-align: center;
+    }
+
+    .footer__col {
+      align-items: center;
+    }
+
+    .footer__nav {
+      align-items: center;
+    }
+  }
 </style>

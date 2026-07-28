@@ -27,17 +27,17 @@ const steps = [
     n: '02',
     title: 'Servicio inteligente',
     desc: 'Luisa recomienda propiedades según el perfil del cliente potencial y analiza su solvencia, incluso antes de la visita. Servicio rápido y eficaz, listo para cerrar el trato.',
-    ctaLabel: 'Ver las funciones',
-    ctaHref: '#funcionalidades',
-    ctaVariant: 'outline',
+    ctaLabel: 'Conversar con Livvo →',
+    ctaHref: WHATSAPP_URL,
+    ctaVariant: 'primary',
   },
   {
     n: '03',
     title: 'Clientes potenciales listos para cerrar',
     desc: 'Atiende y resuelve: el 90 % de las solicitudes de servicio se resuelven sin intervención humana, ya sea con inquilinos o propietarios. Luisa continúa brindando soporte después de la firma del contrato sin depender de tu equipo.',
-    ctaLabel: 'Más información sobre integraciones',
-    ctaHref: '#integraciones',
-    ctaVariant: 'outline',
+    ctaLabel: 'Conversar con Livvo →',
+    ctaHref: WHATSAPP_URL,
+    ctaVariant: 'primary',
   },
 ] as const;
 
@@ -139,7 +139,7 @@ const plans = [
       'Todo lo del plan Gratis',
     ],
     featured: true,
-    ctaLabel: 'Agendar demo →',
+    ctaLabel: 'Conversar con Livvo →',
   },
   {
     name: 'Pro',
@@ -154,7 +154,7 @@ const plans = [
       'Todo lo del plan Básico',
     ],
     featured: false,
-    ctaLabel: 'Agendar demo',
+    ctaLabel: 'Conversar con Livvo →',
   },
 ];
 
@@ -202,6 +202,8 @@ const faqItems = [
     a: 'No hay contrato de permanencia — cancelas cuando quieras, sin penalidades. Te acompañamos durante la implementación para asegurarnos de que veas resultados desde el primer mes.',
   },
 ];
+
+const faqSubtitle = 'Más información sobre Maya';
 ---
 
 <Base>
@@ -364,7 +366,7 @@ const faqItems = [
             features={plan.features}
             featured={plan.featured}
             ctaLabel={plan.ctaLabel}
-            ctaHref={DEMO_URL}
+            ctaHref={WHATSAPP_URL}
             ctaTarget="_blank"
           />
         ))
@@ -378,22 +380,13 @@ const faqItems = [
   </Section>
 
   <!-- FAQ -->
-  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" alt>
+  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" subtitle={faqSubtitle} alt>
     <div class="fade-up">
       <FAQ items={faqItems} />
-    </div>
-  </Section>
-
-  <!-- CTA FINAL -->
-  <Section id="contacto">
-    <div class="cta-final fade-up">
-      <span class="eyebrow">Empieza hoy</span>
-      <h2>¿Listo para dejar de perder leads?</h2>
-      <p>
-        Agenda una demo de 15 minutos y mira a Livvo responder, calificar y agendar con propiedades
-        reales de tu portafolio.
-      </p>
-      <Button href={DEMO_URL} target="_blank" size="lg" id="final-demo-cta">Agendar demo →</Button>
+      <div class="faq-footer fade-up">
+        <p>Contáctanos si tienes alguna pregunta o problema.</p>
+        <Button href={WHATSAPP_URL} target="_blank" variant="primary">Conversar con Livvo →</Button>
+      </div>
     </div>
   </Section>
 
@@ -947,17 +940,17 @@ const faqItems = [
     color: var(--muted);
   }
 
-  .cta-final { text-align: center; max-width: 620px; margin: 0 auto; }
-  .cta-final h2 {
-    margin: var(--space-4) 0;
-    font-size: clamp(32px, 4vw, 44px);
-    letter-spacing: -1px;
+  .faq-footer {
+    text-align: center;
+    max-width: 620px;
+    margin: var(--space-12) auto 0;
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--border);
   }
-  .cta-final p {
+  .faq-footer p {
+    font-size: var(--text-body);
     color: var(--muted);
-    font-size: var(--text-h2);
-    line-height: var(--lh-body);
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-6);
   }
 
   @media (max-width: 1024px) {

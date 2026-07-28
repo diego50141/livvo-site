@@ -4,6 +4,7 @@ import Button from './Button.astro';
 interface Props {
   name: string;
   price: string;
+  period?: string;
   tagline: string;
   features: string[];
   featured?: boolean;
@@ -12,15 +13,24 @@ interface Props {
   ctaTarget?: string;
 }
 
-const { name, price, tagline, features, featured = false, ctaLabel, ctaHref, ctaTarget } =
-  Astro.props;
+const {
+  name,
+  price,
+  period = '/mes',
+  tagline,
+  features,
+  featured = false,
+  ctaLabel,
+  ctaHref,
+  ctaTarget,
+} = Astro.props;
 ---
 
 <div class:list={['pricing', { 'pricing--featured': featured }]}>
   {featured && <div class="pricing__badge">Recomendado</div>}
   <div class="pricing__name">{name}</div>
   <p class="pricing__tagline">{tagline}</p>
-  <div class="pricing__price">{price}<span> /mes</span></div>
+  <div class="pricing__price">{price}<span> {period}</span></div>
   <hr class="pricing__divider" />
   <ul class="pricing__features">
     {

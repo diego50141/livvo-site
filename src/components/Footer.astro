@@ -1,68 +1,66 @@
 ---
-const WHATSAPP_URL = 'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo');
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+
+const WHATSAPP_URL =
+  'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo');
 ---
 
 <footer class="footer">
   <div class="container-site">
     <div class="footer__main">
-      <!-- Izquierda -->
-      <div class="footer__col footer__col--left">
-        <svg class="footer__logo" viewBox="0 0 40 40" width="40" height="40" fill="none">
-          <path d="M8 12h24M8 28h24M12 8v24M28 8v24" stroke="currentColor" stroke-width="2"/>
-        </svg>
+      <!-- Izquierda: marca -->
+      <div class="footer__col footer__brand">
+        <Logo />
         <p class="footer__desc">
-          Aumenta tu tasa de conversión de clientes potenciales con IA diseñada específicamente para el mercado inmobiliario.
+          Aumenta tu tasa de conversión de clientes potenciales con IA diseñada específicamente
+          para el mercado inmobiliario.
         </p>
-        <a href={WHATSAPP_URL} target="_blank" class="footer__cta">
-          Conversar con Livvo →
-        </a>
+        <div>
+          <Button href={WHATSAPP_URL} target="_blank" size="sm">Conversar con Livvo →</Button>
+        </div>
       </div>
 
-      <!-- Centro -->
-      <div class="footer__col footer__col--center">
-        <nav class="footer__nav">
-          <h3 class="footer__nav-title">Menu</h3>
-          <ul>
-            <li><a href="#funcionalidades">Funcionalidades</a></li>
-            <li><a href="#integraciones">Integraciones</a></li>
-          </ul>
-        </nav>
-      </div>
+      <!-- Centro: menú -->
+      <nav class="footer__col footer__nav" aria-label="Menú del sitio">
+        <h3 class="footer__nav-title">Menu</h3>
+        <ul>
+          <li><a href="#funcionalidades">Funcionalidades</a></li>
+          <li><a href="#integraciones">Integraciones</a></li>
+        </ul>
+      </nav>
 
-      <!-- Derecha -->
-      <div class="footer__col footer__col--right">
-        <nav class="footer__nav">
-          <ul>
-            <li><a href="/terminos-de-uso" target="_blank">Términos de uso</a></li>
-          </ul>
-        </nav>
-      </div>
+      <!-- Derecha: legal -->
+      <nav class="footer__col footer__nav" aria-label="Enlaces legales">
+        <ul>
+          <li><a href="/terminos-de-uso">Términos de uso</a></li>
+        </ul>
+      </nav>
     </div>
 
-    <!-- Bottom -->
     <div class="footer__bottom">
       <p>
-        Livvo tecnologia Ltda - RUT 1121923287-1 Bogotá, Colombia ©2026 Livvo - Todos los derechos reservados
+        Livvo tecnologia Ltda - RUT 1121923287-1 Bogotá, Colombia ©2026 Livvo - Todos los
+        derechos reservados
       </p>
     </div>
   </div>
 </footer>
 
 <style>
+  /* El footer sigue el tema: blanco en claro, oscuro en oscuro.
+     Los tokens (--white/--text/--muted) se remapean solos con data-theme. */
   .footer {
-    background: var(--dark);
-    color: var(--white);
-    padding: var(--space-16) 0;
-    transition: background-color var(--transition);
-  }
-
-  [data-theme="light"] .footer {
-    background: var(--navy);
+    background: var(--white);
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    padding: 64px 0 40px;
+    transition: background-color var(--transition), border-color var(--transition);
   }
 
   .footer__main {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.4fr 1fr 1fr;
     gap: var(--space-8);
     margin-bottom: var(--space-12);
   }
@@ -72,50 +70,28 @@ const WHATSAPP_URL = 'https://wa.me/573159281379?text=' + encodeURIComponent('Ho
     flex-direction: column;
   }
 
-  .footer__col--left {
+  .footer__brand {
     gap: var(--space-6);
+    max-width: 360px;
   }
-
-  .footer__logo {
-    color: var(--white);
-    margin-bottom: var(--space-4);
-  }
-
   .footer__desc {
     font-size: var(--text-small);
     line-height: var(--lh-body);
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: var(--space-6);
-  }
-
-  .footer__cta {
-    display: inline-block;
-    padding: 8px 16px;
-    background: var(--teal-deep);
-    color: var(--white);
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: var(--text-small);
-    font-weight: 600;
-    transition: opacity var(--transition);
-  }
-
-  .footer__cta:hover {
-    opacity: 0.9;
+    color: var(--muted);
+    margin: 0;
   }
 
   .footer__nav {
-    display: flex;
-    flex-direction: column;
     gap: var(--space-4);
   }
 
   .footer__nav-title {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: var(--space-2);
+    letter-spacing: var(--ls-label);
+    color: var(--muted);
+    margin: 0;
   }
 
   .footer__nav ul {
@@ -124,45 +100,37 @@ const WHATSAPP_URL = 'https://wa.me/573159281379?text=' + encodeURIComponent('Ho
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-3);
   }
 
   .footer__nav a {
     font-size: var(--text-small);
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--muted);
     text-decoration: none;
     transition: color var(--transition);
   }
-
   .footer__nav a:hover {
-    color: var(--white);
+    color: var(--navy);
   }
 
   .footer__bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border);
     padding-top: var(--space-8);
     text-align: center;
   }
-
   .footer__bottom p {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--muted);
     margin: 0;
   }
 
   @media (max-width: 768px) {
     .footer__main {
       grid-template-columns: 1fr;
-      gap: var(--space-12);
-      text-align: center;
+      gap: var(--space-8);
     }
-
-    .footer__col {
-      align-items: center;
-    }
-
-    .footer__nav {
-      align-items: center;
+    .footer__brand {
+      max-width: none;
     }
   }
 </style>

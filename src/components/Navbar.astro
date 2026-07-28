@@ -5,8 +5,8 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const links = [
   { href: '#funcionalidades', label: 'Funcionalidades' },
+  { href: '#integraciones', label: 'Integraciones' },
   { href: '#precios', label: 'Precios' },
-  { href: '#faq', label: 'FAQ' },
 ];
 ---
 
@@ -20,8 +20,13 @@ const links = [
     </div>
     <div class="navbar__actions">
       <ThemeToggle />
-      <Button href="https://meetings.hubspot.com/daar5014" target="_blank" size="sm" id="nav-demo-cta">
-        Agendar demo
+      <Button
+        href={'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo')}
+        target="_blank"
+        size="sm"
+        id="nav-demo-cta"
+      >
+        Conversar con Livvo →
       </Button>
     </div>
   </div>

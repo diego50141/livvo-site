@@ -115,13 +115,14 @@ const plans = [
   {
     name: 'Gratis',
     price: '$0',
+    period: '/7 días',
     tagline: 'Empieza gratis y prueba la IA sin riesgo',
     features: [
-      'Hasta 10 propiedades publicadas',
-      'Descripciones con IA',
-      'CRM (leads + propietarios)',
-      'Calendario de citas',
-      'Analíticas y reportes',
+      'Hasta 50 conversaciones',
+      'Agente IA operando 24/7 en WhatsApp',
+      'Portal básico (ver conversaciones)',
+      '1 usuario',
+      'Soporte comunitario (Discord/Telegram)',
     ],
     featured: false,
     ctaLabel: 'Empezar gratis',
@@ -131,52 +132,51 @@ const plans = [
     price: '$200.000',
     tagline: 'Para arrancar con ventas automáticas en WhatsApp',
     features: [
-      'Hasta 25 propiedades',
-      '500 conversaciones/mes',
-      'CRM (leads + propietarios)',
-      'Calendario de citas',
-      'Analíticas y reportes',
-      'Todo lo del plan Gratis',
+      'Hasta 500 conversaciones mensuales',
+      'Operación 24/7 de tus Empleados IA',
+      'Portal completo (métricas de conversión y funnel de leads)',
+      'Hasta 5 usuarios',
+      'Ajustes y mejoras continuas',
+      'Soporte básico',
     ],
     featured: true,
     ctaLabel: 'Conversar con Livvo →',
   },
   {
     name: 'Pro',
-    price: '$507.000',
+    price: '$500.000',
     tagline: 'Para escalar tu operación comercial',
     features: [
-      'Hasta 50 propiedades',
-      '1.500 conversaciones/mes',
-      'CRM (leads + propietarios)',
-      'Calendario de citas',
-      'Analíticas y reportes',
-      'Todo lo del plan Básico',
+      'Hasta 1.000 conversaciones mensuales',
+      'Operación 24/7 de tus Empleados IA',
+      'Usuarios ilimitados',
+      'Chat widget para tu sitio web',
+      'Campañas de WhatsApp',
+      'Módulo de plantillas de Meta',
+      'Reunión mensual de optimización',
+      'Ajustes y mejoras continuas',
+      'Soporte prioritario',
+      'Gerente de cuenta dedicado',
     ],
     featured: false,
     ctaLabel: 'Conversar con Livvo →',
   },
 ];
 
-// Integraciones — CONFIRMAR la lista real antes de publicar.
-// Dos cintas: herramientas generales (arriba) y sistemas del sector
-// inmobiliario (abajo). `mark` es el monograma del pill y `color` un
-// aproximado del color de marca (solo tiñe el monograma).
+// Integraciones — logos oficiales en public/integrations/.
+// Dos cintas: CRMs (arriba) y portales inmobiliarios (abajo).
 const integrationRows = [
   [
-    { name: 'WhatsApp Business API', cat: 'Canal oficial', mark: 'W', color: '#25D366' },
-    { name: 'HubSpot', cat: 'CRM', mark: 'H', color: '#FF7A59' },
-    { name: 'Salesforce', cat: 'CRM', mark: 'S', color: '#00A1E0' },
-    { name: 'Zoho CRM', cat: 'CRM', mark: 'Z', color: '#E42527' },
-    { name: 'Pipedrive', cat: 'CRM', mark: 'P', color: '#017737' },
-    { name: 'Google Calendar', cat: 'Agenda', mark: 'G', color: '#4285F4' },
+    { name: 'HubSpot', cat: 'CRM', src: '/integrations/hubspot.svg' },
+    { name: 'GoHighLevel', cat: 'CRM', src: '/integrations/gohighlevel.svg' },
+    { name: 'Wasi', cat: 'CRM inmobiliario', src: '/integrations/wasi.svg' },
+    { name: 'Domus', cat: 'CRM inmobiliario', src: '/integrations/domus.png' },
   ],
   [
-    { name: 'Wasi', cat: 'CRM inmobiliario', mark: 'W', color: '#00B398' },
-    { name: 'Simi', cat: 'ERP inmobiliario', mark: 'S', color: '#2E5BFF' },
-    { name: 'Fincaraíz', cat: 'Portal', mark: 'F', color: '#6BBE45' },
-    { name: 'Metrocuadrado', cat: 'Portal', mark: 'm²', color: '#F5A800' },
-    { name: 'Ciencuadras', cat: 'Portal', mark: 'C', color: '#0B5ED7' },
+    { name: 'Fincaraíz', cat: 'Portal', src: '/integrations/fincaraiz.png' },
+    { name: 'Metrocuadrado', cat: 'Portal', src: '/integrations/metrocuadrado.png' },
+    { name: 'Ciencuadras', cat: 'Portal', src: '/integrations/ciencuadras.svg' },
+    { name: 'Century 21', cat: 'Red inmobiliaria', src: '/integrations/century21.svg' },
   ],
 ];
 
@@ -333,13 +333,9 @@ const faqSubtitle = 'Más información sobre Maya';
           <div class:list={['integrations__track', { 'integrations__track--reverse': i % 2 === 1 }]}>
             {[0, 1].map((copy) => (
               <div class="integrations__group" aria-hidden={copy === 1 ? 'true' : undefined}>
-                {row.map(({ name, cat, mark, color }) => (
-                  <span class="integration-pill" style={`--brand: ${color}`}>
-                    <span class="integration-pill__mark" aria-hidden="true">{mark}</span>
-                    <span class="integration-pill__body">
-                      <span class="integration-pill__name">{name}</span>
-                      <span class="integration-pill__cat">{cat}</span>
-                    </span>
+                {row.map(({ name, cat, src }) => (
+                  <span class="integration-pill" title={`${name} · ${cat}`}>
+                    <img class="integration-pill__logo" src={src} alt={name} loading="lazy" />
                   </span>
                 ))}
               </div>
@@ -362,6 +358,7 @@ const faqSubtitle = 'Más información sobre Maya';
           <PricingCard
             name={plan.name}
             price={plan.price}
+            period={plan.period}
             tagline={plan.tagline}
             features={plan.features}
             featured={plan.featured}
@@ -857,43 +854,25 @@ const faqSubtitle = 'Más información sobre Maya';
   .integration-pill {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
     white-space: nowrap;
-    padding: 8px 22px 8px 10px;
-    background: var(--white);
+    padding: 14px 28px;
+    /* fondo blanco fijo: los wordmarks oscuros deben leerse también en dark */
+    background: #ffffff;
     border: 1px solid var(--border);
     border-radius: 999px;
     box-shadow: var(--shadow-sm);
     transition: border-color var(--transition), transform var(--transition);
   }
   .integration-pill:hover {
-    border-color: color-mix(in srgb, var(--brand) 50%, transparent);
+    border-color: var(--teal);
     transform: translateY(-2px);
   }
-  .integration-pill__mark {
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--brand);
-    background: color-mix(in srgb, var(--brand) 14%, transparent);
-  }
-  .integration-pill__body {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.25;
-  }
-  .integration-pill__name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--navy);
-  }
-  .integration-pill__cat {
-    font-size: 12px;
-    color: var(--muted);
+  .integration-pill__logo {
+    height: 30px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+    display: block;
   }
   .integrations__note {
     text-align: center;

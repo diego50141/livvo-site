@@ -78,18 +78,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <slot />
 
     <script>
-      const observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
+      function initFadeUp() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
             }
-          }
-        },
-        { threshold: 0.12 }
-      );
-      document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+          },
+          { threshold: 0.1 }
+        );
+        const elements = document.querySelectorAll('.fade-up');
+        elements.forEach((el) => observer.observe(el));
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initFadeUp);
+      } else {
+        initFadeUp();
+      }
     </script>
 
     <!-- Eventos de analytics — paridad con la landing de producción -->

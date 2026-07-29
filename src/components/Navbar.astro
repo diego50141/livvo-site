@@ -2,6 +2,7 @@
 import Button from './Button.astro';
 import Logo from './Logo.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import { WHATSAPP_URL } from '../config';
 
 const links = [
   { href: '#funcionalidades', label: 'Funcionalidades' },
@@ -21,7 +22,7 @@ const links = [
     <div class="navbar__actions">
       <ThemeToggle />
       <Button
-        href={'https://wa.me/573159281379?text=' + encodeURIComponent('Hola, quiero conocer Livvo')}
+        href={WHATSAPP_URL}
         target="_blank"
         size="sm"
         id="nav-demo-cta"

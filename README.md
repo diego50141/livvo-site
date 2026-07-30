@@ -39,8 +39,7 @@ npm run preview
 
 `Base.astro` carga Clarity (`vyssfzeld2`) y PostHog (misma key que producción) y dispara:
 `page_viewed` (con UTMs y tema activo), `demo_cta_clicked` (por ubicación del botón),
-`section_viewed`, `faq_opened`, `theme_toggled` y `demo_requested` (este último solo si se
-embebe el form/meetings de HubSpot; verifica orígenes exactos).
+`section_viewed`, `faq_opened` y `theme_toggled`.
 
 ## Notas
 

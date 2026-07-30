@@ -5,5 +5,3 @@ export const WHATSAPP_MESSAGE = 'Hola equipo livvo, visité su pagina web y quis
 
 export const WHATSAPP_URL =
   `https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(WHATSAPP_MESSAGE);
-
-export const DEMO_URL = 'https://meetings.hubspot.com/daar5014';

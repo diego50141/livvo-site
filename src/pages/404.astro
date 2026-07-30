@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Button from '../components/Button.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_URL } from '../config';
+---
+
+<Base title="Página no encontrada — Livvo" description="Esta página no existe o fue movida." noindex>
+  <Navbar />
+
+  <main class="not-found">
+    <div class="container-site not-found__inner">
+      <span class="eyebrow">Error 404</span>
+      <h1>Esta página <em class="grad-text">no existe</em>.</h1>
+      <p>Puede que el enlace esté roto o que la página se haya movido. Vuelve al inicio o escríbenos.</p>
+      <div class="not-found__actions">
+        <Button href="/" size="lg">Volver al inicio</Button>
+        <Button href={WHATSAPP_URL} target="_blank" variant="outline" size="lg">Hablar con Livvo →</Button>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 0 80px;
+  }
+  .not-found__inner {
+    max-width: 640px;
+    text-align: center;
+    margin-inline: auto;
+  }
+  .not-found h1 {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--navy);
+    margin: 16px 0 12px;
+  }
+  .not-found h1 em { font-style: normal; }
+  .not-found p {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+  .not-found__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 640px) {
+    .not-found h1 { font-size: 30px; }
+  }
+</style>

@@ -34,7 +34,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="es_CO" />
-    <!-- TODO: crear /og.png (1200×630) para la vista previa al compartir -->
     <meta property="og:image" content={new URL('/og.png', Astro.site)} />
     <meta name="twitter:card" content="summary_large_image" />
 
@@ -159,24 +158,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         // theme_toggled — para comparar conversión claro vs oscuro
         document.getElementById('theme-toggle')?.addEventListener('click', () => {
           setTimeout(() => ph.capture('theme_toggled', { theme: currentTheme() }), 0);
-        });
-
-        // demo_requested — conversión real desde embeds de HubSpot
-        // (solo dispara si se embebe el form/meetings; orígenes exactos, no indexOf)
-        const HUBSPOT_ORIGINS = [
-          'https://meetings.hubspot.com',
-          'https://app.hubspot.com',
-          'https://forms.hubspot.com',
-          'https://forms.hsforms.com',
-        ];
-        window.addEventListener('message', (event) => {
-          if (!HUBSPOT_ORIGINS.includes(event.origin)) return;
-          const data = event.data;
-          if (data?.meetingBookSucceeded) {
-            ph.capture('demo_requested', { channel: 'hubspot_meetings' });
-          } else if (data?.type === 'hsFormCallback' && data?.eventName === 'onFormSubmitted') {
-            ph.capture('demo_requested', { channel: 'hubspot_form_embed' });
-          }
         });
       }
     </script>

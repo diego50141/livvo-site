@@ -6,7 +6,7 @@ import Section from '../components/Section.astro';
 import PricingCard from '../components/PricingCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
-import { WHATSAPP_URL, DEMO_URL } from '../config';
+import { WHATSAPP_URL } from '../config';
 
 // Pantallas fijas que rotan con el scroll (patrón useplaza): la sección mide
 // varias alturas de viewport y el contenido queda "pegado" mientras los
@@ -206,6 +206,7 @@ const faqSubtitle = 'Más información sobre Luisa';
 <Base>
   <Navbar />
 
+  <main>
   <!-- ESCENA HERO + CONVERSACIÓN — anillos concéntricos como escenario común -->
   <div class="hero-scene">
     <div id="hero-particles" class="hero-scene__particles" aria-hidden="true"></div>
@@ -383,6 +384,7 @@ const faqSubtitle = 'Más información sobre Luisa';
       </div>
     </div>
   </Section>
+  </main>
 
   <Footer />
 </Base>

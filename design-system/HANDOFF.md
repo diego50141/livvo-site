@@ -8,8 +8,9 @@ manteniendo consistencia de marca.
 
 > **Este documento fue actualizado (jul-2026)** para reflejar las decisiones de marca vigentes —
 > ver `README.md` de esta carpeta. Reemplaza tipografía (Bricolage Grotesque + Instrument Sans →
-> Open Sans), azul (`#3B9EFF` → `#3B7EFF`) y añade el bloque de tokens del **tema oscuro**, que es
-> ahora el tema por defecto de livvo.tech.
+> Open Sans), azul (`#3B9EFF` → `#3B7EFF`) y añade el bloque de tokens del **tema oscuro**, disponible
+> junto al claro (el sitio respeta `prefers-color-scheme` del sistema o la preferencia guardada en
+> `localStorage`; ninguno de los dos es forzado por defecto).
 
 ## About the Design Files
 La **referencia principal y siempre actualizada** es la página viva [`/design-system`](https://livvo-site.vercel.app/design-system)
@@ -60,11 +61,13 @@ en livvo.tech. Recrear pixel-perfect con las librerías del proyecto.
 }
 ```
 
-### Tema oscuro (`[data-theme="dark"]`) — por defecto en livvo.tech
+### Tema oscuro (`[data-theme="dark"]`) — disponible junto al claro, no forzado por defecto
 Mismas superficies que el sistema "Dark-First · Teal Core" del skill `livvo-designer`, para que web
 oscura y piezas de marketing usen exactamente los mismos valores. Sobrescribe los tokens neutros de
 `:root`; el teal, azul y violeta se mantienen sin cambio y se usan **directos** sobre oscuro (sin
-variante `-deep`).
+variante `-deep`). El sitio activa uno u otro según `prefers-color-scheme` del sistema o la
+preferencia guardada en `localStorage` (ver `ThemeToggle.astro`), nunca por defecto sin señal del
+usuario.
 
 ```css
 [data-theme="dark"] {

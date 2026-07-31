@@ -8,6 +8,10 @@ import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
+// Sección de precios oculta por ahora; volver a true para mostrarla
+// (también restaura el link "Precios" en Navbar.astro y el alt del FAQ).
+const SHOW_PRICING = false;
+
 // Pantallas fijas que rotan con el scroll (patrón useplaza): la sección mide
 // varias alturas de viewport y el contenido queda "pegado" mientras los
 // pasos 01 → 02 → 03 se cruzan con fade + desplazamiento.
@@ -348,7 +352,8 @@ const faqSubtitle = 'Más información sobre Luisa';
     </div>
   </Section>
 
-  <!-- PRECIOS -->
+  <!-- PRECIOS (oculto por ahora — ver SHOW_PRICING) -->
+  {SHOW_PRICING && (
   <Section id="precios" eyebrow="Planes" title="Empieza gratis. Escala cuando quieras.">
     <div class="pricing-grid fade-up">
       {
@@ -373,9 +378,10 @@ const faqSubtitle = 'Más información sobre Luisa';
       <span>Facturación en pesos colombianos</span>
     </div>
   </Section>
+  )}
 
-  <!-- FAQ -->
-  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" subtitle={faqSubtitle} alt>
+  <!-- FAQ (alt sigue la alternancia de fondos: sin precios va tras Integraciones, que ya es alt) -->
+  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" subtitle={faqSubtitle} alt={SHOW_PRICING}>
     <div class="fade-up">
       <FAQ items={faqItems} />
       <div class="faq-footer fade-up">

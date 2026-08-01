@@ -1,0 +1,165 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Button from '../components/Button.astro';
+import Footer from '../components/Footer.astro';
+import { CRM_LOGIN_URL, AGENTES_LOGIN_URL, WHATSAPP_URL } from '../config';
+
+const products = [
+  {
+    name: 'Livvo CRM',
+    description:
+      'Haz seguimiento a tus leads, gestiona tu catálogo de propiedades y monitorea tus métricas comerciales.',
+    href: CRM_LOGIN_URL,
+    id: 'login-crm',
+    icon: 'crm',
+  },
+  {
+    name: 'Livvo Agentes',
+    description:
+      'Configura y supervisa tus agentes de IA: conversaciones, calificación de leads y agendamiento por WhatsApp.',
+    href: AGENTES_LOGIN_URL,
+    id: 'login-agentes',
+    icon: 'agentes',
+  },
+];
+---
+
+<Base
+  title="Ingresar — Livvo"
+  description="Accede a Livvo CRM o Livvo Agentes con tu cuenta."
+>
+  <Navbar />
+
+  <main class="login">
+    <div class="container-site login__inner">
+      <span class="eyebrow">Ingresar</span>
+      <h1>¿A dónde quieres <em class="grad-text">entrar</em>?</h1>
+      <p class="login__subtitle">Elige la plataforma a la que quieres acceder con tu cuenta de Livvo.</p>
+
+      <div class="login__grid">
+        {products.map(({ name, description, href, id, icon }) => (
+          <a class="login__card" {href} {id}>
+            <span class="login__icon" data-icon={icon}>
+              {icon === 'crm' ? (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="3" />
+                  <path d="M8 16v-5" />
+                  <path d="M12 16V8" />
+                  <path d="M16 16v-3" />
+                </svg>
+              ) : (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 1 1-8 0V7a4 4 0 0 1 4-4Z" />
+                  <path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" />
+                </svg>
+              )}
+            </span>
+            <span class="login__name">{name}</span>
+            <span class="login__desc">{description}</span>
+            <span class="login__cta">Iniciar sesión →</span>
+          </a>
+        ))}
+      </div>
+
+      <p class="login__help">
+        ¿Aún no tienes cuenta? <a href="/">Conoce Livvo</a> o
+        <a href={WHATSAPP_URL} target="_blank" rel="noopener">escríbenos por WhatsApp</a>.
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .login {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 0 80px;
+  }
+  .login__inner {
+    max-width: 760px;
+    text-align: center;
+    margin-inline: auto;
+  }
+  .login h1 {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--navy);
+    margin: 16px 0 12px;
+  }
+  .login h1 em { font-style: normal; }
+  .login__subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+  .login__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    text-align: left;
+  }
+  .login__card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+    text-decoration: none;
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+  }
+  .login__card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(0, 199, 180, 0.4);
+    transform: translateY(-2px);
+  }
+  .login__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(0, 199, 180, 0.1);
+    color: var(--teal-deep);
+    margin-bottom: 4px;
+  }
+  .login__name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .login__desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    flex: 1;
+  }
+  .login__cta {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal-deep);
+  }
+  .login__help {
+    margin-top: 32px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .login__help a {
+    color: var(--teal-deep);
+    font-weight: 600;
+  }
+  @media (max-width: 640px) {
+    .login h1 { font-size: 30px; }
+    .login__grid { grid-template-columns: 1fr; }
+  }
+</style>

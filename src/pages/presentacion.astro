@@ -1,0 +1,217 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Button from '../components/Button.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_URL } from '../config';
+
+const features = [
+  {
+    emoji: '🤖',
+    title: 'Agente de IA entrenada con el inventario',
+    text: 'Una asistente virtual (personalizable con el nombre y tono de cada inmobiliaria) responde consultas en lenguaje natural, recomienda propiedades relevantes del inventario cargado en su base de conocimiento y escala la conversación a un asesor humano cuando detecta intención de compra. Puede operar en modo automático o sugiriendo borradores que el asesor aprueba.',
+  },
+  {
+    emoji: '💬',
+    title: 'Bandeja de entrada compartida',
+    text: 'Todo el equipo atiende desde una sola bandeja estilo WhatsApp: conversaciones asignables, notas internas, etiquetas y historial completo de cada cliente. Funciona perfecto desde el celular.',
+  },
+  {
+    emoji: '🔄',
+    title: 'Flujos de bienvenida y calificación automática',
+    text: 'Cuando alguien escribe por primera vez, un flujo con botones lo guía (¿Busca comprar, arrendar o vender?), captura zona, presupuesto y tipo de propiedad, y le crea automáticamente un negocio en el embudo — todo antes de que un humano intervenga.',
+  },
+  {
+    emoji: '📊',
+    title: 'Embudo de ventas inmobiliario',
+    text: 'Pipeline visual con etapas pensadas para el sector: Lead nuevo → Contactado → Visita agendada → Visita realizada → Oferta/Negociación → Reserva → Cierre ganado. Valores en pesos colombianos y campos personalizados de propiedad (tipo, operación, presupuesto, zona, habitaciones, fecha objetivo).',
+  },
+  {
+    emoji: '📣',
+    title: 'Difusiones y plantillas',
+    text: 'Campañas masivas por WhatsApp con plantillas aprobadas por Meta: nuevos proyectos, open house, seguimiento de cartera. Con importación de audiencias por CSV y métricas de entrega.',
+  },
+  {
+    emoji: '⚙️',
+    title: 'Automatizaciones e integraciones',
+    text: 'Reglas tipo "si pasa X, haz Y" (crear negocio al etiquetar, notificar al asesor, webhooks salientes) y API pública para conectar con otras herramientas.',
+  },
+];
+
+const ficha = [
+  ['Plataforma web', ' — funciona en computador y celular, en español'],
+  ['API oficial de WhatsApp', ' (Meta Cloud API), no soluciones no oficiales que arriesgan el número'],
+  ['Multi-usuario', ': invita a todo el equipo de asesores con roles'],
+  ['Datos propios', ': exportables vía API, alojados con seguridad de nivel empresarial'],
+];
+---
+
+<Base
+  title="Presentación — Livvo, CRM de WhatsApp con IA para inmobiliarias"
+  description="Livvo convierte el WhatsApp de una inmobiliaria en su canal de ventas central: cada mensaje entrante se captura como lead, se califica automáticamente y avanza por un embudo diseñado para el sector."
+>
+  <Navbar />
+
+  <main class="pres">
+    <div class="container-site pres__inner">
+      <span class="eyebrow">Presentación</span>
+      <h1>Livvo — CRM de WhatsApp con <em class="grad-text">IA</em> para inmobiliarias</h1>
+      <p class="pres__intro">
+        <strong>Livvo convierte el WhatsApp de una inmobiliaria en su canal de ventas central</strong>:
+        cada mensaje entrante se captura como lead, se califica automáticamente y avanza por un embudo
+        de ventas diseñado para el negocio inmobiliario — sin que se pierda un solo contacto en el
+        celular de un asesor.
+      </p>
+
+      <section class="pres__section">
+        <h2>¿Qué problema resuelve?</h2>
+        <p>
+          Las inmobiliarias reciben decenas de consultas diarias por WhatsApp que terminan dispersas
+          entre los teléfonos de los asesores: no hay seguimiento, no hay trazabilidad y los leads se
+          enfrían. Livvo centraliza todo en una sola plataforma conectada a la
+          <strong>API oficial de WhatsApp Business (Meta)</strong>, con respuesta automática 24/7.
+        </p>
+      </section>
+
+      <section class="pres__section">
+        <h2>Funcionalidades principales</h2>
+        <div class="pres__grid">
+          {features.map(({ emoji, title, text }) => (
+            <div class="pres__feature">
+              <h3><span class="pres__emoji">{emoji}</span> {title}</h3>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="pres__section">
+        <h2>Ficha rápida</h2>
+        <ul class="pres__list">
+          {ficha.map(([lead, rest]) => (
+            <li><strong>{lead}</strong>{rest}</li>
+          ))}
+        </ul>
+      </section>
+
+      <div class="pres__cta">
+        <Button href={WHATSAPP_URL} target="_blank" size="lg" id="pres-whatsapp">
+          Escríbenos por WhatsApp
+        </Button>
+        <Button href="https://app.livvo.tech" target="_blank" variant="outline" size="lg" id="pres-app">
+          Ver la plataforma
+        </Button>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .pres {
+    padding: 100px 0 80px;
+  }
+  .pres__inner {
+    max-width: 880px;
+    margin-inline: auto;
+  }
+  .pres h1 {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    color: var(--navy);
+    margin: 16px 0 14px;
+  }
+  .pres h1 em { font-style: normal; }
+  .pres__intro {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+  .pres__intro strong,
+  .pres__section p strong,
+  .pres__list strong {
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .pres__section { margin-bottom: 40px; }
+  .pres__section h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .pres__section h2::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--teal);
+    flex: none;
+  }
+  .pres__section > p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .pres__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 40px;
+    row-gap: 24px;
+  }
+  .pres__feature h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .pres__emoji { margin-right: 2px; }
+  .pres__feature p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .pres__list {
+    list-style: none;
+    padding: 0;
+  }
+  .pres__list li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .pres__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+  .pres__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  @media (max-width: 700px) {
+    .pres h1 { font-size: 28px; }
+    .pres__grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -14,7 +14,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/design-system'),
+      filter: (page) => !page.includes('/design-system') && !page.includes('/presentacion'),
     }),
   ],
 });

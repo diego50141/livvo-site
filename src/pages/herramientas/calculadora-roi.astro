@@ -1,24 +1,24 @@
-﻿---
+---
 import Base from '../../layouts/Base.astro';
 import Navbar from '../../components/Navbar.astro';
 import Button from '../../components/Button.astro';
 import Footer from '../../components/Footer.astro';
 import { WHATSAPP_URL } from '../../config';
 
-const LIVVO_COST = 500000; // Plan incluido: 500 conv/mes Â· hasta 5 usuarios
+const LIVVO_COST = 500000; // Plan incluido: 500 conv/mes · hasta 5 usuarios
 
 const sliders = [
   { id: 'leads',  label: 'Leads por mes (WhatsApp)',            min: 100,     max: 1500,     step: 50,     value: 600 },
-  { id: 'pauta',  label: 'InversiÃ³n en pauta (COP/mes)',        min: 500000,  max: 10000000, step: 100000, value: 3000000 },
+  { id: 'pauta',  label: 'Inversión en pauta (COP/mes)',        min: 500000,  max: 10000000, step: 100000, value: 3000000 },
   { id: 'resp',   label: 'Tiempo de respuesta actual',          min: 1,       max: 72,       step: 1,      value: 48 },
-  { id: 'com',    label: 'ComisiÃ³n promedio por cierre (COP)',  min: 1000000, max: 15000000, step: 500000, value: 4000000 },
+  { id: 'com',    label: 'Comisión promedio por cierre (COP)',  min: 1000000, max: 15000000, step: 500000, value: 4000000 },
   { id: 'cierre', label: 'Tasa de cierre actual',               min: 1,       max: 10,       step: 0.5,    value: 3 },
 ];
 ---
 
 <Base
-  title="Calculadora de ROI â€” Livvo"
-  description="Ingresa los datos de tu inmobiliaria y ve cuÃ¡nto puedes recuperar cada mes con Livvo."
+  title="Calculadora de ROI — Livvo"
+  description="Ingresa los datos de tu inmobiliaria y ve cuánto puedes recuperar cada mes con Livvo."
   noindex
 >
   <Navbar />
@@ -27,7 +27,7 @@ const sliders = [
     <div class="roi__card fade-up">
       <header class="roi__header">
         <h1>Calculadora de ROI</h1>
-        <p>Ingresa los datos de tu inmobiliaria y ve cuÃ¡nto puedes recuperar cada mes.</p>
+        <p>Ingresa los datos de tu inmobiliaria y ve cuánto puedes recuperar cada mes.</p>
       </header>
 
       <div class="roi__grid">
@@ -52,7 +52,7 @@ const sliders = [
 
           <div class="plan-badge">
             <p>Plan incluido</p>
-            <p>500 conversaciones/mes &nbsp;Â·&nbsp; hasta 5 usuarios &nbsp;Â·&nbsp; <strong>$500.000 COP/mes</strong></p>
+            <p>500 conversaciones/mes &nbsp;·&nbsp; hasta 5 usuarios &nbsp;·&nbsp; <strong>$500.000 COP/mes</strong></p>
           </div>
         </div>
 
@@ -61,19 +61,19 @@ const sliders = [
           <div class="metric-grid">
             <div class="metric">
               <div class="metric-label">Leads perdidos/mes</div>
-              <div class="metric-value" id="res-perdidos">â€”</div>
+              <div class="metric-value" id="res-perdidos">—</div>
             </div>
             <div class="metric">
               <div class="metric-label">Cierres recuperables</div>
-              <div class="metric-value teal" id="res-cierres">â€”</div>
+              <div class="metric-value teal" id="res-cierres">—</div>
             </div>
             <div class="metric">
               <div class="metric-label">Ingreso adicional/mes</div>
-              <div class="metric-value teal md" id="res-ingreso">â€”</div>
+              <div class="metric-value teal md" id="res-ingreso">—</div>
             </div>
             <div class="metric">
               <div class="metric-label">Pauta no convertida</div>
-              <div class="metric-value amber md" id="res-pauta">â€”</div>
+              <div class="metric-value amber md" id="res-pauta">—</div>
             </div>
           </div>
 
@@ -81,24 +81,24 @@ const sliders = [
             <div class="breakdown-title">Resumen mensual con Livvo</div>
             <div class="breakdown-row">
               <span class="lbl">Ingreso adicional estimado</span>
-              <span class="val teal" id="b-ingreso">â€”</span>
+              <span class="val teal" id="b-ingreso">—</span>
             </div>
             <hr class="sep" />
             <div class="breakdown-row">
-              <span class="lbl">Costo Livvo (500 conv Â· 5 usuarios)</span>
+              <span class="lbl">Costo Livvo (500 conv · 5 usuarios)</span>
               <span class="val red">$500.000</span>
             </div>
             <hr class="sep" />
             <div class="breakdown-row">
               <span class="lbl">Ganancia neta mensual</span>
-              <span class="val teal" id="b-neta">â€”</span>
+              <span class="val teal" id="b-neta">—</span>
             </div>
           </div>
 
           <div class="roi-banner">
             <div>
               <div class="roi-label">ROI estimado</div>
-              <div class="roi-value" id="res-roi">â€”</div>
+              <div class="roi-value" id="res-roi">—</div>
             </div>
             <div class="roi-banner__right">
               <div class="roi-label">Payback</div>
@@ -107,13 +107,13 @@ const sliders = [
           </div>
 
           <Button href={WHATSAPP_URL} target="_blank" size="lg" id="roi-demo-cta">
-            Agenda tu demo gratuita â†’
+            Agenda tu demo gratuita →
           </Button>
         </div>
       </div>
 
       <div class="roi__footnote">
-        EstimaciÃ³n basada en datos promedio del mercado inmobiliario colombiano.
+        Estimación basada en datos promedio del mercado inmobiliario colombiano.
         Los resultados reales pueden variar.
       </div>
     </div>
@@ -126,7 +126,7 @@ const sliders = [
   const $ = (id) => document.getElementById(id);
   const fmtCOP = (n) => '$' + Math.round(n).toLocaleString('es-CO');
 
-  // A mayor demora en responder, mayor porcentaje de leads que se enfrÃ­an
+  // A mayor demora en responder, mayor porcentaje de leads que se enfrían
   function calcLostRate(h) {
     if (h <= 5)  return 0.05;
     if (h <= 15) return 0.15;
@@ -172,7 +172,7 @@ const sliders = [
     return { leads, pauta, resp_h: resp, com, cierre_pct: cierre, roi };
   }
 
-  // Analytics: con quÃ© nÃºmeros juega la gente (debounce para no spamear)
+  // Analytics: con qué números juega la gente (debounce para no spamear)
   let phTimer;
   function trackDebounced(values) {
     clearTimeout(phTimer);
@@ -226,7 +226,7 @@ const sliders = [
     gap: 40px;
   }
 
-  /* â”€â”€ Inputs â”€â”€ */
+  /* ── Inputs ── */
   .inputs { display: flex; flex-direction: column; gap: 24px; }
 
   .field-label {
@@ -292,7 +292,7 @@ const sliders = [
   }
   .plan-badge p:last-child { font-size: 13px; font-weight: 600; color: var(--teal-deep); }
 
-  /* â”€â”€ Results â”€â”€ */
+  /* ── Results ── */
   .results { display: flex; flex-direction: column; gap: 10px; }
 
   .metric-grid {

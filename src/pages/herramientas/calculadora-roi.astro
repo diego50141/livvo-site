@@ -1,0 +1,390 @@
+﻿---
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import Button from '../../components/Button.astro';
+import Footer from '../../components/Footer.astro';
+import { WHATSAPP_URL } from '../../config';
+
+const LIVVO_COST = 500000; // Plan incluido: 500 conv/mes Â· hasta 5 usuarios
+
+const sliders = [
+  { id: 'leads',  label: 'Leads por mes (WhatsApp)',            min: 100,     max: 1500,     step: 50,     value: 600 },
+  { id: 'pauta',  label: 'InversiÃ³n en pauta (COP/mes)',        min: 500000,  max: 10000000, step: 100000, value: 3000000 },
+  { id: 'resp',   label: 'Tiempo de respuesta actual',          min: 1,       max: 72,       step: 1,      value: 48 },
+  { id: 'com',    label: 'ComisiÃ³n promedio por cierre (COP)',  min: 1000000, max: 15000000, step: 500000, value: 4000000 },
+  { id: 'cierre', label: 'Tasa de cierre actual',               min: 1,       max: 10,       step: 0.5,    value: 3 },
+];
+---
+
+<Base
+  title="Calculadora de ROI â€” Livvo"
+  description="Ingresa los datos de tu inmobiliaria y ve cuÃ¡nto puedes recuperar cada mes con Livvo."
+  noindex
+>
+  <Navbar />
+
+  <main class="roi">
+    <div class="roi__card fade-up">
+      <header class="roi__header">
+        <h1>Calculadora de ROI</h1>
+        <p>Ingresa los datos de tu inmobiliaria y ve cuÃ¡nto puedes recuperar cada mes.</p>
+      </header>
+
+      <div class="roi__grid">
+        <!-- INPUTS -->
+        <div class="inputs">
+          {sliders.map((s) => (
+            <div>
+              <div class="field-label">
+                <label for={`sl-${s.id}`}>{s.label}</label>
+                <output id={`lbl-${s.id}`} for={`sl-${s.id}`}></output>
+              </div>
+              <input
+                type="range"
+                id={`sl-${s.id}`}
+                min={s.min}
+                max={s.max}
+                step={s.step}
+                value={s.value}
+              />
+            </div>
+          ))}
+
+          <div class="plan-badge">
+            <p>Plan incluido</p>
+            <p>500 conversaciones/mes &nbsp;Â·&nbsp; hasta 5 usuarios &nbsp;Â·&nbsp; <strong>$500.000 COP/mes</strong></p>
+          </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="results" aria-live="polite">
+          <div class="metric-grid">
+            <div class="metric">
+              <div class="metric-label">Leads perdidos/mes</div>
+              <div class="metric-value" id="res-perdidos">â€”</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Cierres recuperables</div>
+              <div class="metric-value teal" id="res-cierres">â€”</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Ingreso adicional/mes</div>
+              <div class="metric-value teal md" id="res-ingreso">â€”</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Pauta no convertida</div>
+              <div class="metric-value amber md" id="res-pauta">â€”</div>
+            </div>
+          </div>
+
+          <div class="breakdown">
+            <div class="breakdown-title">Resumen mensual con Livvo</div>
+            <div class="breakdown-row">
+              <span class="lbl">Ingreso adicional estimado</span>
+              <span class="val teal" id="b-ingreso">â€”</span>
+            </div>
+            <hr class="sep" />
+            <div class="breakdown-row">
+              <span class="lbl">Costo Livvo (500 conv Â· 5 usuarios)</span>
+              <span class="val red">$500.000</span>
+            </div>
+            <hr class="sep" />
+            <div class="breakdown-row">
+              <span class="lbl">Ganancia neta mensual</span>
+              <span class="val teal" id="b-neta">â€”</span>
+            </div>
+          </div>
+
+          <div class="roi-banner">
+            <div>
+              <div class="roi-label">ROI estimado</div>
+              <div class="roi-value" id="res-roi">â€”</div>
+            </div>
+            <div class="roi-banner__right">
+              <div class="roi-label">Payback</div>
+              <div class="roi-sub">Primer mes</div>
+            </div>
+          </div>
+
+          <Button href={WHATSAPP_URL} target="_blank" size="lg" id="roi-demo-cta">
+            Agenda tu demo gratuita â†’
+          </Button>
+        </div>
+      </div>
+
+      <div class="roi__footnote">
+        EstimaciÃ³n basada en datos promedio del mercado inmobiliario colombiano.
+        Los resultados reales pueden variar.
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<script define:vars={{ LIVVO_COST }}>
+  const $ = (id) => document.getElementById(id);
+  const fmtCOP = (n) => '$' + Math.round(n).toLocaleString('es-CO');
+
+  // A mayor demora en responder, mayor porcentaje de leads que se enfrÃ­an
+  function calcLostRate(h) {
+    if (h <= 5)  return 0.05;
+    if (h <= 15) return 0.15;
+    if (h <= 30) return 0.25;
+    if (h <= 48) return 0.35;
+    return 0.45;
+  }
+
+  function paint(input) {
+    const pct = ((input.value - input.min) / (input.max - input.min)) * 100;
+    input.style.setProperty('--fill', `${pct}%`);
+  }
+
+  function update() {
+    const leads  = +$('sl-leads').value;
+    const pauta  = +$('sl-pauta').value;
+    const resp   = +$('sl-resp').value;
+    const com    = +$('sl-com').value;
+    const cierre = +$('sl-cierre').value / 100;
+
+    $('lbl-leads').textContent  = leads.toLocaleString('es-CO');
+    $('lbl-pauta').textContent  = fmtCOP(pauta);
+    $('lbl-resp').textContent   = resp + ' h';
+    $('lbl-com').textContent    = fmtCOP(com);
+    $('lbl-cierre').textContent = (+$('sl-cierre').value).toFixed(1).replace('.', ',') + '%';
+
+    const lostRate   = calcLostRate(resp);
+    const perdidos   = Math.round(leads * lostRate);
+    const cierresRec = Math.round(perdidos * cierre);
+    const ingreso    = cierresRec * com;
+    const pautaP     = Math.round(pauta * lostRate);
+    const neta       = ingreso - LIVVO_COST;
+    const roi        = Math.round(ingreso / LIVVO_COST);
+
+    $('res-perdidos').textContent = perdidos.toLocaleString('es-CO');
+    $('res-cierres').textContent  = cierresRec.toLocaleString('es-CO');
+    $('res-ingreso').textContent  = fmtCOP(ingreso);
+    $('res-pauta').textContent    = fmtCOP(pautaP);
+    $('b-ingreso').textContent    = fmtCOP(ingreso);
+    $('b-neta').textContent       = fmtCOP(neta);
+    $('res-roi').textContent      = roi + 'x';
+
+    return { leads, pauta, resp_h: resp, com, cierre_pct: cierre, roi };
+  }
+
+  // Analytics: con quÃ© nÃºmeros juega la gente (debounce para no spamear)
+  let phTimer;
+  function trackDebounced(values) {
+    clearTimeout(phTimer);
+    phTimer = setTimeout(() => {
+      window.posthog?.capture?.('roi_calculated', values);
+    }, 2000);
+  }
+
+  ['sl-leads', 'sl-pauta', 'sl-resp', 'sl-com', 'sl-cierre'].forEach((id) => {
+    const input = $(id);
+    paint(input);
+    input.addEventListener('input', () => {
+      paint(input);
+      trackDebounced(update());
+    });
+  });
+  update();
+</script>
+
+<style>
+  .roi {
+    background: var(--gray-bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 110px 16px 80px;
+    transition: background-color var(--transition);
+  }
+
+  .roi__card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+    padding: 40px;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .roi__header { margin-bottom: 32px; }
+  .roi__header h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .roi__header p { font-size: var(--text-small); color: var(--muted); }
+
+  .roi__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  /* â”€â”€ Inputs â”€â”€ */
+  .inputs { display: flex; flex-direction: column; gap: 24px; }
+
+  .field-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .field-label output {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+
+  input[type='range'] {
+    --fill: 50%;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background: linear-gradient(to right, var(--teal) var(--fill), var(--surface) var(--fill));
+    outline: none;
+    cursor: pointer;
+  }
+  input[type='range']::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--teal);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 199, 180, 0.4);
+    transition: transform var(--transition);
+  }
+  input[type='range']::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  input[type='range']::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--teal);
+    cursor: pointer;
+    border: none;
+  }
+
+  .plan-badge {
+    background: rgba(0, 199, 180, 0.07);
+    border: 1px solid rgba(0, 199, 180, 0.35);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 8px;
+  }
+  .plan-badge p:first-child {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-weight: 600;
+  }
+  .plan-badge p:last-child { font-size: 13px; font-weight: 600; color: var(--teal-deep); }
+
+  /* â”€â”€ Results â”€â”€ */
+  .results { display: flex; flex-direction: column; gap: 10px; }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .metric {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .metric-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .metric-value {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .metric-value.teal  { color: var(--teal-deep); }
+  .metric-value.amber { color: var(--gold); }
+  .metric-value.md    { font-size: 15px; }
+
+  .breakdown {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .breakdown-title {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    padding: 6px 0;
+    font-size: 13px;
+  }
+  .breakdown-row .lbl { color: var(--muted); }
+  .breakdown-row .val {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+  .breakdown-row .val.teal { color: var(--teal-deep); }
+  .breakdown-row .val.red  { color: var(--red); }
+  .sep { border: none; border-top: 1px solid var(--border); }
+
+  .roi-banner {
+    background: var(--grad-cta);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+  }
+  .roi-banner__right { text-align: right; }
+  .roi-banner .roi-label { font-size: 12px; opacity: 0.85; margin-bottom: 4px; }
+  .roi-banner .roi-value {
+    font-family: var(--font-mono);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .roi-banner .roi-sub { font-size: 13px; font-weight: 600; }
+
+  .results :global(.btn) {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .roi__footnote {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .roi { padding: 90px 12px 60px; }
+    .roi__card { padding: 24px; }
+    .roi__grid { grid-template-columns: 1fr; }
+  }
+</style>

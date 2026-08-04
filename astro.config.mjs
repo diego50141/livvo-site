@@ -14,7 +14,10 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/design-system') && !page.includes('/presentacion'),
+      filter: (page) =>
+        !page.includes('/design-system') &&
+        !page.includes('/presentacion') &&
+        !page.includes('/herramientas/calculadora-roi'),
     }),
   ],
 });

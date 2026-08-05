@@ -6,11 +6,7 @@ import Section from '../components/Section.astro';
 import PricingCard from '../components/PricingCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
-import { Image } from 'astro:assets';
-import shotBandeja from '../assets/screenshots/bandeja.jpg';
-import shotEmbudo from '../assets/screenshots/embudo.jpg';
-import shotPanel from '../assets/screenshots/panel.jpg';
-import { WHATSAPP_URL, CRM_LOGIN_URL } from '../config';
+import { WHATSAPP_URL } from '../config';
 
 // Sección de precios oculta por ahora; volver a true para mostrarla
 // (también restaura el link "Precios" en Navbar.astro y el alt del FAQ).
@@ -22,24 +18,24 @@ const SHOW_PRICING = false;
 const steps = [
   {
     n: '01',
-    title: 'Luisa responde al instante',
-    desc: 'Luisa atiende cada mensaje de WhatsApp en segundos, a cualquier hora, con el tono de tu inmobiliaria: responde preguntas, recopila datos del interesado y nunca deja un lead en visto.',
+    title: 'Luisa responde preguntas',
+    desc: 'Luisa responde preguntas en 15 segundos, recopila datos y califica automáticamente los clientes potenciales, directamente en WhatsApp, en cualquier momento.',
     ctaLabel: 'Conversar con Livvo →',
     ctaHref: WHATSAPP_URL,
     ctaVariant: 'primary',
   },
   {
     n: '02',
-    title: 'Califica y recomienda',
-    desc: 'En la misma conversación detecta si el cliente quiere comprar, arrendar o vender, captura presupuesto, zona y tipo de propiedad, y le recomienda inmuebles de tu portafolio que encajan con su perfil.',
+    title: 'Servicio inteligente',
+    desc: 'Luisa recomienda propiedades según el perfil del cliente potencial y analiza su solvencia, incluso antes de la visita. Servicio rápido y eficaz, listo para cerrar el trato.',
     ctaLabel: 'Conversar con Livvo →',
     ctaHref: WHATSAPP_URL,
     ctaVariant: 'primary',
   },
   {
     n: '03',
-    title: 'Tu equipo recibe leads listos',
-    desc: 'Cada lead calificado llega a tu CRM con su etiqueta, la conversación completa y un negocio creado en el embudo. Tus asesores entran cuando hay una oportunidad real, no antes.',
+    title: 'Clientes potenciales listos para cerrar',
+    desc: 'Atiende y resuelve: el 90 % de las solicitudes de servicio se resuelven sin intervención humana, ya sea con inquilinos o propietarios. Luisa continúa brindando soporte después de la firma del contrato sin depender de tu equipo.',
     ctaLabel: 'Conversar con Livvo →',
     ctaHref: WHATSAPP_URL,
     ctaVariant: 'primary',
@@ -50,7 +46,7 @@ const steps = [
 // al cliente que presta Luisa, y las herramientas de administración.
 const featureTypes = {
   luisa: 'Luisa · Atención al cliente',
-  admin: 'Livvo · CRM',
+  admin: 'Luisa · Admin',
 } as const;
 
 const features = [
@@ -58,13 +54,19 @@ const features = [
     type: 'luisa',
     icon: 'chat',
     title: 'Atención al cliente 24/7 con IA',
-    desc: 'Luisa responde en segundos, con el tono de tu inmobiliaria, a compradores, arrendatarios y propietarios en cualquier momento.',
+    desc: 'Luisa responde en segundos, con el tono de tu inmobiliaria a inquilinos y propietarios en cualquier momento.',
+  },
+  {
+    type: 'luisa',
+    icon: 'target',
+    title: 'Priorización de clientes potenciales',
+    desc: 'Antes de derivar la solicitud a un agente inmobiliario, identifica quién realmente desea alquilar o comprar.',
   },
   {
     type: 'luisa',
     icon: 'filter',
     title: 'Calificación automática de leads',
-    desc: 'Luisa detecta si el cliente quiere comprar, arrendar o vender, y captura presupuesto, zona y tipo de propiedad antes de pasarlo a tu equipo.',
+    desc: 'Luisa detecta presupuesto, zona de interés y liquidez y te entrega solo los leads listos para avanzar.',
   },
   {
     type: 'luisa',
@@ -74,33 +76,27 @@ const features = [
   },
   {
     type: 'luisa',
-    icon: 'target',
-    title: 'IA supervisada por tu equipo',
-    desc: 'Tú decides: Luisa responde sola o prepara borradores que tus asesores revisan y aprueban antes de enviar.',
-  },
-  {
-    type: 'admin',
-    icon: 'chat',
-    title: 'Bandeja de entrada compartida',
-    desc: 'Todo tu equipo atiende el WhatsApp de la inmobiliaria desde un solo lugar, con asignación de conversaciones, etiquetas y notas internas.',
-  },
-  {
-    type: 'admin',
-    icon: 'calendar-check',
-    title: 'Embudo inmobiliario',
-    desc: 'Negocios organizados en las etapas reales de tu operación, de lead nuevo a cierre ganado, con campos a tu medida: tipo de propiedad, operación, presupuesto y zona.',
+    icon: 'calendar',
+    title: 'Agendamiento de visitas',
+    desc: 'Luisa coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
   },
   {
     type: 'admin',
     icon: 'link',
-    title: 'Flujos y automatizaciones',
-    desc: 'Menús de opciones, respuestas automáticas y reglas que etiquetan leads y crean negocios en el embudo sin que nadie toque nada.',
+    title: 'Integración con CRM y ERP',
+    desc: 'Luisa ya está integrada con los principales sistemas del mercado inmobiliario. Todo conectado, en un solo lugar.',
   },
   {
     type: 'admin',
+    icon: 'calendar-check',
+    title: 'Calendario de citas del equipo',
+    desc: 'Todas las visitas que agenda Luisa quedan organizadas en el calendario de tus asesores.',
+  },
+  {
+    type: 'luisa',
     icon: 'chart',
-    title: 'Difusiones e informes',
-    desc: 'Envía campañas de WhatsApp con plantillas aprobadas por Meta y mide conversaciones, negocios y conversión en tiempo real.',
+    title: 'Informes y métricas',
+    desc: 'Realiza un seguimiento del rendimiento en tiempo real con datos sobre conversaciones, atención al cliente, tasas de conversión y productividad.',
   },
 ];
 
@@ -174,49 +170,21 @@ const plans = [
   },
 ];
 
-// Conexión con otros sistemas — sin logos de terceros: lo que ofrecemos
-// hoy es API pública, webhooks e import/export, y se explica tal cual.
-const connectItems = [
-  {
-    icon: 'link',
-    title: 'API pública',
-    desc: 'Consulta y crea contactos, conversaciones y mensajes desde tus propios sistemas con una API REST documentada y llaves con permisos por alcance.',
-  },
-  {
-    icon: 'chart',
-    title: 'Webhooks en tiempo real',
-    desc: 'Cada mensaje, lead o cambio de etapa puede notificarse al instante a tu CRM o a cualquier sistema que ya uses.',
-  },
-  {
-    icon: 'filter',
-    title: 'Importación de datos',
-    desc: 'Trae tus contactos y audiencias por CSV en minutos. Tus datos son tuyos: entran y salen de Livvo sin fricción.',
-  },
-];
-
-// Screenshots reales del producto (src/assets/screenshots/, optimizados por astro:assets).
-const platformShots = [
-  {
-    src: shotBandeja,
-    alt: 'Bandeja de entrada de Livvo: conversación de WhatsApp atendida por Luisa, con etiquetas y negocio asociado',
-    title: 'Bandeja de entrada',
-    desc: 'Luisa conversa, tu equipo supervisa: cada chat llega con etiqueta, contexto y su negocio en el embudo.',
-    wide: true,
-  },
-  {
-    src: shotEmbudo,
-    alt: 'Embudo inmobiliario de Livvo con negocios organizados por etapa',
-    title: 'Embudo inmobiliario',
-    desc: 'De lead nuevo a cierre ganado: tus negocios organizados en las etapas reales de una inmobiliaria.',
-    wide: false,
-  },
-  {
-    src: shotPanel,
-    alt: 'Panel de métricas de Livvo con conversaciones, contactos y valor del embudo',
-    title: 'Panel de métricas',
-    desc: 'Conversaciones, leads y valor del embudo en tiempo real, sin armar reportes a mano.',
-    wide: false,
-  },
+// Integraciones — logos oficiales en public/integrations/.
+// Dos cintas: CRMs (arriba) y portales inmobiliarios (abajo).
+const integrationRows = [
+  [
+    { name: 'HubSpot', cat: 'CRM', src: '/integrations/hubspot.svg' },
+    { name: 'GoHighLevel', cat: 'CRM', src: '/integrations/gohighlevel.svg' },
+    { name: 'Wasi', cat: 'CRM inmobiliario', src: '/integrations/wasi.svg' },
+    { name: 'Domus', cat: 'CRM inmobiliario', src: '/integrations/domus.png' },
+  ],
+  [
+    { name: 'Fincaraíz', cat: 'Portal', src: '/integrations/fincaraiz.png' },
+    { name: 'Metrocuadrado', cat: 'Portal', src: '/integrations/metrocuadrado.png' },
+    { name: 'Ciencuadras', cat: 'Portal', src: '/integrations/ciencuadras.svg' },
+    { name: 'Century 21', cat: 'Red inmobiliaria', src: '/integrations/century21.svg' },
+  ],
 ];
 
 const faqItems = [
@@ -226,7 +194,7 @@ const faqItems = [
   },
   {
     q: '¿Se necesita un CRM previo?',
-    a: 'No. Livvo incluye un CRM inmobiliario completo: bandeja de entrada compartida, contactos con campos personalizados, embudo de negocios, difusiones y métricas. Si ya tienes un CRM, puedes conectarlo con nuestra API pública y webhooks.',
+    a: 'No. Livvo incluye un portal donde puedes hacer seguimiento a tus leads y monitorear tus métricas comerciales. Si ya tienes un CRM, también nos integramos con él.',
   },
   {
     q: '¿Cuánto tiempo toma implementarlo?',
@@ -264,7 +232,6 @@ const faqSubtitle = 'Más información sobre Luisa';
           </p>
           <div class="hero__ctas">
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Conversar con Livvo →</Button>
-            <Button href="#plataforma" variant="ghost" size="lg" id="hero-platform-cta">Ver la plataforma</Button>
           </div>
         </div>
       </div>
@@ -360,74 +327,35 @@ const faqSubtitle = 'Más información sobre Luisa';
     </div>
   </Section>
 
-  <!-- PLATAFORMA — screenshots reales del producto -->
-  <Section
-    id="plataforma"
-    eyebrow="Plataforma"
-    title="Un CRM inmobiliario incluido, no un extra."
-    subtitle="Así se ve Livvo por dentro: la bandeja donde Luisa y tu equipo atienden, el embudo donde viven tus negocios y las métricas de tu operación."
-    alt
-  >
-    <div class="platform fade-up">
-      {platformShots.map(({ src, alt: shotAlt, title, desc, wide }) => (
-        <figure class:list={['platform__shot', { 'platform__shot--wide': wide }]}>
-          <div class="platform__frame">
-            <Image
-              src={src}
-              alt={shotAlt}
-              format="webp"
-              widths={wide ? [640, 960, 1200, 1568] : [480, 640, 960, 1200]}
-              sizes={wide
-                ? '(min-width: 1025px) 1200px, calc(100vw - 40px)'
-                : '(min-width: 1025px) 585px, calc(100vw - 40px)'}
-              loading="lazy"
-            />
-          </div>
-          <figcaption>
-            <strong>{title}</strong>
-            <span>{desc}</span>
-          </figcaption>
-        </figure>
-      ))}
-    </div>
-    <div class="platform__cta fade-up">
-      <Button href={CRM_LOGIN_URL} target="_blank" size="lg">Crea tu cuenta →</Button>
-      <p>Sin tarjeta de crédito. Configura tu embudo y tu agente IA el mismo día.</p>
-    </div>
-  </Section>
-
   <!-- INTEGRACIONES -->
   <Section
     id="integraciones"
     eyebrow="Integraciones"
-    title="Livvo se conecta con los sistemas que ya usas."
-    subtitle="API pública, webhooks e importación de datos para que Livvo conviva con tu CRM o tus herramientas actuales."
+    title="Luisa está conectada con los sistemas que ya usas."
+    subtitle="Integración con los principales CRMs, portales y ERPs del mercado inmobiliario."
+    alt
   >
-    <div class="connect-grid fade-up">
-      {connectItems.map(({ icon, title, desc }) => (
-        <article class="feature-card feature-card--admin">
-          <span class="feature-card__icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              set:html={featureIcons[icon]}
-            />
-          </span>
-          <h3 class="feature-card__title">{title}</h3>
-          <p class="feature-card__desc">{desc}</p>
-        </article>
+    <div class="integrations fade-up">
+      {integrationRows.map((row, i) => (
+        <div class="integrations__marquee">
+          <div class:list={['integrations__track', { 'integrations__track--reverse': i % 2 === 1 }]}>
+            {[0, 1].map((copy) => (
+              <div class="integrations__group" aria-hidden={copy === 1 ? 'true' : undefined}>
+                {row.map(({ name, cat, src }) => (
+                  <span class="integration-pill" title={`${name} · ${cat}`}>
+                    <img class="integration-pill__logo" src={src} alt={name} loading="lazy" />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       ))}
+      <p class="integrations__note">
+        ¿Usas otro sistema? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Cuéntanos</a> —
+        Luisa se conecta vía API con el stack que ya tienes.
+      </p>
     </div>
-    <p class="integrations__note fade-up">
-      ¿Usas otro sistema? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Cuéntanos</a> —
-      te ayudamos a conectar Livvo con el stack que ya tienes.
-    </p>
   </Section>
 
   <!-- PRECIOS (oculto por ahora — ver SHOW_PRICING) -->
@@ -479,8 +407,8 @@ const faqSubtitle = 'Más información sobre Luisa';
   </Section>
   )}
 
-  <!-- FAQ (alternancia: Plataforma es alt, Integraciones normal, FAQ alt) -->
-  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" subtitle={faqSubtitle} alt>
+  <!-- FAQ (alt sigue la alternancia de fondos: sin precios va tras Integraciones, que ya es alt) -->
+  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" subtitle={faqSubtitle} alt={SHOW_PRICING}>
     <div class="fade-up">
       <FAQ items={faqItems} />
       <div class="faq-footer fade-up">
@@ -922,75 +850,67 @@ const faqSubtitle = 'Más información sobre Luisa';
     color: #fff;
   }
 
-  /* ---- Plataforma: screenshots reales del producto ---- */
-  .platform {
+  /* ---- Integraciones: dos cintas contra-rotantes de sistemas ---- */
+  .integrations {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-8) var(--space-6);
-  }
-  .platform__shot {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
     gap: var(--space-4);
   }
-  .platform__shot--wide {
-    grid-column: 1 / -1;
-  }
-  .platform__frame {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
+  .integrations__marquee {
     overflow: hidden;
-    box-shadow: var(--shadow-hover);
-    background: var(--white);
-    transition: border-color var(--transition), box-shadow var(--transition);
+    /* desvanecer en los bordes */
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   }
-  .platform__shot:hover .platform__frame {
-    border-color: var(--teal);
-  }
-  .platform__frame img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  .platform__shot figcaption {
+  .integrations__track {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding-inline: var(--space-1);
-  }
-  .platform__shot figcaption strong {
-    font-family: var(--font-display);
-    font-size: var(--text-h3);
-    color: var(--text);
-  }
-  .platform__shot figcaption span {
-    font-size: var(--text-small);
-    line-height: var(--lh-body);
-    color: var(--muted);
-    max-width: 560px;
-  }
-  .platform__cta {
-    text-align: center;
-    margin-top: var(--space-12);
-  }
-  .platform__cta p {
-    font-size: var(--text-small);
-    color: var(--muted);
-    margin: var(--space-4) 0 0;
-  }
-
-  /* ---- Integraciones: API, webhooks e importación ---- */
-  .connect-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-6);
+    width: max-content;
+    padding-block: var(--space-2); /* aire para la sombra de las pills */
+    animation: integrations-scroll 40s linear infinite;
+  }
+  .integrations__track--reverse {
+    animation-direction: reverse;
+    animation-duration: 48s; /* velocidad distinta: se siente orgánico */
+  }
+  .integrations__group {
+    display: flex;
+    gap: var(--space-6);
+  }
+  .integrations__marquee:hover .integrations__track {
+    animation-play-state: paused;
+  }
+  @keyframes integrations-scroll {
+    /* -50% menos medio gap: el loop se repite sin salto */
+    to { transform: translateX(calc(-50% - var(--space-3))); }
+  }
+  .integration-pill {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 14px 28px;
+    /* fondo blanco fijo: los wordmarks oscuros deben leerse también en dark */
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+  .integration-pill:hover {
+    border-color: var(--teal);
+    transform: translateY(-2px);
+  }
+  .integration-pill__logo {
+    height: 30px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+    display: block;
   }
   .integrations__note {
     text-align: center;
     font-size: var(--text-small);
     color: var(--muted);
-    margin-top: var(--space-8);
+    margin-top: var(--space-2);
   }
   .integrations__note a {
     color: var(--teal-deep);
@@ -999,6 +919,20 @@ const faqSubtitle = 'Más información sobre Luisa';
   }
   .integrations__note a:hover {
     text-decoration: underline;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .integrations__track {
+      animation: none;
+      width: auto;
+    }
+    .integrations__track,
+    .integrations__group {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* sin animación no hace falta la copia duplicada */
+    .integrations__group[aria-hidden='true'] { display: none; }
+    .integrations__marquee { mask-image: none; -webkit-mask-image: none; }
   }
 
   .pricing-grid {
@@ -1095,8 +1029,6 @@ const faqSubtitle = 'Más información sobre Luisa';
 
   @media (max-width: 1024px) {
     .features-grid { grid-template-columns: repeat(2, 1fr); }
-    .platform { grid-template-columns: 1fr; }
-    .connect-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
     .feature-card { padding: var(--space-6) var(--space-4); }
     .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-inline: auto; }
     .setup-card {

@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Button from './Button.astro';
+import ThemeToggle from './ThemeToggle.astro';
 import { WHATSAPP_URL } from '../config';
 ---
 
@@ -14,23 +15,34 @@ import { WHATSAPP_URL } from '../config';
           Aumenta tu tasa de conversión de clientes potenciales con IA diseñada específicamente
           para el mercado inmobiliario.
         </p>
-        <div>
+        <div class="footer__actions">
           <Button href={WHATSAPP_URL} target="_blank" size="sm">Conversar con Livvo →</Button>
         </div>
       </div>
 
-      <!-- Centro: menú -->
+      <!-- Centro: menú (antes vivía en el navbar) -->
       <nav class="footer__col footer__nav" aria-label="Menú del sitio">
         <h3 class="footer__nav-title">Menu</h3>
         <ul>
           <li><a href="/empleados-ia">Empleados IA</a></li>
           <li><a href="/plataforma-comercial">Plataforma Comercial</a></li>
-          <li><a href="#integraciones">Integraciones</a></li>
+          <li><a href="/#producto">Producto</a></li>
+          <li><a href="/#integraciones">Integraciones</a></li>
+          <li><a href="/#faq">Preguntas frecuentes</a></li>
+        </ul>
+      </nav>
+
+      <!-- Herramientas (antes: dropdown del navbar) -->
+      <nav class="footer__col footer__nav" aria-label="Herramientas">
+        <h3 class="footer__nav-title">Herramientas</h3>
+        <ul>
+          <li><a href="/herramientas/calculadora-roi">Calculadora de ROI</a></li>
         </ul>
       </nav>
 
       <!-- Derecha: legal -->
       <nav class="footer__col footer__nav" aria-label="Enlaces legales">
+        <h3 class="footer__nav-title">Legal</h3>
         <ul>
           <li><a href="/terminos-de-uso">Términos de uso</a></li>
         </ul>
@@ -42,6 +54,7 @@ import { WHATSAPP_URL } from '../config';
         Livvo tecnologia SAS - NIT 1121923287-1 Bogotá, Colombia ©2026 Livvo - Todos los
         derechos reservados
       </p>
+      <ThemeToggle />
     </div>
   </div>
 </footer>
@@ -59,7 +72,7 @@ import { WHATSAPP_URL } from '../config';
 
   .footer__main {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
     gap: var(--space-8);
     margin-bottom: var(--space-12);
   }
@@ -112,10 +125,20 @@ import { WHATSAPP_URL } from '../config';
     color: var(--navy);
   }
 
+  .footer__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
   .footer__bottom {
     border-top: 1px solid var(--border);
     padding-top: var(--space-8);
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
   }
   .footer__bottom p {
     font-size: 12px;
@@ -130,6 +153,10 @@ import { WHATSAPP_URL } from '../config';
     }
     .footer__brand {
       max-width: none;
+    }
+    .footer__bottom {
+      flex-direction: column;
+      text-align: center;
     }
   }
 </style>

@@ -5,12 +5,31 @@ import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
 import PricingCard from '../components/PricingCard.astro';
 import FAQ from '../components/FAQ.astro';
+import Conversation from '../components/Conversation.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
 // Sección de precios oculta por ahora; volver a true para mostrarla
 // (también restaura el link "Precios" en Navbar.astro y el alt del FAQ).
 const SHOW_PRICING = false;
+
+// Conversación del hero: se reproduce en loop, turno a turno, y cuenta el
+// ciclo completo — responde, califica, recomienda, agenda y entrega el lead.
+const heroChat = [
+  { from: 'client' as const, label: 'Carolina', text: 'Hola, vi el apartamento en Chapinero. ¿Sigue disponible?' },
+  { from: 'luisa' as const, text: '¡Hola, Carolina! Sí, sigue disponible. ¿Lo buscas para compra o arriendo?' },
+  { from: 'client' as const, label: 'Carolina', text: 'Para compra, con un presupuesto de $450 millones.' },
+  { from: 'reasoning' as const, label: 'Luisa calificando' },
+  {
+    from: 'luisa' as const,
+    text: 'Perfecto. Tengo 3 opciones en Chapinero y Chicó dentro de tu presupuesto. ¿Te gustaría verlas este sábado?',
+  },
+  { from: 'client' as const, label: 'Carolina', text: 'Sí, en la mañana.' },
+  {
+    from: 'luisa' as const,
+    text: 'Listo, agendé tu visita el sábado a las 10:00 a.m. Un asesor te confirma hoy mismo.',
+  },
+];
 
 // Pantallas fijas que rotan con el scroll (patrón useplaza): la sección mide
 // varias alturas de viewport y el contenido queda "pegado" mientras los
@@ -42,61 +61,66 @@ const steps = [
   },
 ] as const;
 
-// Dos tipos de funcionalidades (patrón useplaza): el servicio de atención
-// al cliente que presta Luisa, y las herramientas de administración.
-const featureTypes = {
-  luisa: 'Luisa · Atención al cliente',
-  admin: 'Luisa · Admin',
-} as const;
-
-const features = [
+// Sección Producto: dos piezas que se explican mutuamente — los Empleados IA
+// que atienden y la Plataforma Comercial donde el equipo humano trabaja.
+const products = [
   {
-    type: 'luisa',
-    icon: 'chat',
-    title: 'Atención al cliente 24/7 con IA',
-    desc: 'Luisa responde en segundos, con el tono de tu inmobiliaria a inquilinos y propietarios en cualquier momento.',
+    key: 'luisa',
+    name: 'Empleados IA',
+    href: '/empleados-ia',
+    tagline:
+      'Luisa y tus empleados digitales atienden WhatsApp 24/7: responden en segundos, califican cada lead y agendan visitas con el tono de tu inmobiliaria.',
+    features: [
+      {
+        icon: 'chat',
+        title: 'Atención al cliente 24/7',
+        desc: 'Luisa responde en segundos, con el tono de tu inmobiliaria, a inquilinos y propietarios en cualquier momento.',
+      },
+      {
+        icon: 'filter',
+        title: 'Calificación automática de leads',
+        desc: 'Detecta quién realmente desea alquilar o comprar, captura presupuesto, zona y liquidez, y te entrega solo los leads listos para avanzar.',
+      },
+      {
+        icon: 'home',
+        title: 'Recomendación de inmuebles',
+        desc: 'Cada lead recibe propiedades de tu portafolio que encajan con lo que busca, directo en el chat.',
+      },
+      {
+        icon: 'calendar',
+        title: 'Agendamiento de visitas',
+        desc: 'Luisa coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
+      },
+    ],
   },
   {
-    type: 'luisa',
-    icon: 'target',
-    title: 'Priorización de clientes potenciales',
-    desc: 'Antes de derivar la solicitud a un agente inmobiliario, identifica quién realmente desea alquilar o comprar.',
-  },
-  {
-    type: 'luisa',
-    icon: 'filter',
-    title: 'Calificación automática de leads',
-    desc: 'Luisa detecta presupuesto, zona de interés y liquidez y te entrega solo los leads listos para avanzar.',
-  },
-  {
-    type: 'luisa',
-    icon: 'home',
-    title: 'Recomendación de inmuebles',
-    desc: 'Cada lead recibe propiedades de tu portafolio que encajan con lo que busca, directo en el chat.',
-  },
-  {
-    type: 'luisa',
-    icon: 'calendar',
-    title: 'Agendamiento de visitas',
-    desc: 'Luisa coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
-  },
-  {
-    type: 'admin',
-    icon: 'link',
-    title: 'Integración con CRM y ERP',
-    desc: 'Luisa ya está integrada con los principales sistemas del mercado inmobiliario. Todo conectado, en un solo lugar.',
-  },
-  {
-    type: 'admin',
-    icon: 'calendar-check',
-    title: 'Calendario de citas del equipo',
-    desc: 'Todas las visitas que agenda Luisa quedan organizadas en el calendario de tus asesores.',
-  },
-  {
-    type: 'luisa',
-    icon: 'chart',
-    title: 'Informes y métricas',
-    desc: 'Realiza un seguimiento del rendimiento en tiempo real con datos sobre conversaciones, atención al cliente, tasas de conversión y productividad.',
+    key: 'admin',
+    name: 'Plataforma Comercial',
+    href: '/plataforma-comercial',
+    tagline:
+      'Donde tu equipo convierte: bandeja compartida, calendario, integraciones y métricas de toda la operación, con los leads que tus Empleados IA entregan listos.',
+    features: [
+      {
+        icon: 'chat',
+        title: 'Bandeja de equipo para WhatsApp',
+        desc: 'Todo tu equipo atiende desde un solo lugar, con asignación de conversaciones y visibilidad de cada chat.',
+      },
+      {
+        icon: 'calendar-check',
+        title: 'Calendario de citas del equipo',
+        desc: 'Todas las visitas que agendan tus Empleados IA quedan organizadas en el calendario de tus asesores.',
+      },
+      {
+        icon: 'link',
+        title: 'Integración con CRM y ERP',
+        desc: 'Conectada con los principales sistemas del mercado inmobiliario. Todo en un solo lugar.',
+      },
+      {
+        icon: 'chart',
+        title: 'Informes y métricas',
+        desc: 'Rendimiento en tiempo real: conversaciones, atención al cliente, tasas de conversión y productividad.',
+      },
+    ],
   },
 ];
 
@@ -217,7 +241,7 @@ const faqSubtitle = 'Más información sobre Luisa';
   <Navbar />
 
   <main>
-  <!-- ESCENA HERO + CONVERSACIÓN — anillos concéntricos como escenario común -->
+  <!-- HERO — partículas teal como energía ambiental -->
   <div class="hero-scene">
     <div id="hero-particles" class="hero-scene__particles" aria-hidden="true"></div>
     <header class="hero">
@@ -232,33 +256,14 @@ const faqSubtitle = 'Más información sobre Luisa';
           </p>
           <div class="hero__ctas">
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Conversar con Livvo →</Button>
+            <Button href="/empleados-ia" variant="ghost" size="lg" id="hero-empleados-cta">Conoce los Empleados IA</Button>
           </div>
+        </div>
+        <div class="hero__chat">
+          <Conversation turns={heroChat} animated />
         </div>
       </div>
     </header>
-
-    <section class="hero-chat">
-      <div class="hero-chat__bg" id="chat-rings" aria-hidden="true">
-        <svg class="hero-chat__circles" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-          <circle cx="100" cy="100" r="90" stroke-width="0.35" stroke-dasharray="2 3" />
-          <circle cx="100" cy="100" r="68" stroke-width="0.35" />
-          <circle cx="100" cy="100" r="46" stroke-width="0.4" stroke-dasharray="1 2" />
-          <circle cx="100" cy="100" r="24" stroke-width="0.5" stroke="#00C7B4" opacity="0.35" />
-        </svg>
-      </div>
-      <div class="container-site hero-chat__inner">
-        <div class="hero-chat__stage" id="chat-stage">
-          <iframe
-            src="/livvo-whatsapp.html"
-            width="424"
-            height="740"
-            loading="lazy"
-            scrolling="no"
-            title="Conversación de WhatsApp con Luisa, la IA de Livvo"
-            class="hero-chat__frame"></iframe>
-        </div>
-      </div>
-    </section>
   </div>
 
   <!-- CÓMO FUNCIONA — pantallas fijas que pasan con el scroll (estilo useplaza) -->
@@ -295,36 +300,47 @@ const faqSubtitle = 'Más información sobre Luisa';
     </div>
   </section>
 
-  <!-- FUNCIONALIDADES -->
+  <!-- PRODUCTO -->
   <Section
-    id="funcionalidades"
-    eyebrow="Funcionalidades"
+    id="producto"
+    eyebrow="Producto"
     title="La inteligencia artificial más completa del mercado inmobiliario"
+    subtitle="Dos piezas que trabajan juntas: Empleados IA que atienden y una Plataforma Comercial donde tu equipo cierra."
   >
-    <div class="features-grid fade-up">
-      {
-        features.map(({ type, icon, title, desc }) => (
-          <article class:list={['feature-card', `feature-card--${type}`]}>
-            <span class="feature-card__badge">{featureTypes[type as keyof typeof featureTypes]}</span>
-            <span class="feature-card__icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                set:html={featureIcons[icon]}
-              />
-            </span>
-            <h3 class="feature-card__title">{title}</h3>
-            <p class="feature-card__desc">{desc}</p>
-          </article>
-        ))
-      }
-    </div>
+    {
+      products.map(({ key, name, href, tagline, features }) => (
+        <div class="product-block">
+          <header class="product-block__head fade-up">
+            <a class:list={['product-badge', `product-badge--${key}`]} {href}>{name}</a>
+            <p class="product-block__tagline">{tagline}</p>
+            <a class:list={['product-block__link', `product-block__link--${key}`]} {href}>
+              Conocer {name} →
+            </a>
+          </header>
+          <div class="features-grid fade-up">
+            {features.map(({ icon, title, desc }) => (
+              <article class:list={['feature-card', `feature-card--${key}`]}>
+                <span class="feature-card__icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    set:html={featureIcons[icon]}
+                  />
+                </span>
+                <h3 class="feature-card__title">{title}</h3>
+                <p class="feature-card__desc">{desc}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </Section>
 
   <!-- INTEGRACIONES -->
@@ -513,57 +529,6 @@ const faqSubtitle = 'Más información sobre Luisa';
   }
 </script>
 
-<script>
-  // Escena hero → teléfono ligada al scroll (estilo useplaza):
-  // el teléfono asoma en la primera pantalla y sube/escala mientras
-  // el texto del hero se desvanece. Sin librerías: scroll + rAF.
-  const stage = document.getElementById('chat-stage');
-  const heroContent = document.getElementById('hero-content');
-  const rings = document.getElementById('chat-rings');
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (stage && heroContent && !reducedMotion) {
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      const progress = Math.min(1, Math.max(0, scrollY / (innerHeight * 0.55)));
-      const eased = 1 - Math.pow(1 - progress, 2); // ease-out
-
-      stage.style.transform = `translateY(${(1 - eased) * 90}px) scale(${0.9 + eased * 0.1})`;
-      stage.style.opacity = String(0.5 + eased * 0.5);
-
-      heroContent.style.opacity = String(1 - eased * 0.9);
-      heroContent.style.transform = `translateY(${-eased * 40}px)`;
-
-      // los anillos ganan presencia y se expanden levemente con el scroll
-      if (rings) {
-        rings.style.opacity = String(0.4 + eased * 0.6);
-        rings.style.transform = `translate(-50%, -50%) scale(${0.92 + eased * 0.08})`;
-      }
-    };
-
-    addEventListener('scroll', () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    }, { passive: true });
-
-    // al terminar la entrada, soltar la animación CSS para que los estilos
-    // inline del scroll tomen el control (una animación activa los pisa)
-    heroContent.addEventListener(
-      'animationend',
-      () => {
-        heroContent.style.animation = 'none';
-        update();
-      },
-      { once: true }
-    );
-    update();
-  }
-</script>
-
 <style>
   /* La escena contiene hero + chat y aporta el fondo; los anillos
      pueden desbordar entre secciones sin salirse de la escena */
@@ -583,20 +548,23 @@ const faqSubtitle = 'Más información sobre Luisa';
   }
 
   .hero {
-    /* deja ~30vh libres al fondo de la primera pantalla para que el teléfono asome */
-    min-height: calc(70vh - 68px);
+    min-height: calc(82vh - 68px);
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     background: transparent;
     position: relative;
     z-index: 2;
-    padding: 14vh 0 0;
+    padding: 10vh 0;
   }
-  .hero__inner { width: 100%; }
+  /* Hero a dos columnas: mensaje a la izquierda, conversación viva a la derecha */
+  .hero__inner {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr minmax(360px, 420px);
+    align-items: center;
+    gap: var(--space-12);
+  }
   .hero__content {
-    text-align: center;
-    max-width: 880px;
-    margin: 0 auto;
     animation: hero-in 0.7s ease both;
     will-change: transform, opacity;
   }
@@ -605,7 +573,7 @@ const faqSubtitle = 'Más información sobre Luisa';
     to { opacity: 1; transform: none; }
   }
   .hero__title {
-    font-size: clamp(38px, 5vw, 68px);
+    font-size: clamp(36px, 4vw, 56px);
     letter-spacing: -1.5px;
     line-height: 1.1;
     margin: 0 0 var(--space-6);
@@ -615,52 +583,30 @@ const faqSubtitle = 'Más información sobre Luisa';
     font-size: var(--text-body);
     line-height: var(--lh-relaxed);
     color: var(--muted);
-    max-width: 560px;
-    margin: 0 auto var(--space-8);
+    max-width: 520px;
+    margin: 0 0 var(--space-8);
   }
-  .hero__ctas { display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap; }
+  .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+  .hero__chat {
+    display: flex;
+    justify-content: flex-end;
+    animation: hero-in 0.7s 0.15s ease both;
+  }
 
-  .hero-chat { padding: 24px 0 96px; background: transparent; position: relative; }
-  .hero-chat__inner { display: flex; justify-content: center; position: relative; z-index: 1; }
-  .hero-chat__stage {
-    transform-origin: top center;
-    will-change: transform, opacity;
-  }
-  .hero-chat__frame { border: 0; max-width: 100%; display: block; }
-
-  /* Anillos concéntricos (patrón del DS) centrados donde aterriza el teléfono */
-  .hero-chat__bg {
-    position: absolute;
-    left: 50%;
-    top: 44%;
-    width: min(1100px, 170vw);
-    height: min(1100px, 170vw);
-    transform: translate(-50%, -50%);
-    color: var(--border);
-    pointer-events: none;
-    z-index: 0;
-    will-change: transform, opacity;
-  }
-  /* máscara radial: los anillos se desvanecen hacia los bordes */
-  .hero-chat__bg::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: radial-gradient(circle at center, transparent 30%, var(--white) 78%);
-  }
-  .hero-chat__circles {
-    width: 100%;
-    height: 100%;
-    display: block;
-    animation: rings-spin 140s linear infinite;
-  }
-  @keyframes rings-spin {
-    to { transform: rotate(360deg); }
+  @media (max-width: 900px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+      justify-items: center;
+      text-align: center;
+    }
+    .hero__sub { margin-inline: auto; }
+    .hero__ctas { justify-content: center; }
+    .hero__chat { justify-content: center; width: 100%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero__content { animation: none; }
-    .hero-chat__circles { animation: none; }
   }
 
   /* ---- Cómo funciona: pantallas sticky que pasan con el scroll ---- */
@@ -780,16 +726,64 @@ const faqSubtitle = 'Más información sobre Luisa';
     box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
   }
-  .feature-card__badge {
+  /* ---- Producto: cada bloque agrupa un producto y sus tarjetas ---- */
+  .product-block + .product-block {
+    margin-top: var(--space-12);
+  }
+  .product-block__head {
+    max-width: 720px;
+    margin-bottom: var(--space-6);
+  }
+  .product-badge {
     display: inline-block;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
     border-radius: 20px;
-    padding: 4px 12px;
-    margin-bottom: var(--space-4);
+    padding: 5px 14px;
+    margin-bottom: var(--space-3);
     border: 1px solid;
+  }
+  .product-badge--luisa {
+    color: var(--violet);
+    border-color: rgba(108, 99, 255, 0.4);
+    background: rgba(108, 99, 255, 0.08);
+  }
+  .product-badge--admin {
+    color: var(--teal-deep);
+    border-color: rgba(0, 199, 180, 0.4);
+    background: rgba(0, 199, 180, 0.08);
+  }
+  .product-block__tagline {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  a.product-badge {
+    text-decoration: none;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  a.product-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+  .product-block__link {
+    display: inline-block;
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .product-block__link:hover {
+    text-decoration: underline;
+  }
+  .product-block__link--luisa {
+    color: var(--violet);
+  }
+  .product-block__link--admin {
+    color: var(--teal-deep);
   }
   .feature-card__icon {
     display: flex;
@@ -812,12 +806,7 @@ const faqSubtitle = 'Más información sobre Luisa';
     margin: 0;
   }
 
-  /* Tipo: Luisa · Atención al cliente — violeta (exclusivo de Luisa IA en el DS) */
-  .feature-card--luisa .feature-card__badge {
-    color: var(--violet);
-    border-color: rgba(108, 99, 255, 0.4);
-    background: rgba(108, 99, 255, 0.08);
-  }
+  /* Producto: Empleados IA — violeta (exclusivo de Luisa IA en el DS) */
   .feature-card--luisa .feature-card__icon {
     background: rgba(108, 99, 255, 0.1);
     color: var(--violet);
@@ -831,12 +820,7 @@ const faqSubtitle = 'Más información sobre Luisa';
     color: #fff;
   }
 
-  /* Tipo: Administración — teal (acento primario del DS) */
-  .feature-card--admin .feature-card__badge {
-    color: var(--teal-deep);
-    border-color: rgba(0, 199, 180, 0.4);
-    background: rgba(0, 199, 180, 0.08);
-  }
+  /* Producto: Plataforma Comercial — teal (acento primario del DS) */
   .feature-card--admin .feature-card__icon {
     background: rgba(0, 199, 180, 0.1);
     color: var(--teal-deep);

@@ -1,0 +1,248 @@
+---
+// Conversación estilo Sierra: burbujas de texto con etiqueta e ícono
+// (sin cromo de WhatsApp — ni encabezado, ni horas, ni palomitas).
+// Las burbujas de Luisa llevan el violeta que el DS reserva para la IA.
+interface Turn {
+  /** 'client' = persona; 'luisa' = IA; 'reasoning' = fila de "Luisa analizando" */
+  from: 'client' | 'luisa' | 'reasoning';
+  /** Nombre mostrado en la etiqueta (por defecto: Cliente / Luisa IA) */
+  label?: string;
+  /** Texto del mensaje. En 'reasoning' no se usa. */
+  text?: string;
+}
+
+interface Props {
+  turns: Turn[];
+  /** Reproduce la conversación en loop, turno a turno. */
+  animated?: boolean;
+}
+
+const { turns, animated = false } = Astro.props;
+
+const sparkle =
+  '<path d="M10.5 1.5 12.4 8.6 19.5 10.5 12.4 12.4 10.5 19.5 8.6 12.4 1.5 10.5 8.6 8.6Z"/><path d="M18.6 14.4 19.4 17.6 22.5 18.4 19.4 19.2 18.6 22.4 17.8 19.2 14.7 18.4 17.8 17.6Z"/>';
+const person =
+  '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="2.6"/><path d="M6.9 18.6a5.6 5.6 0 0 1 10.2 0"/>';
+const reasoningIcons = [
+  '<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>',
+  '<path d="M3 9.5 12 3l9 6.5"/><path d="M5 8.5V21h14V8.5"/><path d="M9 21v-6h6v6"/>',
+  '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>',
+];
+---
+
+<div
+  class:list={['convo', { 'convo--animated': animated }]}
+  data-convo-animated={animated ? 'true' : undefined}
+>
+  <div class="convo__track">
+    {
+      turns.map(({ from, label, text }) =>
+        from === 'reasoning' ? (
+          <div class="convo__turn convo__turn--reasoning">
+            <div class="reasoning">
+              <svg class="reasoning__spark" viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" set:html={sparkle} />
+              <span class="reasoning__label">{label ?? 'Luisa analizando'}</span>
+              <span class="reasoning__tools" aria-hidden="true">
+                {reasoningIcons.map((d) => (
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={d} />
+                ))}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div class:list={['convo__turn', `convo__turn--${from}`]}>
+            <div class="bubble">
+              <span class="bubble__label">
+                <svg
+                  class="bubble__icon"
+                  viewBox="0 0 24 24"
+                  width="17"
+                  height="17"
+                  fill={from === 'luisa' ? 'currentColor' : 'none'}
+                  stroke={from === 'luisa' ? 'none' : 'currentColor'}
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                  set:html={from === 'luisa' ? sparkle : person}
+                />
+                {label ?? (from === 'luisa' ? 'Luisa IA' : 'Cliente')}
+              </span>
+              <p class="bubble__text">{text}</p>
+            </div>
+          </div>
+        )
+      )
+    }
+  </div>
+</div>
+
+<script>
+  // Reproduce la conversación turno a turno y reinicia en loop. La clase
+  // is-playing la añade este script: sin JS (o con prefers-reduced-motion)
+  // la conversación queda completa y estática.
+  document.querySelectorAll<HTMLElement>('[data-convo-animated="true"]').forEach((convo) => {
+    const turns = Array.from(convo.querySelectorAll<HTMLElement>('.convo__turn'));
+    if (!turns.length) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    const run = async () => {
+      convo.classList.add('is-playing');
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        for (const turn of turns) {
+          turn.classList.add('is-shown');
+          const isReasoning = turn.classList.contains('convo__turn--reasoning');
+          // el "analizando" es un guiño breve; los mensajes dan tiempo de lectura
+          await delay(
+            isReasoning ? 1400 : Math.min(3200, 900 + (turn.textContent?.length ?? 0) * 22)
+          );
+        }
+        await delay(3200);
+        turns.forEach((t) => t.classList.remove('is-shown'));
+        await delay(700);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer.disconnect();
+          run();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(convo);
+  });
+</script>
+
+<style>
+  /* El panel usa un fondo propio: la "colita" de cada burbuja se recorta
+     con este mismo color, así que debe ser sólido. */
+  .convo {
+    --panel: var(--gray-bg);
+    --bubble-client: var(--white);
+    --bubble-luisa: color-mix(in srgb, var(--violet) 9%, var(--white));
+
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: var(--space-6);
+    transition: background-color var(--transition), border-color var(--transition);
+  }
+  .convo__track {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* deja aire para la colita del último turno cuando el track recorta */
+    padding-bottom: 8px;
+  }
+
+  .convo__turn {
+    display: flex;
+  }
+  .convo__turn--client { justify-content: flex-end; }
+  .convo__turn--luisa,
+  .convo__turn--reasoning { justify-content: flex-start; }
+
+  /* ---- Burbuja ---- */
+  .bubble {
+    position: relative;
+    max-width: 88%;
+    padding: 12px 16px 14px;
+    border-radius: 16px;
+    background: var(--bubble-client);
+  }
+  .convo__turn--luisa .bubble {
+    background: var(--bubble-luisa);
+    border-bottom-left-radius: 6px;
+  }
+  .convo__turn--client .bubble {
+    border-bottom-right-radius: 6px;
+  }
+
+  /* Colita: un triángulo bajo la esquina exterior de la burbuja. Va por
+     debajo (no por fuera) para que el recorte del track no la corte. */
+  .bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    width: 15px;
+    height: 15px;
+  }
+  .convo__turn--luisa .bubble::after {
+    left: 13px;
+    background: var(--bubble-luisa);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+  .convo__turn--client .bubble::after {
+    right: 13px;
+    background: var(--bubble-client);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+
+  .bubble__label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+  .convo__turn--luisa .bubble__label { color: var(--violet); }
+  .bubble__icon { flex: none; }
+  .bubble__text {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  /* ---- Fila "Luisa analizando" ---- */
+  .reasoning {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 16px;
+    border-radius: 14px;
+    background: var(--bubble-luisa);
+    color: var(--violet);
+  }
+  .reasoning__label {
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .reasoning__tools {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-left: 4px;
+    opacity: 0.75;
+  }
+  .reasoning__spark { flex: none; }
+
+  /* ---- Animación (solo con .is-playing) ---- */
+  .convo--animated.is-playing .convo__track {
+    /* alto fijo anclado abajo: los turnos nuevos empujan a los anteriores */
+    height: 430px;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+  .convo--animated.is-playing .convo__turn { display: none; }
+  .convo--animated.is-playing .convo__turn.is-shown {
+    display: flex;
+    animation: convo-in 0.4s ease both;
+  }
+  @keyframes convo-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .convo { padding: var(--space-4); }
+    .bubble { max-width: 94%; }
+    .bubble__text { font-size: 15px; }
+  }
+</style>

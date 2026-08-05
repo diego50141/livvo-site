@@ -69,38 +69,9 @@ const steps = [
   },
 ] as const;
 
-// Sección Producto: dos piezas que se explican mutuamente — los Empleados IA
-// que atienden y la Plataforma Comercial donde el equipo humano trabaja.
+// Sección Producto: dos piezas que se explican mutuamente — la Plataforma
+// Comercial donde trabaja el equipo humano y los Empleados IA que atienden.
 const products = [
-  {
-    key: 'luisa',
-    name: 'Empleados IA',
-    href: '/empleados-ia',
-    tagline:
-      'Luisa y tus empleados digitales atienden WhatsApp 24/7: responden en segundos, califican cada lead y agendan visitas con el tono de tu inmobiliaria.',
-    features: [
-      {
-        icon: 'chat',
-        title: 'Atención al cliente 24/7',
-        desc: 'Luisa responde en segundos, con el tono de tu inmobiliaria, a inquilinos y propietarios en cualquier momento.',
-      },
-      {
-        icon: 'filter',
-        title: 'Calificación automática de leads',
-        desc: 'Detecta quién realmente desea alquilar o comprar, captura presupuesto, zona y liquidez, y te entrega solo los leads listos para avanzar.',
-      },
-      {
-        icon: 'home',
-        title: 'Recomendación de inmuebles',
-        desc: 'Cada lead recibe propiedades de tu portafolio que encajan con lo que busca, directo en el chat.',
-      },
-      {
-        icon: 'calendar',
-        title: 'Agendamiento de visitas',
-        desc: 'Luisa coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
-      },
-    ],
-  },
   {
     key: 'admin',
     name: 'Plataforma Comercial',
@@ -127,6 +98,35 @@ const products = [
         icon: 'chart',
         title: 'Informes y métricas',
         desc: 'Rendimiento en tiempo real: conversaciones, atención al cliente, tasas de conversión y productividad.',
+      },
+    ],
+  },
+  {
+    key: 'luisa',
+    name: 'Empleados IA',
+    href: '/empleados-ia',
+    tagline:
+      'Empleados de Inteligencia Artificial en cada punto de contacto con tus clientes.',
+    features: [
+      {
+        icon: 'chat',
+        title: 'Atención al cliente 24/7',
+        desc: 'Luisa responde en segundos, con el tono de tu inmobiliaria, a inquilinos y propietarios en cualquier momento.',
+      },
+      {
+        icon: 'filter',
+        title: 'Calificación automática de leads',
+        desc: 'Detecta quién realmente desea alquilar o comprar, captura presupuesto, zona y liquidez, y te entrega solo los leads listos para avanzar.',
+      },
+      {
+        icon: 'home',
+        title: 'Recomendación de inmuebles',
+        desc: 'Cada lead recibe propiedades de tu portafolio que encajan con lo que busca, directo en el chat.',
+      },
+      {
+        icon: 'calendar',
+        title: 'Agendamiento de visitas',
+        desc: 'Luisa coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
       },
     ],
   },
@@ -222,19 +222,39 @@ const integrationRows = [
 const faqItems = [
   {
     q: '¿Qué hace exactamente Livvo?',
-    a: 'Livvo es un agente de IA que conversa con tus leads por WhatsApp, los califica según presupuesto, zona y capacidad de pago, y les recomienda inmuebles personalizados. El objetivo es eliminar el trabajo operativo de tu equipo y aumentar tu tasa de cierre.',
+    a: 'Livvo es el sistema comercial de IA para inmobiliarias que integra en una sola plataforma conversaciones, negocios y agentes de inteligencia artificial. El objetivo es eliminar el trabajo operativo de tu equipo y aumentar tu tasa de cierre.',
   },
   {
-    q: '¿Se necesita un CRM previo?',
-    a: 'No. Livvo incluye un portal donde puedes hacer seguimiento a tus leads y monitorear tus métricas comerciales. Si ya tienes un CRM, también nos integramos con él.',
+    q: '¿La IA reemplaza a mis asesores?',
+    a: 'No. Imagínalos como una primera línea que nunca duerme: los Empleados IA responden, califican y agendan; tus asesores entran cuando hay una visita que atender o un negocio que cerrar, con todo el historial de la conversación a la vista, y pueden intervenir en cualquier momento si lo ven necesario.',
+  },
+  {
+    q: '¿Qué pasa si la IA no sabe responder algo?',
+    a: 'Escala la conversación a un asesor humano en el mismo chat, sin que el cliente tenga que repetir nada. Además tú defines el nivel de autonomía: puede responder sola o dejar el borrador listo para que alguien lo apruebe antes de enviarlo.',
+  },
+  {
+    q: '¿Sirve solo para vender, o también para arriendos y postventa?',
+    a: 'También. Los mismos Empleados IA atienden a inquilinos y propietarios: requisitos, mantenimiento, renovaciones y estado de un proceso, sin que tu equipo tenga que responder caso por caso.',
+  },
+  {
+    q: '¿Funciona con los leads que llegan de los portales?',
+    a: 'Sí. Los leads de Fincaraíz, Metrocuadrado, Ciencuadras o tu propia página entran a la misma bandeja y reciben respuesta en segundos, sin importar la hora.',
+  },
+  {
+    q: '¿Puedo seguir usando el número de WhatsApp que ya tiene mi inmobiliaria?',
+    a: 'Sí. Migramos tu línea actual a WhatsApp Business API para que tus clientes sigan escribiendo al mismo número, y todo el equipo atiende desde una bandeja compartida en vez de desde celulares sueltos.',
+  },
+  {
+    q: '¿De quién son los contactos y las conversaciones?',
+    a: 'De tu inmobiliaria. Contactos, historial y negocios viven en la plataforma, no en el celular del asesor: si alguien se va del equipo, la relación con el cliente se queda.',
   },
   {
     q: '¿Cuánto tiempo toma implementarlo?',
     a: 'Entre 1 y 3 días dependiendo de la personalización. Incluye entrenamiento del agente y conexión con WhatsApp Business API.',
   },
   {
-    q: '¿Y si el bot suena robótico y espanta a mis clientes?',
-    a: 'Livvo usa IA conversacional que se adapta al tono de tu inmobiliaria. Entrenamos el agente con el lenguaje real de tu equipo y del sector. Si en la demo no te convence cómo suena, no pagas nada.',
+    q: '¿De qué depende el precio?',
+    a: 'Del volumen de conversaciones al mes, del número de propiedades que administres y de cuántos usuarios de tu equipo entran a la plataforma.',
   },
   {
     q: '¿Qué pasa si quiero cancelar?',
@@ -256,7 +276,7 @@ const faqSubtitle = 'Más información sobre Livvo';
       <div class="container-site hero__inner">
         <div class="hero__content" id="hero-content">
           <h1 class="hero__title">
-            Automatiza tu proceso comercial y <em class="grad-text">vende más.</em>
+            El sistema comercial de <em class="grad-text">IA para inmobiliarias.</em>
           </h1>
           <p class="hero__sub">
             Livvo opera todo el ciclo comercial y de atención al cliente de tu inmobiliaria
@@ -312,8 +332,6 @@ const faqSubtitle = 'Más información sobre Livvo';
   <Section
     id="producto"
     eyebrow="Producto"
-    title="La inteligencia artificial más completa del mercado inmobiliario"
-    subtitle="Dos piezas que trabajan juntas: Empleados IA que atienden y una Plataforma Comercial donde tu equipo cierra."
   >
     {
       products.map(({ key, name, href, tagline, features }) => (

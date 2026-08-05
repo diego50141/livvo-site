@@ -64,8 +64,8 @@ dispara: `page_viewed` (con UTMs y tema activo), `demo_cta_clicked` (por ubicaci
 
 - La calculadora de ROI vive en `/herramientas/calculadora-roi` (versión propia del sitio;
   la de producción se decidió no portar tal cual).
-- El link "Términos de uso" del footer apunta a `/terminos-de-uso`, página que **aún no
-  existe** — pendiente de crear o retirar el link.
+- Los términos de uso viven en `/terminos-de-uso` (borrador redactado internamente;
+  **pendiente de revisión por un abogado** antes de considerarse definitivos).
 - Reglas del DS a respetar (decisiones de marca jul-2026): **Open Sans** para todo el texto
   (titulares 700, labels 600, cuerpo 400) y **Geist Mono** solo para datos; teal único color de
   CTA; `--teal-deep` para texto pequeño sobre fondo claro; azul oficial `#3B7EFF`; violeta

@@ -1,0 +1,191 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_URL } from '../config';
+
+const LAST_UPDATED = 'Agosto de 2026';
+
+const sections = [
+  {
+    title: '1. Identificación y aceptación',
+    body: [
+      'Este sitio web y la plataforma Livvo (en adelante, "el Servicio") son operados por Livvo tecnologia SAS, sociedad constituida en Colombia, identificada con NIT 1121923287-1 y domiciliada en Bogotá, Colombia (en adelante, "Livvo").',
+      'Al acceder al sitio livvo.tech, crear una cuenta o usar cualquiera de los productos de Livvo, aceptas estos Términos de uso en su totalidad. Si no estás de acuerdo con ellos, debes abstenerte de usar el Servicio.',
+    ],
+  },
+  {
+    title: '2. Descripción del Servicio',
+    body: [
+      'Livvo es una plataforma de software como servicio (SaaS) para inmobiliarias y profesionales del sector, que incluye, entre otras funcionalidades: un agente de inteligencia artificial ("Luisa") que atiende conversaciones de WhatsApp; una bandeja de entrada compartida; un CRM con embudo de negocios, contactos y campos personalizados; difusiones mediante plantillas aprobadas por Meta; e informes y métricas.',
+      'Livvo puede agregar, modificar o retirar funcionalidades del Servicio en cualquier momento, procurando no afectar de forma sustancial las funcionalidades contratadas por clientes activos.',
+    ],
+  },
+  {
+    title: '3. Cuentas y registro',
+    body: [
+      'Para usar la plataforma debes crear una cuenta con información veraz, completa y actualizada. Eres responsable de mantener la confidencialidad de tus credenciales y de toda actividad que ocurra bajo tu cuenta.',
+      'El Servicio está dirigido a empresas y profesionales. Al registrarte en nombre de una empresa, declaras contar con la autorización para obligarla conforme a estos términos.',
+    ],
+  },
+  {
+    title: '4. Uso aceptable',
+    body: [
+      'Te comprometes a usar el Servicio de forma lícita y conforme a las políticas de las plataformas de mensajería que Livvo integra, incluidas las políticas de WhatsApp Business y de Meta. En particular, no está permitido: enviar mensajes no solicitados (spam) o a contactos que no hayan dado su consentimiento; usar el Servicio para actividades fraudulentas, engañosas o ilegales; suplantar la identidad de terceros; ni intentar vulnerar la seguridad de la plataforma.',
+      'El incumplimiento de estas reglas puede dar lugar a la suspensión o cancelación de la cuenta, sin perjuicio de las acciones legales a que haya lugar.',
+    ],
+  },
+  {
+    title: '5. Servicios de terceros',
+    body: [
+      'El funcionamiento del Servicio depende de servicios de terceros, en especial de la API de WhatsApp Business operada por Meta. Livvo no controla dichos servicios y no es responsable por interrupciones, cambios de políticas, restricciones de cuentas o limitaciones que estos impongan.',
+      'El uso de WhatsApp a través de Livvo está sujeto, además, a los términos y políticas de Meta aplicables al cliente.',
+    ],
+  },
+  {
+    title: '6. Contenido generado por inteligencia artificial',
+    body: [
+      'Las respuestas generadas por el agente de IA se producen de forma automatizada a partir de la información y configuración suministradas por el cliente. Aunque Livvo trabaja para que sean precisas y útiles, pueden contener errores o imprecisiones.',
+      'El cliente es responsable de configurar, entrenar y supervisar a su agente, y de verificar la información crítica (precios, condiciones comerciales, disponibilidad de inmuebles, asuntos legales) antes de que produzca efectos frente a sus propios clientes. Livvo ofrece herramientas de supervisión y aprobación de borradores para este fin.',
+    ],
+  },
+  {
+    title: '7. Planes, precios y pagos',
+    body: [
+      'Las condiciones comerciales (planes, precios, límites de uso y períodos de facturación) son las vigentes al momento de la contratación y se informan antes de la compra. Livvo puede modificar sus precios hacia el futuro, notificando a los clientes activos con antelación razonable.',
+      'Salvo que se indique lo contrario, los precios no incluyen impuestos aplicables ni los costos de conversación que cobra Meta por el uso de WhatsApp Business API, que corren por cuenta del cliente.',
+    ],
+  },
+  {
+    title: '8. Datos personales',
+    body: [
+      'Livvo trata datos personales conforme a la Ley 1581 de 2012 y demás normas colombianas sobre protección de datos personales. Respecto de los datos de los contactos y clientes finales que el cliente gestiona en la plataforma, el cliente actúa como responsable del tratamiento y Livvo como encargado, tratándolos únicamente para prestar el Servicio.',
+      'Los datos del cliente le pertenecen: puede exportarlos y solicitar su eliminación al terminar la relación contractual, salvo aquellos que Livvo deba conservar por obligación legal.',
+    ],
+  },
+  {
+    title: '9. Propiedad intelectual',
+    body: [
+      'El software, la marca Livvo, sus logos, el diseño del sitio y de la plataforma son propiedad de Livvo o de sus licenciantes. La contratación del Servicio otorga una licencia de uso limitada, no exclusiva e intransferible, vigente mientras dure la suscripción. Nada en estos términos transfiere derechos de propiedad intelectual al cliente.',
+    ],
+  },
+  {
+    title: '10. Disponibilidad y soporte',
+    body: [
+      'Livvo procura mantener el Servicio disponible de forma continua, pero no garantiza una disponibilidad ininterrumpida: pueden presentarse mantenimientos programados, fallas técnicas o interrupciones de terceros. Cuando sea posible, los mantenimientos que afecten el Servicio se anunciarán con antelación.',
+    ],
+  },
+  {
+    title: '11. Limitación de responsabilidad',
+    body: [
+      'En la máxima medida permitida por la ley colombiana, Livvo no será responsable por daños indirectos, lucro cesante o pérdida de oportunidades de negocio derivados del uso o imposibilidad de uso del Servicio. La responsabilidad total de Livvo frente al cliente se limita al valor pagado por el Servicio durante los tres (3) meses anteriores al hecho que dé lugar a la reclamación.',
+      'Nada de lo anterior limita responsabilidades que por ley no puedan excluirse o limitarse.',
+    ],
+  },
+  {
+    title: '12. Terminación',
+    body: [
+      'El cliente puede cancelar su suscripción en cualquier momento; la cancelación surte efectos al final del período facturado en curso. Livvo puede suspender o terminar el acceso al Servicio en caso de incumplimiento grave de estos términos, mora en los pagos o uso que ponga en riesgo la plataforma o a terceros.',
+    ],
+  },
+  {
+    title: '13. Modificaciones a estos términos',
+    body: [
+      'Livvo puede actualizar estos Términos de uso. La versión vigente estará siempre publicada en esta página con su fecha de actualización. Los cambios sustanciales se notificarán a los clientes activos por los canales de contacto registrados. El uso del Servicio después de la publicación de los cambios constituye su aceptación.',
+    ],
+  },
+  {
+    title: '14. Ley aplicable y contacto',
+    body: [
+      'Estos términos se rigen por las leyes de la República de Colombia. Cualquier controversia se someterá a los jueces competentes de Bogotá, Colombia, sin perjuicio de los mecanismos alternativos de solución de conflictos que las partes acuerden.',
+      'Para preguntas sobre estos términos o sobre el Servicio, escríbenos por WhatsApp desde el enlace de contacto de este sitio.',
+    ],
+  },
+];
+---
+
+<Base
+  title="Términos de uso — Livvo"
+  description="Términos y condiciones de uso del sitio y la plataforma Livvo."
+>
+  <Navbar />
+
+  <main class="terms">
+    <div class="container-site terms__inner">
+      <header class="terms__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Términos de uso</h1>
+        <p class="terms__meta">Última actualización: {LAST_UPDATED}</p>
+      </header>
+
+      {sections.map(({ title, body }) => (
+        <section class="terms__section">
+          <h2>{title}</h2>
+          {body.map((p) => <p>{p}</p>)}
+        </section>
+      ))}
+
+      <p class="terms__contact">
+        ¿Tienes dudas? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Escríbenos por WhatsApp</a>.
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .terms {
+    padding: 100px 0 80px;
+  }
+  .terms__inner {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .terms__header {
+    margin-bottom: 40px;
+  }
+  .terms h1 {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--navy);
+    margin: 16px 0 8px;
+  }
+  .terms__meta {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .terms__section {
+    margin-bottom: 32px;
+  }
+  .terms__section h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .terms__section p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .terms__contact {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .terms__contact a {
+    color: var(--teal-deep);
+    font-weight: 600;
+  }
+  @media (max-width: 640px) {
+    .terms { padding: 80px 0 60px; }
+    .terms h1 { font-size: 30px; }
+  }
+</style>

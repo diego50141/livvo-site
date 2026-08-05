@@ -24,18 +24,25 @@ tema activo.
 src/
 ├── styles/global.css        # tokens claro + dark, bases, utilidades
 ├── layouts/Base.astro       # <head> (meta/OG/favicon/fuentes) + tema + analytics + fade-up
+├── assets/screenshots/      # screenshots del producto (optimizados vía astro:assets)
 ├── components/              # Button, Badge, Card, StatBox, Section, Navbar, Logo,
 │   │                        # ThemeToggle, ChatMockup, PricingCard, FAQ, Footer
-│   └── ui/marquee.tsx       # marquee de integraciones (React)
+│   └── ui/marquee.tsx       # marquee (React, sin uso en la landing actual)
+├── config.ts                # número/mensaje de WhatsApp y URLs de login
 └── pages/
     ├── index.astro          # landing (hero con partículas, pasos, funcionalidades,
-    │                        # integraciones, precios, FAQ)
+    │                        # plataforma con screenshots, integraciones, precios
+    │                        # tras SHOW_PRICING, FAQ)
     ├── design-system.astro  # catálogo vivo del DS en ambos temas
+    ├── ingresar.astro       # acceso a CRM y Agentes (URLs en config.ts)
+    ├── presentacion.astro   # overview del producto (noindex, fuera del sitemap)
+    ├── herramientas/
+    │   └── calculadora-roi.astro
     └── 404.astro
 ```
 
-React se usa solo para las partículas del hero (tsparticles) y el marquee; el resto es Astro
-estático. Sitemap y `robots.txt` incluidos (`@astrojs/sitemap` + `public/robots.txt`).
+React se usa solo para las partículas del hero (tsparticles); el resto es Astro estático.
+Sitemap y `robots.txt` incluidos (`@astrojs/sitemap` + `public/robots.txt`).
 
 ## Comandos
 
@@ -55,7 +62,10 @@ dispara: `page_viewed` (con UTMs y tema activo), `demo_cta_clicked` (por ubicaci
 
 ## Notas
 
-- La calculadora de ROI de producción se decidió **no** portar.
+- La calculadora de ROI vive en `/herramientas/calculadora-roi` (versión propia del sitio;
+  la de producción se decidió no portar tal cual).
+- El link "Términos de uso" del footer apunta a `/terminos-de-uso`, página que **aún no
+  existe** — pendiente de crear o retirar el link.
 - Reglas del DS a respetar (decisiones de marca jul-2026): **Open Sans** para todo el texto
   (titulares 700, labels 600, cuerpo 400) y **Geist Mono** solo para datos; teal único color de
   CTA; `--teal-deep` para texto pequeño sobre fondo claro; azul oficial `#3B7EFF`; violeta

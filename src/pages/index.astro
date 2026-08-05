@@ -33,28 +33,36 @@ const heroChat = [
 
 // Pantallas fijas que rotan con el scroll (patrón useplaza): la sección mide
 // varias alturas de viewport y el contenido queda "pegado" mientras los
-// pasos 01 → 02 → 03 se cruzan con fade + desplazamiento.
+// pasos 01 → 04 se cruzan con fade + desplazamiento.
 const steps = [
   {
     n: '01',
-    title: 'Luisa responde preguntas',
-    desc: 'Luisa responde preguntas en 15 segundos, recopila datos y califica automáticamente los clientes potenciales, directamente en WhatsApp, en cualquier momento.',
+    title: 'Unifica tu operación comercial y de servicio al cliente',
+    desc: 'Todos los frentes de tu inmobiliaria — renta, venta, compra, mantenimiento y jurídico — en una sola plataforma: un número, tu equipo completo y empleados IA con un flujo definido para cada caso.',
     ctaLabel: 'Conversar con Livvo →',
     ctaHref: WHATSAPP_URL,
     ctaVariant: 'primary',
   },
   {
     n: '02',
-    title: 'Servicio inteligente',
-    desc: 'Luisa recomienda propiedades según el perfil del cliente potencial y analiza su solvencia, incluso antes de la visita. Servicio rápido y eficaz, listo para cerrar el trato.',
+    title: 'Centraliza tu portafolio en una plataforma con IA',
+    desc: 'Tus empleados IA se conectan a la base de propiedades de tu inmobiliaria y responden con inmuebles reales: precio, área, zona y disponibilidad al día.',
     ctaLabel: 'Conversar con Livvo →',
     ctaHref: WHATSAPP_URL,
     ctaVariant: 'primary',
   },
   {
     n: '03',
-    title: 'Clientes potenciales listos para cerrar',
-    desc: 'Atiende y resuelve: el 90 % de las solicitudes de servicio se resuelven sin intervención humana, ya sea con inquilinos o propietarios. Luisa continúa brindando soporte después de la firma del contrato sin depender de tu equipo.',
+    title: 'Crea tus propios empleados IA para automatizar la operación inmobiliaria',
+    desc: 'Defines el flujo de cada caso y sales a producción sin escribir una línea de código ni depender de tu área de tecnología.',
+    ctaLabel: 'Conversar con Livvo →',
+    ctaHref: WHATSAPP_URL,
+    ctaVariant: 'primary',
+  },
+  {
+    n: '04',
+    title: 'Mide y mejora tu operación comercial',
+    desc: 'Tiempos de respuesta, conversión por canal y productividad por asesor, en tiempo real.',
     ctaLabel: 'Conversar con Livvo →',
     ctaHref: WHATSAPP_URL,
     ctaVariant: 'primary',
@@ -234,7 +242,7 @@ const faqItems = [
   },
 ];
 
-const faqSubtitle = 'Más información sobre Luisa';
+const faqSubtitle = 'Más información sobre Livvo';
 ---
 
 <Base>
@@ -251,12 +259,12 @@ const faqSubtitle = 'Más información sobre Luisa';
             Automatiza tu proceso comercial y <em class="grad-text">vende más.</em>
           </h1>
           <p class="hero__sub">
-            Descubre cómo Luisa, la inteligencia artificial de Livvo, precalifica y agenda leads
-            24/7 aumentando citas y disminuyendo trabajo manual.
+            Livvo opera todo el ciclo comercial y de atención al cliente de tu inmobiliaria
+            —de la prospección a la postventa— con agentes de IA que trabajan 24/7 en una sola
+            plataforma y se conectan con tus sistemas actuales.
           </p>
           <div class="hero__ctas">
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Conversar con Livvo →</Button>
-            <Button href="/empleados-ia" variant="ghost" size="lg" id="hero-empleados-cta">Conoce los Empleados IA</Button>
           </div>
         </div>
         <div class="hero__chat">
@@ -267,7 +275,7 @@ const faqSubtitle = 'Más información sobre Luisa';
   </div>
 
   <!-- CÓMO FUNCIONA — pantallas fijas que pasan con el scroll (estilo useplaza) -->
-  <section id="como-funciona" class="steps" aria-label="Cómo funciona Luisa">
+  <section id="como-funciona" class="steps" aria-label="Cómo funciona la plataforma">
     <div class="steps__sticky">
       <div class="container-site steps__inner">
         <div class="steps__nav" aria-hidden="true">
@@ -347,7 +355,7 @@ const faqSubtitle = 'Más información sobre Luisa';
   <Section
     id="integraciones"
     eyebrow="Integraciones"
-    title="Luisa está conectada con los sistemas que ya usas."
+    title="Livvo se conecta con los sistemas que ya usas."
     subtitle="Integración con los principales CRMs, portales y ERPs del mercado inmobiliario."
     alt
   >
@@ -368,8 +376,7 @@ const faqSubtitle = 'Más información sobre Luisa';
         </div>
       ))}
       <p class="integrations__note">
-        ¿Usas otro sistema? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Cuéntanos</a> —
-        Luisa se conecta vía API con el stack que ya tienes.
+        ¿Usas otro sistema? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Cuéntanos</a>.
       </p>
     </div>
   </Section>
@@ -612,7 +619,7 @@ const faqSubtitle = 'Más información sobre Luisa';
   /* ---- Cómo funciona: pantallas sticky que pasan con el scroll ---- */
   .steps {
     position: relative;
-    height: 300vh; /* 100vh por paso: define cuánto scroll dura la escena */
+    height: 400vh; /* 100vh por paso: define cuánto scroll dura la escena */
     background: var(--gray-bg);
     transition: background-color var(--transition);
   }

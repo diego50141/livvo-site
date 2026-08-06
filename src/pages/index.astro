@@ -6,6 +6,8 @@ import Section from '../components/Section.astro';
 import PricingCard from '../components/PricingCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Conversation from '../components/Conversation.astro';
+import ProductStack from '../components/ProductStack.astro';
+import DealFlow from '../components/DealFlow.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
@@ -288,7 +290,7 @@ const faqSubtitle = 'Más información sobre Livvo';
           </div>
         </div>
         <div class="hero__chat">
-          <Conversation turns={heroChat} animated />
+          <DealFlow />
         </div>
       </div>
     </header>
@@ -585,7 +587,7 @@ const faqSubtitle = 'Más información sobre Livvo';
   .hero__inner {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr minmax(360px, 420px);
+    grid-template-columns: 1fr minmax(420px, 560px);
     align-items: center;
     gap: var(--space-12);
   }
@@ -613,8 +615,7 @@ const faqSubtitle = 'Más información sobre Livvo';
   }
   .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; }
   .hero__chat {
-    display: flex;
-    justify-content: flex-end;
+    display: block;
     animation: hero-in 0.7s 0.15s ease both;
   }
 

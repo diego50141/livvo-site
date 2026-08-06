@@ -1,10 +1,15 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
+import fotoLuisa from '../assets/equipo/luisa.png';
+import fotoLucia from '../assets/equipo/lucia.png';
+import fotoLaura from '../assets/equipo/laura.png';
+import fotoLina from '../assets/equipo/lina.jpg';
 
 const features = [
   {
@@ -28,14 +33,35 @@ const features = [
     desc: 'Coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
   },
   {
-    icon: 'target',
-    title: 'Supervisada por tu equipo',
-    desc: 'Tú decides el nivel de autonomía: responde sola o prepara borradores que tus asesores revisan y aprueban antes de enviar.',
+    icon: 'refresh',
+    title: 'Seguimientos automatizados',
+    desc: 'Si un lead deja de responder, Luisa retoma la conversación por ti: recordatorios y seguimientos en el momento justo, hasta agendar la visita o cerrar el ciclo.',
   },
   {
-    icon: 'spark',
-    title: 'Entrenada para tu inmobiliaria',
-    desc: 'Antes de salir a producción la configuramos contigo: tu tono, tu portafolio y tus reglas de negocio.',
+    icon: 'send',
+    title: 'Outreach a escala',
+    desc: 'Reactiva tu base de datos con campañas salientes por WhatsApp: la misma conversación personalizada, para cien o para diez mil contactos.',
+  },
+];
+
+const team = [
+  {
+    foto: fotoLucia,
+    nombre: 'Lucía',
+    rol: 'Mantenimiento IA',
+    desc: 'Recibe las solicitudes de mantenimiento de tus inquilinos, coordina proveedores y hace seguimiento automático hasta cerrar cada caso.',
+  },
+  {
+    foto: fotoLaura,
+    nombre: 'Laura',
+    rol: 'Administrativa IA',
+    desc: 'Atiende a inquilinos y propietarios 24/7: resuelve consultas de pagos, certificados y trámites sin intervención humana, con una respuesta personalizada para cada caso.',
+  },
+  {
+    foto: fotoLina,
+    nombre: 'Lina',
+    rol: 'Jurídica IA',
+    desc: 'Gestiona la cobranza y los recordatorios de pago por WhatsApp, con el tono firme y cordial que protege la relación con tu cliente.',
   },
 ];
 
@@ -45,69 +71,74 @@ const featureIcons: Record<string, string> = {
   home: '<path d="M3 9.5 12 3l9 6.5"/><path d="M5 8.5V21h14V8.5"/><path d="M9 21v-6h6v6"/>',
   calendar:
     '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>',
-  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-  spark:
-    '<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/>',
+  refresh: '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>',
+  send: '<path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/>',
 };
 ---
 
 <Base
   title="Empleados IA — Livvo"
-  description="Luisa y tus empleados digitales atienden WhatsApp 24/7: responden en segundos, califican cada lead y agendan visitas con el tono de tu inmobiliaria."
+  description="Luisa y su equipo de Empleados IA atienden el WhatsApp de tu inmobiliaria 24/7: ventas, mantenimiento, administración y cobranza, con tu tono y bajo tus reglas."
 >
   <Navbar />
 
   <main>
-    <!-- HERO del producto -->
+    <!-- HERO del producto: texto a la izquierda, demo de WhatsApp a la derecha -->
     <header class="product-hero product-hero--luisa">
       <div class="container-site product-hero__inner">
-        <span class="product-hero__badge">Producto · Empleados IA</span>
-        <h1>Empleados IA que <em class="grad-text">venden por ti.</em></h1>
-        <p class="product-hero__sub">
-          Luisa y tus empleados digitales atienden el WhatsApp de tu inmobiliaria 24/7: responden
-          en segundos, califican cada lead, recomiendan inmuebles de tu portafolio y agendan
-          visitas — con tu tono y bajo tus reglas.
-        </p>
-        <div class="product-hero__ctas">
-          <Button href={WHATSAPP_URL} target="_blank" size="lg" id="empleados-demo-cta">
-            Conversar con Livvo →
-          </Button>
-          <Button href="/plataforma-comercial" variant="ghost" size="lg">
-            Ver la Plataforma Comercial
-          </Button>
+        <div class="product-hero__copy">
+          <span class="product-hero__badge">Producto · Empleados IA</span>
+          <h1>Empleados IA que <em class="grad-text">venden por ti.</em></h1>
+          <p class="product-hero__sub">
+            Luisa responde en segundos, califica cada lead, recomienda inmuebles de tu portafolio y
+            agenda visitas — mientras Lucía, Laura y Lina se encargan del mantenimiento, la
+            administración y la cobranza. Con tu tono y bajo tus reglas, 24/7.
+          </p>
+          <div class="product-hero__ctas">
+            <Button href={WHATSAPP_URL} target="_blank" size="lg" id="empleados-demo-cta">
+              Conversar con Livvo →
+            </Button>
+          </div>
+        </div>
+
+        <div class="product-hero__demo" aria-label="Conversación de WhatsApp con Luisa">
+          <div class="demo__bg" aria-hidden="true">
+            <svg class="demo__circles" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+              <circle cx="100" cy="100" r="90" stroke-width="0.35" stroke-dasharray="2 3" />
+              <circle cx="100" cy="100" r="68" stroke-width="0.35" />
+              <circle cx="100" cy="100" r="46" stroke-width="0.4" stroke-dasharray="1 2" />
+              <circle cx="100" cy="100" r="24" stroke-width="0.5" stroke="#6C63FF" opacity="0.35" />
+            </svg>
+          </div>
+          <iframe
+            src="/livvo-whatsapp.html"
+            width="424"
+            height="740"
+            loading="lazy"
+            scrolling="no"
+            title="Conversación de WhatsApp con Luisa, la IA de Livvo"
+            class="demo__frame"></iframe>
         </div>
       </div>
     </header>
 
-    <!-- DEMO — conversación real de WhatsApp con Luisa -->
-    <section class="demo" aria-label="Conversación de WhatsApp con Luisa">
-      <div class="demo__bg" aria-hidden="true">
-        <svg class="demo__circles" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-          <circle cx="100" cy="100" r="90" stroke-width="0.35" stroke-dasharray="2 3" />
-          <circle cx="100" cy="100" r="68" stroke-width="0.35" />
-          <circle cx="100" cy="100" r="46" stroke-width="0.4" stroke-dasharray="1 2" />
-          <circle cx="100" cy="100" r="24" stroke-width="0.5" stroke="#6C63FF" opacity="0.35" />
-        </svg>
+    <!-- AGENTE ESTRELLA: Luisa -->
+    <Section alt>
+      <div class="star-head fade-up">
+        <span class="eyebrow">Nuestra agente estrella</span>
+        <h2>Luisa, tu Agente Comercial IA</h2>
+        <Image
+          src={fotoLuisa}
+          alt="Luisa, Agente Comercial IA de Livvo"
+          width={280}
+          densities={[1, 2]}
+          class="star-head__foto"
+        />
+        <p class="star-head__subtitle">
+          La primera línea de tu equipo comercial: atiende, califica, recomienda y agenda — sin
+          dejar un lead en visto.
+        </p>
       </div>
-      <div class="container-site demo__inner">
-        <iframe
-          src="/livvo-whatsapp.html"
-          width="424"
-          height="740"
-          loading="lazy"
-          scrolling="no"
-          title="Conversación de WhatsApp con Luisa, la IA de Livvo"
-          class="demo__frame"></iframe>
-      </div>
-    </section>
-
-    <!-- QUÉ HACEN -->
-    <Section
-      eyebrow="Qué hacen"
-      title="Un empleado que nunca deja un lead en visto"
-      subtitle="Todo lo que tus Empleados IA resuelven antes de que un asesor humano tenga que intervenir."
-      alt
-    >
       <div class="pfeatures fade-up">
         {features.map(({ icon, title, desc }) => (
           <article class="pfeature">
@@ -131,6 +162,35 @@ const featureIcons: Record<string, string> = {
       </div>
     </Section>
 
+    <!-- EL RESTO DEL EQUIPO -->
+    <Section
+      eyebrow="El equipo completo"
+      title="Luisa no trabaja sola"
+      subtitle="Empleados IA especializados para cada área de tu inmobiliaria, en el mismo WhatsApp."
+    >
+      <div class="team fade-up">
+        {team.map(({ foto, nombre, rol, desc }) => (
+          <article class="tcard">
+            <Image
+              src={foto}
+              alt={`${nombre}, ${rol} de Livvo`}
+              width={240}
+              densities={[1, 2]}
+              class="tcard__foto"
+            />
+            <h3 class="tcard__nombre">{nombre}</h3>
+            <span class="tcard__rol">{rol}</span>
+            <p class="tcard__desc">{desc}</p>
+          </article>
+        ))}
+      </div>
+      <p class="team__note fade-up">
+        Cada Empleado IA se configura contigo antes de salir a producción — tu tono, tu portafolio
+        y tus reglas de negocio — y trabaja con el nivel de autonomía que tú decidas: responde solo
+        o prepara borradores que tu equipo revisa y aprueba.
+      </p>
+    </Section>
+
     <!-- CTA FINAL -->
     <Section eyebrow="Pruébalo" title="Habla con Luisa ahora mismo">
       <div class="product-cta fade-up">
@@ -150,12 +210,17 @@ const featureIcons: Record<string, string> = {
 
 <style>
   .product-hero {
-    padding: 140px 0 80px;
+    padding: 130px 0 40px;
+    overflow: hidden;
   }
   .product-hero__inner {
-    max-width: 800px;
-    text-align: center;
-    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: var(--space-10);
+  }
+  .product-hero__copy {
+    text-align: left;
   }
   .product-hero__badge {
     display: inline-block;
@@ -185,40 +250,34 @@ const featureIcons: Record<string, string> = {
     color: var(--muted);
     font-size: 17px;
     line-height: var(--lh-body);
-    max-width: 640px;
-    margin: 0 auto 32px;
+    max-width: 560px;
+    margin: 0 0 32px;
   }
   .product-hero__ctas {
     display: flex;
     gap: 12px;
-    justify-content: center;
     flex-wrap: wrap;
   }
 
-  /* ---- Demo: teléfono con anillos concéntricos (patrón del DS) ---- */
-  .demo {
+  /* ---- Demo en el hero: teléfono con anillos concéntricos (patrón del DS) ---- */
+  .product-hero__demo {
     position: relative;
-    overflow: hidden;
-    padding: 8px 0 96px;
-    background: var(--white);
-  }
-  .demo__inner {
     display: flex;
     justify-content: center;
-    position: relative;
-    z-index: 1;
   }
   .demo__frame {
     border: 0;
     max-width: 100%;
     display: block;
+    position: relative;
+    z-index: 1;
   }
   .demo__bg {
     position: absolute;
     left: 50%;
-    top: 46%;
-    width: min(1100px, 170vw);
-    height: min(1100px, 170vw);
+    top: 50%;
+    width: min(680px, 100vw);
+    height: min(680px, 100vw);
     transform: translate(-50%, -50%);
     color: var(--border);
     pointer-events: none;
@@ -242,6 +301,40 @@ const featureIcons: Record<string, string> = {
   }
   @media (prefers-reduced-motion: reduce) {
     .demo__circles { animation: none; }
+  }
+
+  /* ---- Cabecera de la agente estrella (replica .section__head + foto) ---- */
+  .star-head {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto var(--space-12);
+  }
+  .star-head :global(.star-head__foto) {
+    display: block;
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    margin: var(--space-6) auto 0;
+    border-radius: 50%;
+    border: 4px solid rgba(108, 99, 255, 0.45);
+    box-shadow: 0 10px 40px rgba(108, 99, 255, 0.22);
+  }
+  @media (max-width: 640px) {
+    .star-head :global(.star-head__foto) {
+      width: 170px;
+      height: 170px;
+    }
+  }
+  .star-head h2 {
+    margin-top: var(--space-4);
+    font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: -1px;
+  }
+  .star-head__subtitle {
+    font-size: var(--text-h2);
+    line-height: var(--lh-body);
+    color: var(--muted);
+    margin: var(--space-4) 0 0;
   }
 
   .pfeatures {
@@ -291,6 +384,67 @@ const featureIcons: Record<string, string> = {
     margin: 0;
   }
 
+  /* ---- Equipo de Empleados IA ---- */
+  .team {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+  .tcard {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+    text-align: center;
+    transition: box-shadow var(--transition), border-color var(--transition),
+      transform var(--transition);
+  }
+  .tcard:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+    border-color: rgba(0, 199, 180, 0.45);
+  }
+  .tcard :global(.tcard__foto) {
+    display: block;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin: 0 auto var(--space-4);
+    border-radius: 50%;
+    border: 3px solid rgba(0, 199, 180, 0.35);
+  }
+  .tcard__nombre {
+    font-size: var(--text-h3);
+    margin: 0 0 var(--space-1);
+  }
+  .tcard__rol {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    background: rgba(0, 199, 180, 0.1);
+    border-radius: 20px;
+    padding: 3px 12px;
+    margin-bottom: var(--space-3);
+  }
+  .tcard__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  .team__note {
+    max-width: 680px;
+    margin: var(--space-8) auto 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+  }
+
   .product-cta {
     max-width: 620px;
     margin-inline: auto;
@@ -304,11 +458,24 @@ const featureIcons: Record<string, string> = {
   }
 
   @media (max-width: 1024px) {
+    .product-hero__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+    .product-hero__copy {
+      text-align: center;
+      max-width: 640px;
+      margin-inline: auto;
+    }
+    .product-hero__sub { margin-inline: auto; }
+    .product-hero__ctas { justify-content: center; }
     .pfeatures { grid-template-columns: repeat(2, 1fr); }
+    .team { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 640px) {
-    .product-hero { padding: 120px 0 60px; }
+    .product-hero { padding: 120px 0 40px; }
     .product-hero h1 { font-size: 34px; }
     .pfeatures { grid-template-columns: 1fr; }
+    .team { grid-template-columns: 1fr; }
   }
 </style>

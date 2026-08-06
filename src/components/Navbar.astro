@@ -1,6 +1,7 @@
 ---
 import Button from './Button.astro';
 import Logo from './Logo.astro';
+import { APP_URL } from '../config';
 ---
 
 <nav class="navbar">
@@ -8,7 +9,7 @@ import Logo from './Logo.astro';
     <a href="/" class="navbar__logo" aria-label="Livvo — inicio">
       <Logo size={26} />
     </a>
-    <Button href="/ingresar" variant="ghost" size="sm" id="nav-login">
+    <Button href={APP_URL} target="_blank" variant="ghost" size="sm" id="nav-login">
       Ingresar
     </Button>
   </div>

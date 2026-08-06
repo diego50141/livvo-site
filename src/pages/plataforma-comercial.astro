@@ -6,21 +6,29 @@ import Section from '../components/Section.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
-const features = [
+// Bloques con captura de producto: cada uno alterna el lado de la imagen.
+// Las capturas viven en public/screenshots/ — si falta el archivo, el marco
+// se sigue viendo y muestra el texto alternativo.
+const showcase = [
   {
-    icon: 'chat',
-    title: 'Bandeja de equipo para WhatsApp',
-    desc: 'Todo tu equipo atiende el WhatsApp de la inmobiliaria desde un solo lugar, con asignación de conversaciones y visibilidad de cada chat.',
+    title: 'Ficha del cliente centralizada',
+    desc: 'Cada conversación y punto de contacto quedan centralizados en una sola ficha para que la atención sea eficiente y personalizada, y no se pase ningún momento importante.',
+    img: '/screenshots/ficha-cliente.jpg',
+    alt: 'Ficha del cliente en la interfaz de Livvo, con la información del contacto y su historial de interacciones',
   },
+  {
+    title: 'Calendario centralizado',
+    desc: 'Gestiona citas, seguimientos y tareas con un calendario unificado integrado en la plataforma Livvo.',
+    img: '/screenshots/calendario.jpg',
+    alt: 'Calendario centralizado del CRM de Livvo mostrando una visita programada',
+  },
+];
+
+const features = [
   {
     icon: 'users',
     title: 'Contactos y negocios',
     desc: 'Cada lead queda registrado desde el primer mensaje, con su historial completo y los datos que tus Empleados IA capturan en la conversación.',
-  },
-  {
-    icon: 'calendar-check',
-    title: 'Calendario de citas del equipo',
-    desc: 'Todas las visitas que agendan tus Empleados IA quedan organizadas en el calendario de tus asesores.',
   },
   {
     icon: 'send',
@@ -53,7 +61,7 @@ const featureIcons: Record<string, string> = {
 
 <Base
   title="Plataforma Comercial — Livvo"
-  description="Bandeja compartida de WhatsApp, calendario, campañas, integraciones y métricas: la plataforma donde tu equipo convierte los leads que tus Empleados IA entregan listos."
+  description="El CRM de administración de propiedades con IA: unifica las conversaciones con prospectos y residentes, y las tareas de toda tu cartera, en una sola plataforma."
 >
   <Navbar />
 
@@ -62,11 +70,14 @@ const featureIcons: Record<string, string> = {
     <header class="product-hero">
       <div class="container-site product-hero__inner">
         <span class="product-hero__badge">Producto · Plataforma Comercial</span>
-        <h1>Donde tu equipo <em class="grad-text">cierra.</em></h1>
+        <h1>
+          El CRM de administración de propiedades <em class="grad-text">con IA</em> para
+          inmobiliarias modernas
+        </h1>
         <p class="product-hero__sub">
-          La operación comercial de tu inmobiliaria en un solo lugar: la bandeja donde tu equipo
-          y tus Empleados IA atienden WhatsApp, el calendario de visitas, las campañas y las
-          métricas de todo lo que pasa.
+          La Plataforma Comercial de Livvo unifica todas las conversaciones con posibles clientes
+          y residentes, así como las tareas asociadas, en toda tu cartera de propiedades.
+          Potenciada con agentes IA especializados en el sector inmobiliario.
         </p>
         <div class="product-hero__ctas">
           <Button href={WHATSAPP_URL} target="_blank" size="lg" id="plataforma-demo-cta">
@@ -79,12 +90,36 @@ const featureIcons: Record<string, string> = {
       </div>
     </header>
 
+    <!-- PLATAFORMA CENTRALIZADA — bloques con captura -->
+    <Section
+      eyebrow="Plataforma de administración de propiedades centralizada"
+      title="Una bandeja de entrada única para cada interacción con prospectos e inquilinos"
+      subtitle="La Plataforma Comercial optimiza el proceso de atención al almacenar cada interacción en un perfil de cliente único y dinámico, y sincronizar todas las tareas programadas y citas en un calendario, brindando claridad y confianza."
+      alt
+    >
+      <div class="showcase">
+        {showcase.map(({ title, desc, img, alt }) => (
+          <article class="showcase__row fade-up">
+            <div class="showcase__copy">
+              <h3 class="showcase__title">{title}</h3>
+              <p class="showcase__desc">{desc}</p>
+            </div>
+            <figure class="showcase__frame">
+              <span class="showcase__bar" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+              <img src={img} {alt} loading="lazy" decoding="async" />
+            </figure>
+          </article>
+        ))}
+      </div>
+    </Section>
+
     <!-- QUÉ INCLUYE -->
     <Section
-      eyebrow="Qué incluye"
+      eyebrow="Qué más incluye"
       title="Todo lo que tu operación necesita para convertir"
       subtitle="Los leads llegan calificados por tus Empleados IA; la plataforma le da a tu equipo el contexto y las herramientas para cerrarlos."
-      alt
     >
       <div class="pfeatures fade-up">
         {features.map(({ icon, title, desc }) => (
@@ -131,7 +166,7 @@ const featureIcons: Record<string, string> = {
     padding: 140px 0 80px;
   }
   .product-hero__inner {
-    max-width: 800px;
+    max-width: 880px;
     text-align: center;
     margin-inline: auto;
   }
@@ -150,11 +185,13 @@ const featureIcons: Record<string, string> = {
   }
   .product-hero h1 {
     font-family: var(--font-display);
-    font-size: 48px;
+    font-size: 44px;
     font-weight: 700;
+    line-height: 1.12;
     letter-spacing: -0.5px;
     color: var(--navy);
     margin: 0 0 16px;
+    text-wrap: balance;
   }
   .product-hero h1 em {
     font-style: normal;
@@ -171,6 +208,66 @@ const featureIcons: Record<string, string> = {
     gap: 12px;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  /* Bloques copy + captura: la imagen alterna de lado en cada fila */
+  .showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+  }
+  .showcase__row {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    align-items: center;
+    gap: var(--space-8, 48px);
+  }
+  .showcase__row:nth-child(even) .showcase__copy { order: 2; }
+  .showcase__title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 var(--space-3, 12px);
+  }
+  .showcase__desc {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  .showcase__frame {
+    position: relative;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .showcase__bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding-inline: 12px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .showcase__bar i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .showcase__frame img {
+    display: block;
+    width: 100%;
+    /* Reserva el alto de la captura para que el marco no salte al cargar */
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top center;
+    background: var(--surface);
   }
 
   .pfeatures {
@@ -234,10 +331,14 @@ const featureIcons: Record<string, string> = {
 
   @media (max-width: 1024px) {
     .pfeatures { grid-template-columns: repeat(2, 1fr); }
+    .showcase { gap: 56px; }
+    .showcase__row { grid-template-columns: 1fr; gap: var(--space-6); }
+    .showcase__row:nth-child(even) .showcase__copy { order: 0; }
   }
   @media (max-width: 640px) {
     .product-hero { padding: 120px 0 60px; }
-    .product-hero h1 { font-size: 34px; }
+    .product-hero h1 { font-size: 32px; }
+    .showcase__title { font-size: 22px; }
     .pfeatures { grid-template-columns: 1fr; }
   }
 </style>

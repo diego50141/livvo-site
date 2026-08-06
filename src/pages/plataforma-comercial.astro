@@ -11,16 +11,28 @@ import { WHATSAPP_URL } from '../config';
 // se sigue viendo y muestra el texto alternativo.
 const showcase = [
   {
+    title: 'Bandeja de entrada compartida',
+    desc: 'Todas las conversaciones de WhatsApp de tu inmobiliaria en una sola bandeja: tu equipo ve lo que la IA responde, interviene cuando hace falta y nada depende del celular de un asesor.',
+    img: '/screenshots/bandeja.jpg',
+    alt: 'Bandeja de entrada compartida de Livvo con las conversaciones de WhatsApp del equipo',
+  },
+  {
     title: 'Ficha del cliente centralizada',
     desc: 'Cada conversación y punto de contacto quedan centralizados en una sola ficha para que la atención sea eficiente y personalizada, y no se pase ningún momento importante.',
     img: '/screenshots/ficha-cliente.jpg',
     alt: 'Ficha del cliente en la interfaz de Livvo, con la información del contacto y su historial de interacciones',
   },
   {
-    title: 'Calendario centralizado',
-    desc: 'Gestiona citas, seguimientos y tareas con un calendario unificado integrado en la plataforma Livvo.',
-    img: '/screenshots/calendario.jpg',
-    alt: 'Calendario centralizado del CRM de Livvo mostrando una visita programada',
+    title: 'Embudo de negocios',
+    desc: 'Mira toda tu operación comercial de un vistazo: cada negocio en su etapa, con su valor y su próximo paso, desde el primer mensaje hasta el cierre.',
+    img: '/screenshots/embudo.jpg',
+    alt: 'Embudo de negocios de Livvo en vista kanban, con los negocios organizados por etapa',
+  },
+  {
+    title: 'Panel de control en tiempo real',
+    desc: 'Analíticas en vivo de toda tu operación: conversaciones, contactos nuevos, valor de los negocios abiertos y el rendimiento de tus difusiones y automatizaciones — en un solo panel.',
+    img: '/screenshots/panel.jpg',
+    alt: 'Panel de Livvo con analíticas en vivo: conversaciones activas, contactos nuevos, valor de negocios abiertos y gráficas de actividad',
   },
 ];
 
@@ -41,9 +53,19 @@ const features = [
     desc: 'Conectada con los principales sistemas del mercado inmobiliario. Todo en un solo lugar.',
   },
   {
-    icon: 'chart',
-    title: 'Informes y métricas',
-    desc: 'Rendimiento en tiempo real: conversaciones, atención al cliente, tasas de conversión y productividad.',
+    icon: 'calendar-check',
+    title: 'Calendario centralizado',
+    desc: 'Gestiona citas, seguimientos y tareas con un calendario unificado integrado en la plataforma Livvo.',
+  },
+  {
+    icon: 'home',
+    title: 'Inventario de propiedades conectado',
+    desc: 'Tu portafolio dentro de la plataforma: cuando un lead pregunta, Luisa recomienda propiedades reales de tu inventario, con fotos y ficha incluidas.',
+  },
+  {
+    icon: 'zap',
+    title: 'Automatizaciones y flujos',
+    desc: 'Asigna leads, dispara seguimientos y mueve negocios de etapa automáticamente, con reglas que tú defines.',
   },
 ];
 
@@ -56,6 +78,8 @@ const featureIcons: Record<string, string> = {
   send: '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
   link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
   chart: '<path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/>',
+  home: '<path d="M3 9.5 12 3l9 6.5"/><path d="M5 8.5V21h14V8.5"/><path d="M9 21v-6h6v6"/>',
+  zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
 };
 ---
 

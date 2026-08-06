@@ -1,0 +1,2218 @@
+---
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Button from '../../components/Button.astro';
+import { WHATSAPP_URL } from '../../config';
+---
+
+<Base
+  title="Gestor de Propiedades — Livvo"
+  description="Organiza tu inventario inmobiliario, filtra propiedades y genera fichas profesionales en segundos. Herramienta gratuita de Livvo."
+  noindex
+>
+  <Navbar />
+
+  <main class="gp">
+    <!-- ══════════ ONBOARDING (calificación del lead) ══════════ -->
+    <div class="gp__onboarding" id="onboarding" hidden>
+      <div class="onb-card fade-up visible">
+        <span class="eyebrow">Herramienta gratuita de Livvo</span>
+        <h1>Gestor de <span class="grad-text">Propiedades</span></h1>
+        <p class="onb-card__sub">
+          Organiza tu inventario, filtra propiedades y genera fichas profesionales en segundos.
+          Antes de empezar, cuéntanos sobre tu operación:
+        </p>
+
+        <div class="onb-q" data-group="propiedades">
+          <p class="onb-q__label">¿Cuántas propiedades administras hoy?</p>
+          <div class="onb-q__pills">
+            <button type="button" data-value="1-10" data-score="0">1 – 10</button>
+            <button type="button" data-value="11-30" data-score="1">11 – 30</button>
+            <button type="button" data-value="31-60" data-score="2">31 – 60</button>
+            <button type="button" data-value="60+" data-score="3">Más de 60</button>
+          </div>
+        </div>
+
+        <div class="onb-q" data-group="pauta">
+          <p class="onb-q__label">¿Cuánto inviertes en pauta digital al mes?</p>
+          <div class="onb-q__pills">
+            <button type="button" data-value="nada" data-score="0">Aún no invierto</button>
+            <button type="button" data-value="<1M" data-score="1">Menos de $1M</button>
+            <button type="button" data-value="1M-3M" data-score="2">$1M – $3M</button>
+            <button type="button" data-value=">3M" data-score="3">Más de $3M</button>
+          </div>
+        </div>
+
+        <div class="onb-q" data-group="agentes">
+          <p class="onb-q__label">¿Cuántos asesores tiene tu inmobiliaria?</p>
+          <div class="onb-q__pills">
+            <button type="button" data-value="solo" data-score="0">Solo yo</button>
+            <button type="button" data-value="2-5" data-score="1">2 – 5</button>
+            <button type="button" data-value="6-15" data-score="2">6 – 15</button>
+            <button type="button" data-value="15+" data-score="3">Más de 15</button>
+          </div>
+        </div>
+
+        <div class="onb-sep"></div>
+
+        <p class="onb-q__label">Tus datos de contacto</p>
+        <p class="onb-contact__hint">
+          Aparecerán en las fichas que generes, para que tus clientes sepan a quién escribirle.
+        </p>
+
+        <div class="onb-contact">
+          <div class="onb-field">
+            <label for="onb-nombre">Tu nombre *</label>
+            <input type="text" id="onb-nombre" class="gp-input" placeholder="Ej: Andrés Amaya" maxlength="60" autocomplete="name" />
+          </div>
+          <div class="onb-field">
+            <label for="onb-celular">Celular / WhatsApp *</label>
+            <input type="tel" id="onb-celular" class="gp-input" placeholder="Ej: 300 123 4567" maxlength="25" autocomplete="tel" />
+          </div>
+          <div class="onb-field">
+            <label for="onb-correo">Correo electrónico *</label>
+            <input type="email" id="onb-correo" class="gp-input" placeholder="Ej: andres@inmobiliaria.com" maxlength="80" autocomplete="email" />
+          </div>
+          <div class="onb-field">
+            <label for="onb-empresa">Inmobiliaria <span class="opt">(opcional)</span></label>
+            <input type="text" id="onb-empresa" class="gp-input" placeholder="Ej: Inmobiliaria Los Llanos" maxlength="60" autocomplete="organization" />
+          </div>
+        </div>
+
+        <p class="onb-card__error" id="onb-error" hidden></p>
+
+        <button type="button" class="onb-card__cta" id="onb-start">Comenzar a usar la herramienta →</button>
+        <p class="onb-card__note">
+          Tus propiedades se guardan solo en tu navegador. Usaremos tus datos únicamente para
+          contactarte sobre Livvo.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══════════ APP ══════════ -->
+    <div class="gp__app" id="app" hidden>
+      <header class="gp__header">
+        <div>
+          <span class="eyebrow">Herramienta gratuita de Livvo</span>
+          <h1 id="app-title">Gestor de Propiedades</h1>
+          <p class="gp__sub">Inventario, filtros y fichas profesionales en un solo lugar.</p>
+        </div>
+        <span class="gp__segment" id="segment-chip"></span>
+      </header>
+
+      <nav class="gp__tabs" role="tablist" aria-label="Secciones de la herramienta">
+        <button role="tab" aria-selected="true" data-tab="dashboard" class="active">Dashboard</button>
+        <button role="tab" aria-selected="false" data-tab="propiedades">Propiedades</button>
+        <button role="tab" aria-selected="false" data-tab="agregar">Agregar propiedad</button>
+      </nav>
+
+      <!-- ── TAB: Dashboard ── -->
+      <section id="tab-dashboard" class="gp__panel">
+        <div class="potencial" id="potencial" hidden>
+          <div>
+            <div class="potencial__label">Potencial de automatización</div>
+            <p class="potencial__text" id="potencial-text"></p>
+          </div>
+          <div class="potencial__score" id="potencial-score"></div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi__label">Total propiedades</div><div class="kpi__value" id="kpi-total">—</div></div>
+          <div class="kpi"><div class="kpi__label">Activas</div><div class="kpi__value green" id="kpi-activas">—</div></div>
+          <div class="kpi"><div class="kpi__label">Inactivas</div><div class="kpi__value red" id="kpi-inactivas">—</div></div>
+          <div class="kpi"><div class="kpi__label">Valor inventario</div><div class="kpi__value teal" id="kpi-valor">—</div></div>
+        </div>
+
+        <div class="chart-grid">
+          <div class="chart"><h3>Por ciudad</h3><div class="chart__rows" id="chart-ciudad"></div></div>
+          <div class="chart"><h3>Por tipo</h3><div class="chart__rows" id="chart-tipo"></div></div>
+          <div class="chart"><h3>Por rango de precio</h3><div class="chart__rows" id="chart-precio"></div></div>
+        </div>
+      </section>
+
+      <!-- ── TAB: Propiedades ── -->
+      <section id="tab-propiedades" class="gp__panel" hidden>
+        <div class="databar">
+          <p class="databar__text">
+            <b>Tu inventario vive solo en este navegador.</b>
+            Descarga un respaldo para no perderlo si cambias de equipo.
+          </p>
+          <div class="databar__btns">
+            <button type="button" id="exp-json">⬇ Respaldo (.json)</button>
+            <button type="button" id="exp-csv">⬇ Excel (.csv)</button>
+            <button type="button" id="imp-btn">⬆ Restaurar</button>
+            <input type="file" id="imp-file" accept="application/json,.json" hidden />
+          </div>
+        </div>
+
+        <div class="impbox" id="impbox" hidden>
+          <p id="impbox-text"></p>
+          <div class="impbox__btns">
+            <button type="button" id="imp-replace">Reemplazar mi inventario</button>
+            <button type="button" id="imp-merge">Agregar a lo que tengo</button>
+            <button type="button" id="imp-cancel" class="ghost">Cancelar</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <select id="f-estado" class="gp-input" aria-label="Filtrar por estado">
+            <option value="">Todas</option>
+            <option value="activa">Activas</option>
+            <option value="inactiva">Inactivas</option>
+          </select>
+          <select id="f-ciudad" class="gp-input" aria-label="Filtrar por ciudad">
+            <option value="">Todas las ciudades</option>
+          </select>
+          <select id="f-tipo" class="gp-input" aria-label="Filtrar por tipo">
+            <option value="">Todos los tipos</option>
+            <option>Casa</option>
+            <option>Apartamento</option>
+            <option>Lote</option>
+          </select>
+          <input type="search" id="f-busqueda" class="gp-input" placeholder="Buscar por nombre…" aria-label="Buscar por nombre" />
+        </div>
+
+        <div class="table-wrap">
+          <table class="ptable">
+            <thead>
+              <tr>
+                <th>Nombre</th><th>Tipo</th><th>Ciudad</th>
+                <th class="num">Área</th><th class="num">Precio</th>
+                <th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="ptable-body"></tbody>
+          </table>
+          <div class="empty" id="ptable-empty" hidden>
+            <div class="empty__icon">📭</div>
+            <p>No hay propiedades que coincidan con los filtros.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB: Agregar / Editar ── -->
+      <section id="tab-agregar" class="gp__panel" hidden>
+        <form class="pform" id="pform" novalidate>
+          <h2 id="pform-title">Nueva propiedad</h2>
+          <p class="pform__hint">Los campos marcados con * son obligatorios.</p>
+
+          <div class="pform__grid">
+            <div class="pform__field span-2">
+              <label for="p-nombre">Nombre *</label>
+              <input type="text" id="p-nombre" class="gp-input" required maxlength="80" placeholder="Ej: Casa La Carolina" />
+            </div>
+            <div class="pform__field">
+              <label for="p-tipo">Tipo *</label>
+              <select id="p-tipo" class="gp-input" required>
+                <option value="">Selecciona…</option>
+                <option>Casa</option>
+                <option>Apartamento</option>
+                <option>Lote</option>
+              </select>
+            </div>
+            <div class="pform__field">
+              <label for="p-ciudad">Ciudad *</label>
+              <input type="text" id="p-ciudad" class="gp-input" required maxlength="40" placeholder="Ej: Villavicencio" />
+            </div>
+            <div class="pform__field">
+              <label for="p-barrio">Barrio / Sector *</label>
+              <input type="text" id="p-barrio" class="gp-input" required maxlength="60" placeholder="Ej: La Esperanza" />
+            </div>
+            <div class="pform__field">
+              <label for="p-area">Área (m²) *</label>
+              <input type="number" id="p-area" class="gp-input" required min="1" step="1" placeholder="120" />
+            </div>
+            <div class="pform__field">
+              <label for="p-hab">Habitaciones</label>
+              <input type="number" id="p-hab" class="gp-input" min="0" step="1" placeholder="3" />
+            </div>
+            <div class="pform__field">
+              <label for="p-banos">Baños</label>
+              <input type="number" id="p-banos" class="gp-input" min="0" step="1" placeholder="2" />
+            </div>
+            <div class="pform__field">
+              <label for="p-valor">Valor venta (COP) <output for="p-valor" id="p-valor-fmt"></output></label>
+              <input type="number" id="p-valor" class="gp-input" min="0" step="1000000" placeholder="370000000" />
+            </div>
+            <div class="pform__field">
+              <label for="p-admin">Administración (COP/mes) <output for="p-admin" id="p-admin-fmt"></output></label>
+              <input type="number" id="p-admin" class="gp-input" min="0" step="1000" placeholder="0" />
+            </div>
+            <div class="pform__field span-2">
+              <label for="p-zonas">Zonas sociales</label>
+              <textarea id="p-zonas" class="gp-input" rows="2" maxlength="200" placeholder="Piscina, parque infantil, terraza…"></textarea>
+            </div>
+
+            <div class="pform__field span-2">
+              <label>
+                Fotos de la propiedad
+                <output id="p-fotos-count">0 / 5</output>
+              </label>
+              <div class="fotos">
+                <div class="fotos__grid" id="fotos-grid"></div>
+                <label class="fotos__drop" id="fotos-drop" for="p-fotos">
+                  <span class="fotos__drop-icon">📷</span>
+                  <span class="fotos__drop-text">
+                    <b>Agrega hasta 5 fotos</b>
+                    Arrástralas aquí o haz clic para elegirlas. La primera será la portada.
+                  </span>
+                  <input type="file" id="p-fotos" accept="image/*" multiple hidden />
+                </label>
+                <p class="fotos__note" id="fotos-note" hidden></p>
+              </div>
+            </div>
+          </div>
+
+          <p class="pform__error" id="pform-error" hidden>⚠️ Completa los campos requeridos (*)</p>
+
+          <div class="pform__actions">
+            <button type="submit" class="pform__save" id="pform-save">✓ Guardar propiedad</button>
+            <button type="button" class="pform__clear" id="pform-clear">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- CTA Livvo (lead magnet → demo) -->
+      <div class="gp__cta">
+        <div>
+          <h2>¿Y si tus leads se atendieran solos?</h2>
+          <p>
+            Livvo responde, califica y agenda tus leads de WhatsApp 24/7,
+            conectado a tu inventario y a tu equipo comercial.
+          </p>
+        </div>
+        <Button href={WHATSAPP_URL} target="_blank" size="lg" id="gestor-demo-cta">
+          Agenda tu demo gratuita →
+        </Button>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- ══════════ FICHA (vista previa + impresión) ══════════ -->
+  <div class="ficha-overlay" id="ficha-overlay" hidden>
+    <div class="ficha-modal">
+      <div class="ficha-toolbar">
+        <span>Ficha de propiedad</span>
+        <div class="ficha-toolbar__btns">
+          <button type="button" id="ficha-print">🖨 Imprimir / Guardar PDF</button>
+          <button type="button" id="ficha-close">Cerrar</button>
+        </div>
+      </div>
+
+      <div class="ficha" id="ficha">
+        <div class="ficha__brand">
+          <span class="ficha__logo"><b>livv</b><i>o</i><em>·</em></span>
+          <span class="ficha__badge" id="fx-tipo">Casa</span>
+        </div>
+        <h1 class="ficha__nombre" id="fx-nombre">—</h1>
+        <p class="ficha__ubicacion" id="fx-ubicacion">—</p>
+
+        <div class="ficha__fotos" id="fx-fotos" hidden></div>
+
+        <div class="ficha__precio">
+          <span>Valor de venta</span>
+          <strong id="fx-precio">—</strong>
+        </div>
+
+        <div class="ficha__grid">
+          <div class="ficha__sec">
+            <h4>Características</h4>
+            <div class="ficha__row"><span>Área</span><b id="fx-area">—</b></div>
+            <div class="ficha__row"><span>Habitaciones</span><b id="fx-hab">—</b></div>
+            <div class="ficha__row"><span>Baños</span><b id="fx-banos">—</b></div>
+          </div>
+          <div class="ficha__sec">
+            <h4>Costos</h4>
+            <div class="ficha__row"><span>Valor venta</span><b id="fx-valor2">—</b></div>
+            <div class="ficha__row"><span>Administración</span><b id="fx-admin">—</b></div>
+            <div class="ficha__row"><span>Estado</span><b id="fx-estado">—</b></div>
+          </div>
+        </div>
+
+        <div class="ficha__sec">
+          <h4>Zonas sociales</h4>
+          <p id="fx-zonas">—</p>
+        </div>
+
+        <div class="ficha__contacto">
+          <div>
+            <h4>Contacto</h4>
+            <p class="ficha__contacto-nombre" id="fx-agente">—</p>
+            <p class="ficha__contacto-empresa" id="fx-empresa" hidden>—</p>
+          </div>
+          <div class="ficha__contacto-datos">
+            <span id="fx-celular">—</span>
+            <span id="fx-correo">—</span>
+          </div>
+        </div>
+
+        <div class="ficha__footer">
+          <span id="fx-contacto">Ficha generada con Livvo · livvo.tech</span>
+          <span id="fx-fecha">—</span>
+        </div>
+        <div class="ficha__bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PUBLICAR (texto listo para copiar / WhatsApp) ══════════ -->
+  <div class="pub-overlay" id="pub-overlay" hidden>
+    <div class="pub-modal">
+      <div class="pub-modal__head">
+        <div>
+          <span class="eyebrow">Listo para publicar</span>
+          <h2 id="pub-titulo">—</h2>
+        </div>
+        <button type="button" id="pub-close" aria-label="Cerrar">✕</button>
+      </div>
+
+      <p class="pub-modal__hint">
+        Edita el texto si quieres y cópialo en Fincaraiz, Metrocuadrado, Marketplace
+        o tus redes. Las fotos se adjuntan aparte en cada portal.
+      </p>
+
+      <textarea id="pub-texto" rows="14" spellcheck="false"></textarea>
+
+      <div class="pub-modal__btns">
+        <button type="button" id="pub-copiar" class="pub-primary">📋 Copiar texto</button>
+        <button type="button" id="pub-whatsapp" class="pub-wa">Enviar por WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gp-toast" id="toast" hidden></div>
+</Base>
+
+<script>
+  // ─────────────────────────────────────────────
+  // Estado y persistencia
+  // ─────────────────────────────────────────────
+  const LS_PROPS = 'livvo_gestor_props';
+  const LS_ONB = 'livvo_gestor_onboarding';
+
+  const MAX_FOTOS = 5;
+
+  const SEED = [
+    { id: 1, nombre: 'La Carolina', tipo: 'Casa', ciudad: 'Villavicencio', barrio: 'La Esperanza', area: 240, hab: 3, banos: 2, valor: 370000000, admin: 0, zonas: 'Terraza, jardín', activa: true, fotos: [] },
+    { id: 2, nombre: 'Balcones De La Colina', tipo: 'Apartamento', ciudad: 'Restrepo', barrio: 'Centro', area: 67, hab: 3, banos: 2, valor: 240000000, admin: 146000, zonas: 'Piscina, parque infantil', activa: true, fotos: [] },
+    { id: 3, nombre: 'Casa De Campo Llanos', tipo: 'Casa', ciudad: 'Restrepo', barrio: 'Vereda San José', area: 593, hab: 5, banos: 5, valor: 1750000000, admin: 0, zonas: 'Piscina, área de recreo', activa: true, fotos: [] },
+    { id: 4, nombre: 'Lote Rural', tipo: 'Lote', ciudad: 'Acacías', barrio: 'Zona rural', area: 500, hab: 0, banos: 0, valor: 85000000, admin: 0, zonas: '', activa: false, fotos: [] },
+  ];
+
+  type Prop = (typeof SEED)[number];
+
+  function loadProps(): Prop[] {
+    try {
+      const raw = localStorage.getItem(LS_PROPS);
+      if (raw) return (JSON.parse(raw) as Prop[]).map((p) => ({ ...p, fotos: p.fotos ?? [] }));
+    } catch {}
+    return structuredClone(SEED);
+  }
+
+  let props: Prop[] = loadProps();
+  let editId: number | null = null;
+
+  const $ = (id: string) => document.getElementById(id)!;
+  const ph = () => (window as any).posthog;
+
+  // Las fotos van en base64 dentro de localStorage, así que el cupo (~5 MB)
+  // es un límite real: si se llena hay que decirlo, no fallar en silencio.
+  function save(): boolean {
+    try {
+      localStorage.setItem(LS_PROPS, JSON.stringify(props));
+      return true;
+    } catch {
+      toast('⚠️ No hay espacio para guardar. Elimina fotos de otras propiedades.');
+      return false;
+    }
+  }
+
+  const fmtCOP = (n: number) => '$' + Math.round(n).toLocaleString('es-CO');
+  const fmtM = (n: number) => '$' + Math.round(n / 1e6).toLocaleString('es-CO') + 'M';
+
+  // Los nombres/ciudades los escribe el propio usuario y vuelven por innerHTML
+  const esc = (s: string) =>
+    String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  function toast(msg: string) {
+    const el = $('toast');
+    el.textContent = msg;
+    el.hidden = false;
+    el.classList.add('show');
+    setTimeout(() => {
+      el.classList.remove('show');
+      setTimeout(() => (el.hidden = true), 300);
+    }, 2200);
+  }
+
+  // ─────────────────────────────────────────────
+  // Onboarding — calificación del lead
+  // ─────────────────────────────────────────────
+  const SEGMENTOS = [
+    { max: 2, label: 'Agente independiente' },
+    { max: 5, label: 'Inmobiliaria en crecimiento' },
+    { max: 9, label: 'Inmobiliaria consolidada' },
+  ];
+
+  function getOnboarding() {
+    try {
+      const raw = localStorage.getItem(LS_ONB);
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    return null;
+  }
+
+  // Score 0–100: cuánto tiene que ganar este lead automatizando.
+  // Pesa la carga por asesor, la pauta que ya está invirtiendo y el tamaño del inventario.
+  const PESOS = {
+    propiedades: { '1-10': 10, '11-30': 20, '31-60': 28, '60+': 35 },
+    pauta: { nada: 0, '<1M': 12, '1M-3M': 22, '>3M': 30 },
+    carga: { '1-10': 12, '11-30': 20, '31-60': 28, '60+': 35 },
+  } as const;
+
+  const AGENTES_LABEL: Record<string, string> = {
+    solo: 'trabajando solo',
+    '2-5': 'con 2 a 5 asesores',
+    '6-15': 'con 6 a 15 asesores',
+    '15+': 'con más de 15 asesores',
+  };
+  const PROPS_LABEL: Record<string, string> = {
+    '1-10': 'hasta 10 propiedades',
+    '11-30': 'entre 11 y 30 propiedades',
+    '31-60': 'entre 31 y 60 propiedades',
+    '60+': 'más de 60 propiedades',
+  };
+  const PAUTA_LABEL: Record<string, string> = {
+    nada: 'sin pauta digital',
+    '<1M': 'con menos de $1M al mes en pauta',
+    '1M-3M': 'con $1M a $3M al mes en pauta',
+    '>3M': 'con más de $3M al mes en pauta',
+  };
+
+  function calcPotencial(o: any) {
+    // Menos asesores para el mismo inventario = más carga manual por persona
+    const factorEquipo = { solo: 1, '2-5': 0.85, '6-15': 0.65, '15+': 0.5 }[o.agentes as string] ?? 1;
+    const score = Math.min(
+      100,
+      Math.round(
+        (PESOS.propiedades[o.propiedades as keyof typeof PESOS.propiedades] ?? 0) +
+          (PESOS.pauta[o.pauta_digital as keyof typeof PESOS.pauta] ?? 0) +
+          (PESOS.carga[o.propiedades as keyof typeof PESOS.carga] ?? 0) * factorEquipo
+      )
+    );
+    const texto =
+      `Administras ${PROPS_LABEL[o.propiedades] ?? 'tu inventario'} ${AGENTES_LABEL[o.agentes] ?? ''}, ` +
+      `${PAUTA_LABEL[o.pauta_digital] ?? ''}. ` +
+      (score >= 70
+        ? 'Cada lead que no respondes en la primera hora es pauta que ya pagaste y se enfría. Automatizar la primera respuesta es donde más recuperas.'
+        : score >= 40
+          ? 'Tu operación ya tiene volumen suficiente para que responder manualmente empiece a costarte cierres.'
+          : 'Todavía manejas un volumen que puedes atender a mano, pero automatizar desde ahora te evita el cuello de botella cuando crezcas.');
+    return { score, texto };
+  }
+
+  function initOnboarding() {
+    const answers: Record<string, { value: string; score: number }> = {};
+
+    document.querySelectorAll<HTMLElement>('.onb-q[data-group]').forEach((group) => {
+      const name = group.dataset.group!;
+      group.querySelectorAll<HTMLButtonElement>('button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('button').forEach((b) => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answers[name] = { value: btn.dataset.value!, score: +btn.dataset.score! };
+          $('onb-error').hidden = true;
+        });
+      });
+    });
+
+    const val = (id: string) => ($(id) as HTMLInputElement).value.trim();
+    const fail = (msg: string, focus?: string) => {
+      $('onb-error').textContent = msg;
+      $('onb-error').hidden = false;
+      if (focus) ($(focus) as HTMLInputElement).focus();
+    };
+
+    $('onb-start').addEventListener('click', () => {
+      if (!answers.propiedades || !answers.pauta || !answers.agentes) {
+        return fail('Responde las tres preguntas para continuar.');
+      }
+      if (val('onb-nombre').length < 3) return fail('Escribe tu nombre.', 'onb-nombre');
+
+      const celular = val('onb-celular');
+      if (celular.replace(/\D/g, '').length < 7) {
+        return fail('Escribe un celular válido.', 'onb-celular');
+      }
+      const correo = val('onb-correo');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo)) {
+        return fail('Escribe un correo electrónico válido.', 'onb-correo');
+      }
+
+      const scoreSegmento = answers.propiedades.score + answers.pauta.score + answers.agentes.score;
+      const data = {
+        propiedades: answers.propiedades.value,
+        pauta_digital: answers.pauta.value,
+        agentes: answers.agentes.value,
+        nombre: val('onb-nombre'),
+        celular,
+        correo,
+        inmobiliaria: val('onb-empresa'),
+        segmento: SEGMENTOS.find((s) => scoreSegmento <= s.max)!.label,
+        score: scoreSegmento,
+      };
+      localStorage.setItem(LS_ONB, JSON.stringify(data));
+
+      const potencial = calcPotencial(data);
+
+      // El corazón del lead magnet: quién es el lead y cuánto potencial tiene
+      ph()?.identify?.(correo, {
+        email: correo,
+        name: data.nombre,
+        phone: celular,
+        company: data.inmobiliaria || undefined,
+      });
+      ph()?.capture?.('gestor_onboarding_completed', { ...data, potencial: potencial.score });
+      ph()?.setPersonProperties?.({
+        gestor_propiedades: data.propiedades,
+        gestor_pauta_digital: data.pauta_digital,
+        gestor_agentes: data.agentes,
+        gestor_segmento: data.segmento,
+        gestor_potencial: potencial.score,
+        gestor_inmobiliaria: data.inmobiliaria || undefined,
+      });
+
+      showApp(data);
+    });
+  }
+
+  function showApp(onb: any) {
+    $('onboarding').hidden = true;
+    $('app').hidden = false;
+    $('segment-chip').textContent = onb.segmento;
+    $('app-title').textContent = onb.inmobiliaria
+      ? 'Propiedades de ' + onb.inmobiliaria
+      : 'Propiedades de ' + onb.nombre;
+
+    const { score, texto } = calcPotencial(onb);
+    $('potencial-score').textContent = score + '/100';
+    $('potencial-text').textContent = texto;
+    $('potencial').hidden = false;
+
+    renderAll();
+  }
+
+  // ─────────────────────────────────────────────
+  // Dashboard — KPIs + gráficos de barras
+  // ─────────────────────────────────────────────
+  function countBy(list: Prop[], key: (p: Prop) => string) {
+    const map = new Map<string, number>();
+    list.forEach((p) => map.set(key(p), (map.get(key(p)) ?? 0) + 1));
+    return [...map.entries()].sort((a, b) => b[1] - a[1]);
+  }
+
+  function renderChart(elId: string, entries: [string, number][]) {
+    const el = $(elId);
+    if (!entries.length) {
+      el.innerHTML = '<p class="chart__empty">Sin datos</p>';
+      return;
+    }
+    const max = Math.max(...entries.map(([, n]) => n));
+    el.innerHTML = entries
+      .map(
+        ([label, n]) => `
+        <div class="crow">
+          <span class="crow__label" title="${esc(label)}">${esc(label)}</span>
+          <div class="crow__track"><div class="crow__bar" style="width:${(n / max) * 100}%"></div></div>
+          <span class="crow__val">${n}</span>
+        </div>`
+      )
+      .join('');
+  }
+
+  function renderDashboard() {
+    const activas = props.filter((p) => p.activa).length;
+    $('kpi-total').textContent = String(props.length);
+    $('kpi-activas').textContent = String(activas);
+    $('kpi-inactivas').textContent = String(props.length - activas);
+    $('kpi-valor').textContent = props.length ? fmtM(props.reduce((s, p) => s + (p.valor || 0), 0)) : '$0';
+
+    renderChart('chart-ciudad', countBy(props, (p) => p.ciudad));
+    renderChart('chart-tipo', countBy(props, (p) => p.tipo));
+    renderChart(
+      'chart-precio',
+      countBy(props, (p) => (p.valor < 100e6 ? 'Hasta $100M' : p.valor <= 500e6 ? '$100M – $500M' : 'Más de $500M'))
+    );
+  }
+
+  // ─────────────────────────────────────────────
+  // Tabla + filtros
+  // ─────────────────────────────────────────────
+  function renderCiudadFilter() {
+    const sel = $('f-ciudad') as HTMLSelectElement;
+    const current = sel.value;
+    const ciudades = [...new Set(props.map((p) => p.ciudad))].sort((a, b) => a.localeCompare(b, 'es'));
+    sel.innerHTML =
+      '<option value="">Todas las ciudades</option>' +
+      ciudades.map((c) => `<option${c === current ? ' selected' : ''}>${esc(c)}</option>`).join('');
+  }
+
+  function filteredProps() {
+    const estado = ($('f-estado') as HTMLSelectElement).value;
+    const ciudad = ($('f-ciudad') as HTMLSelectElement).value;
+    const tipo = ($('f-tipo') as HTMLSelectElement).value;
+    const q = ($('f-busqueda') as HTMLInputElement).value.trim().toLowerCase();
+    return props.filter(
+      (p) =>
+        (!estado || (estado === 'activa') === p.activa) &&
+        (!ciudad || p.ciudad === ciudad) &&
+        (!tipo || p.tipo === tipo) &&
+        (!q || p.nombre.toLowerCase().includes(q))
+    );
+  }
+
+  function renderTable() {
+    const list = filteredProps();
+    const body = $('ptable-body');
+    $('ptable-empty').hidden = list.length > 0;
+    body.innerHTML = list
+      .map(
+        (p) => `
+        <tr>
+          <td class="strong">
+            <span class="pname">
+              ${
+                p.fotos?.length
+                  ? `<img class="pname__thumb" src="${p.fotos[0]}" alt="" onerror="this.outerHTML='<span class=&quot;pname__thumb pname__thumb--empty&quot;>🏠</span>'" />`
+                  : '<span class="pname__thumb pname__thumb--empty">🏠</span>'
+              }
+              ${esc(p.nombre)}
+            </span>
+          </td>
+          <td>${esc(p.tipo)}</td>
+          <td>${esc(p.ciudad)}</td>
+          <td class="num">${p.area} m²</td>
+          <td class="num">${fmtM(p.valor || 0)}</td>
+          <td><span class="badge ${p.activa ? 'badge--on' : 'badge--off'}">${p.activa ? 'Activa' : 'Inactiva'}</span></td>
+          <td class="actions">
+            <button data-action="ficha" data-id="${p.id}" title="Generar ficha">📄 Ficha</button>
+            <button data-action="publicar" data-id="${p.id}" title="Texto para publicar y compartir">📤 Publicar</button>
+            <button data-action="editar" data-id="${p.id}" title="Editar">✏️</button>
+            <button data-action="toggle" data-id="${p.id}" title="${p.activa ? 'Desactivar' : 'Activar'}">${p.activa ? '○ Desactivar' : '✓ Activar'}</button>
+          </td>
+        </tr>`
+      )
+      .join('');
+  }
+
+  function renderAll() {
+    renderDashboard();
+    renderCiudadFilter();
+    renderTable();
+  }
+
+  ['f-estado', 'f-ciudad', 'f-tipo'].forEach((id) => $(id).addEventListener('change', renderTable));
+  $('f-busqueda').addEventListener('input', renderTable);
+
+  $('ptable-body').addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('button');
+    if (!btn) return;
+    const id = +btn.dataset.id!;
+    const p = props.find((x) => x.id === id);
+    if (!p) return;
+
+    if (btn.dataset.action === 'toggle') {
+      p.activa = !p.activa;
+      save();
+      renderAll();
+      toast('✓ Estado actualizado');
+    } else if (btn.dataset.action === 'editar') {
+      startEdit(p);
+    } else if (btn.dataset.action === 'ficha') {
+      openFicha(p);
+    } else if (btn.dataset.action === 'publicar') {
+      openPublicar(p);
+    }
+  });
+
+  // ─────────────────────────────────────────────
+  // Publicar: texto listo para portales y WhatsApp
+  // ─────────────────────────────────────────────
+  const ICONO_TIPO: Record<string, string> = { Casa: '🏡', Apartamento: '🏢', Lote: '🌄' };
+
+  function textoPublicacion(p: Prop): string {
+    const onb = getOnboarding();
+    const linea: string[] = [];
+
+    linea.push(`${ICONO_TIPO[p.tipo] ?? '🏠'} ${p.tipo} en ${p.barrio}, ${p.ciudad}`);
+    linea.push('');
+
+    const specs = [`📐 ${p.area} m²`];
+    if (p.hab) specs.push(`🛏 ${p.hab} ${p.hab === 1 ? 'habitación' : 'habitaciones'}`);
+    if (p.banos) specs.push(`🚿 ${p.banos} ${p.banos === 1 ? 'baño' : 'baños'}`);
+    linea.push(specs.join('  ·  '));
+
+    linea.push(p.valor ? `💰 ${fmtCOP(p.valor)}` : '💰 Precio a convenir');
+    if (p.admin) linea.push(`🏢 Administración: ${fmtCOP(p.admin)}/mes`);
+    if (p.zonas) linea.push(`✨ ${p.zonas}`);
+
+    linea.push('');
+    if (onb?.nombre) linea.push(`Escríbeme para agendar tu visita 👇`);
+    if (onb?.nombre) linea.push(`${onb.nombre}${onb.inmobiliaria ? ' · ' + onb.inmobiliaria : ''}`);
+    if (onb?.celular) linea.push(`📲 ${onb.celular}`);
+    if (onb?.correo) linea.push(`✉️ ${onb.correo}`);
+
+    return linea.join('\n').trim();
+  }
+
+  function openPublicar(p: Prop) {
+    $('pub-titulo').textContent = p.nombre;
+    ($('pub-texto') as HTMLTextAreaElement).value = textoPublicacion(p);
+    $('pub-overlay').hidden = false;
+    document.body.classList.add('modal-open');
+    ph()?.capture?.('gestor_publicacion_abierta', { tipo: p.tipo, ciudad: p.ciudad });
+  }
+
+  function closePublicar() {
+    $('pub-overlay').hidden = true;
+    document.body.classList.remove('modal-open');
+  }
+
+  $('pub-close').addEventListener('click', closePublicar);
+  $('pub-overlay').addEventListener('click', (e) => {
+    if (e.target === $('pub-overlay')) closePublicar();
+  });
+
+  $('pub-copiar').addEventListener('click', async () => {
+    const texto = ($('pub-texto') as HTMLTextAreaElement).value;
+    try {
+      await navigator.clipboard.writeText(texto);
+    } catch {
+      // Safari viejo / contexto sin permiso: seleccionar y dejar que copien a mano
+      ($('pub-texto') as HTMLTextAreaElement).select();
+      document.execCommand?.('copy');
+    }
+    toast('✓ Texto copiado');
+    ph()?.capture?.('gestor_publicacion_copiada');
+  });
+
+  $('pub-whatsapp').addEventListener('click', () => {
+    const texto = ($('pub-texto') as HTMLTextAreaElement).value;
+    window.open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank', 'noopener');
+    ph()?.capture?.('gestor_publicacion_whatsapp');
+  });
+
+  // ─────────────────────────────────────────────
+  // Respaldo: exportar / importar
+  // ─────────────────────────────────────────────
+  function descargar(contenido: string, nombre: string, mime: string) {
+    const url = URL.createObjectURL(new Blob([contenido], { type: mime }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nombre;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  const hoy = () => new Date().toISOString().slice(0, 10);
+
+  $('exp-json').addEventListener('click', () => {
+    const payload = { version: 1, exportado: new Date().toISOString(), propiedades: props };
+    descargar(JSON.stringify(payload, null, 2), `inventario-livvo-${hoy()}.json`, 'application/json');
+    toast('✓ Respaldo descargado');
+    ph()?.capture?.('gestor_export', { formato: 'json', total: props.length });
+  });
+
+  $('exp-csv').addEventListener('click', () => {
+    // Excel en es-CO espera punto y coma; las fotos no caben en una celda
+    const cols = ['Nombre', 'Tipo', 'Ciudad', 'Barrio', 'Area m2', 'Habitaciones', 'Banos', 'Valor', 'Administracion', 'Zonas sociales', 'Estado', 'Fotos'];
+    const celda = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const filas = props.map((p) =>
+      [p.nombre, p.tipo, p.ciudad, p.barrio, p.area, p.hab, p.banos, p.valor, p.admin, p.zonas, p.activa ? 'Activa' : 'Inactiva', p.fotos?.length ?? 0]
+        .map(celda)
+        .join(';')
+    );
+    // BOM para que Excel reconozca UTF-8 y no rompa las tildes
+    const BOM = String.fromCharCode(0xfeff);
+    descargar(BOM + [cols.map(celda).join(';'), ...filas].join('\r\n'), `inventario-livvo-${hoy()}.csv`, 'text/csv;charset=utf-8');
+    toast('✓ CSV descargado');
+    ph()?.capture?.('gestor_export', { formato: 'csv', total: props.length });
+  });
+
+  let importadas: Prop[] | null = null;
+
+  $('imp-btn').addEventListener('click', () => ($('imp-file') as HTMLInputElement).click());
+
+  $('imp-file').addEventListener('change', async (e) => {
+    const el = e.target as HTMLInputElement;
+    const file = el.files?.[0];
+    el.value = '';
+    if (!file) return;
+
+    try {
+      const data = JSON.parse(await file.text());
+      const lista = Array.isArray(data) ? data : data?.propiedades;
+      if (!Array.isArray(lista) || !lista.length) throw new Error('vacío');
+
+      // Normalizamos: un archivo ajeno o viejo puede venir sin campos nuevos
+      importadas = lista
+        .filter((p: any) => p && typeof p.nombre === 'string' && p.nombre.trim())
+        .map((p: any) => ({
+          id: Number(p.id) || Date.now() + Math.floor(performance.now() * 1000) % 1000,
+          nombre: String(p.nombre).slice(0, 80),
+          tipo: ['Casa', 'Apartamento', 'Lote'].includes(p.tipo) ? p.tipo : 'Casa',
+          ciudad: String(p.ciudad ?? '').slice(0, 40),
+          barrio: String(p.barrio ?? '').slice(0, 60),
+          area: Number(p.area) || 0,
+          hab: Number(p.hab) || 0,
+          banos: Number(p.banos) || 0,
+          valor: Number(p.valor) || 0,
+          admin: Number(p.admin) || 0,
+          zonas: String(p.zonas ?? '').slice(0, 200),
+          activa: p.activa !== false,
+          fotos: Array.isArray(p.fotos) ? p.fotos.filter((f: any) => typeof f === 'string' && f.startsWith('data:image/')).slice(0, MAX_FOTOS) : [],
+        }));
+
+      if (!importadas.length) throw new Error('sin propiedades válidas');
+
+      $('impbox-text').textContent = `El archivo tiene ${importadas.length} propiedad(es). Hoy tienes ${props.length}. ¿Qué quieres hacer?`;
+      $('impbox').hidden = false;
+      $('impbox').scrollIntoView({ block: 'nearest' });
+    } catch {
+      importadas = null;
+      toast('⚠️ El archivo no es un respaldo válido');
+    }
+  });
+
+  function aplicarImport(modo: 'replace' | 'merge') {
+    if (!importadas) return;
+    const anterior = structuredClone(props);
+    // Al fusionar reasignamos id para no pisar propiedades existentes
+    props = modo === 'replace' ? importadas : [...props, ...importadas.map((p, i) => ({ ...p, id: Date.now() + i }))];
+
+    if (!save()) {
+      props = anterior;
+      return;
+    }
+    ph()?.capture?.('gestor_import', { modo, cantidad: importadas.length, total: props.length });
+    importadas = null;
+    $('impbox').hidden = true;
+    renderAll();
+    toast(`✓ Inventario ${modo === 'replace' ? 'restaurado' : 'actualizado'}`);
+  }
+
+  $('imp-replace').addEventListener('click', () => aplicarImport('replace'));
+  $('imp-merge').addEventListener('click', () => aplicarImport('merge'));
+  $('imp-cancel').addEventListener('click', () => {
+    importadas = null;
+    $('impbox').hidden = true;
+  });
+
+  // ─────────────────────────────────────────────
+  // Formulario agregar / editar
+  // ─────────────────────────────────────────────
+  const FIELDS = ['nombre', 'tipo', 'ciudad', 'barrio', 'area', 'hab', 'banos', 'valor', 'admin', 'zonas'] as const;
+  const REQUIRED = ['nombre', 'tipo', 'ciudad', 'barrio', 'area'];
+  const input = (f: string) => $('p-' + f) as HTMLInputElement;
+
+  // ── Fotos ──
+  // Se guardan en localStorage, así que hay que reescalarlas: una foto de
+  // celular son ~4 MB y el cupo entero del navegador son ~5 MB.
+  const FOTO_MAX_LADO = 1000;
+  const FOTO_CALIDAD = 0.7;
+  let formFotos: string[] = [];
+
+  function comprimirFoto(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const escala = Math.min(1, FOTO_MAX_LADO / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * escala);
+        canvas.height = Math.round(img.height * escala);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('sin canvas'));
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', FOTO_CALIDAD));
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('imagen inválida'));
+      };
+      img.src = url;
+    });
+  }
+
+  function renderFotos() {
+    $('p-fotos-count').textContent = `${formFotos.length} / ${MAX_FOTOS}`;
+    $('fotos-grid').innerHTML = formFotos
+      .map(
+        (src, i) => `
+        <div class="foto${i === 0 ? ' foto--portada' : ''}">
+          <img src="${src}" alt="Foto ${i + 1}" />
+          ${i === 0 ? '<span class="foto__tag">Portada</span>' : ''}
+          <button type="button" class="foto__del" data-i="${i}" aria-label="Quitar foto ${i + 1}">✕</button>
+        </div>`
+      )
+      .join('');
+    $('fotos-drop').hidden = formFotos.length >= MAX_FOTOS;
+  }
+
+  function notaFotos(msg: string) {
+    $('fotos-note').textContent = msg;
+    $('fotos-note').hidden = !msg;
+  }
+
+  async function agregarFotos(files: FileList | File[]) {
+    const libres = MAX_FOTOS - formFotos.length;
+    if (libres <= 0) return notaFotos(`Ya tienes el máximo de ${MAX_FOTOS} fotos.`);
+
+    const imagenes = [...files].filter((f) => f.type.startsWith('image/'));
+    const descartadas = [...files].length - imagenes.length;
+    const aProcesar = imagenes.slice(0, libres);
+
+    notaFotos('Procesando fotos…');
+    for (const file of aProcesar) {
+      try {
+        formFotos.push(await comprimirFoto(file));
+      } catch {
+        /* archivo corrupto: lo saltamos */
+      }
+    }
+    renderFotos();
+
+    const sobrantes = imagenes.length - aProcesar.length;
+    notaFotos(
+      [
+        sobrantes > 0 ? `Solo se agregaron ${aProcesar.length}: el máximo es ${MAX_FOTOS}.` : '',
+        descartadas > 0 ? `${descartadas} archivo(s) no eran imágenes.` : '',
+      ]
+        .filter(Boolean)
+        .join(' ')
+    );
+  }
+
+  $('p-fotos').addEventListener('change', (e) => {
+    const el = e.target as HTMLInputElement;
+    if (el.files?.length) agregarFotos(el.files);
+    el.value = ''; // permite volver a elegir el mismo archivo
+  });
+
+  $('fotos-grid').addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.foto__del');
+    if (!btn) return;
+    formFotos.splice(+btn.dataset.i!, 1);
+    renderFotos();
+    notaFotos('');
+  });
+
+  const drop = $('fotos-drop');
+  ['dragenter', 'dragover'].forEach((ev) =>
+    drop.addEventListener(ev, (e) => {
+      e.preventDefault();
+      drop.classList.add('dragging');
+    })
+  );
+  ['dragleave', 'drop'].forEach((ev) =>
+    drop.addEventListener(ev, (e) => {
+      e.preventDefault();
+      drop.classList.remove('dragging');
+    })
+  );
+  drop.addEventListener('drop', (e) => {
+    const files = (e as DragEvent).dataTransfer?.files;
+    if (files?.length) agregarFotos(files);
+  });
+
+  function clearForm() {
+    FIELDS.forEach((f) => {
+      input(f).value = '';
+      input(f).classList.remove('invalid');
+    });
+    $('p-valor-fmt').textContent = '';
+    $('p-admin-fmt').textContent = '';
+    $('pform-error').hidden = true;
+    formFotos = [];
+    renderFotos();
+    notaFotos('');
+    editId = null;
+    $('pform-title').textContent = 'Nueva propiedad';
+    $('pform-save').textContent = '✓ Guardar propiedad';
+  }
+
+  function startEdit(p: Prop) {
+    FIELDS.forEach((f) => (input(f).value = String((p as any)[f] ?? '')));
+    formFotos = [...(p.fotos ?? [])];
+    renderFotos();
+    notaFotos('');
+    editId = p.id;
+    $('pform-title').textContent = 'Editar: ' + p.nombre;
+    $('pform-save').textContent = '✓ Guardar cambios';
+    switchTab('agregar');
+    input('nombre').focus();
+  }
+
+  ['valor', 'admin'].forEach((f) => {
+    input(f).addEventListener('input', () => {
+      const v = +input(f).value;
+      $('p-' + f + '-fmt').textContent = v > 0 ? '= ' + fmtCOP(v) : '';
+    });
+  });
+
+  $('pform').addEventListener('submit', (e) => {
+    e.preventDefault();
+    let valid = true;
+    REQUIRED.forEach((f) => {
+      const ok = input(f).value.trim() !== '' && (f !== 'area' || +input(f).value > 0);
+      input(f).classList.toggle('invalid', !ok);
+      if (!ok) valid = false;
+    });
+    $('pform-error').hidden = valid;
+    if (!valid) return;
+
+    const data = {
+      nombre: input('nombre').value.trim(),
+      tipo: input('tipo').value,
+      ciudad: input('ciudad').value.trim(),
+      barrio: input('barrio').value.trim(),
+      area: +input('area').value,
+      hab: +input('hab').value || 0,
+      banos: +input('banos').value || 0,
+      valor: +input('valor').value || 0,
+      admin: +input('admin').value || 0,
+      zonas: input('zonas').value.trim(),
+      fotos: [...formFotos],
+    };
+
+    const anterior = structuredClone(props);
+    if (editId !== null) {
+      const p = props.find((x) => x.id === editId)!;
+      Object.assign(p, data);
+    } else {
+      props.push({ id: Date.now(), activa: true, ...data });
+    }
+
+    // Si el cupo revienta por las fotos, deshacemos en vez de perder el inventario
+    if (!save()) {
+      props = anterior;
+      return;
+    }
+
+    if (editId !== null) {
+      toast('✓ Propiedad actualizada');
+      ph()?.capture?.('gestor_propiedad_editada', { tipo: data.tipo, ciudad: data.ciudad, fotos: data.fotos.length });
+    } else {
+      toast('✓ Propiedad agregada');
+      ph()?.capture?.('gestor_propiedad_creada', {
+        tipo: data.tipo,
+        ciudad: data.ciudad,
+        fotos: data.fotos.length,
+        total: props.length,
+      });
+    }
+    clearForm();
+    renderAll();
+    switchTab('propiedades');
+  });
+
+  $('pform-clear').addEventListener('click', clearForm);
+
+  // ─────────────────────────────────────────────
+  // Tabs
+  // ─────────────────────────────────────────────
+  function switchTab(tab: string) {
+    document.querySelectorAll<HTMLButtonElement>('.gp__tabs [role="tab"]').forEach((b) => {
+      const on = b.dataset.tab === tab;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', String(on));
+    });
+    ['dashboard', 'propiedades', 'agregar'].forEach((t) => ($('tab-' + t).hidden = t !== tab));
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.gp__tabs [role="tab"]').forEach((b) =>
+    b.addEventListener('click', () => switchTab(b.dataset.tab!))
+  );
+
+  // ─────────────────────────────────────────────
+  // Ficha imprimible
+  // ─────────────────────────────────────────────
+  function openFicha(p: Prop) {
+    const onb = getOnboarding();
+    $('fx-tipo').textContent = p.tipo;
+    $('fx-nombre').textContent = p.nombre;
+    $('fx-ubicacion').textContent = `${p.barrio} · ${p.ciudad}`;
+    $('fx-precio').textContent = p.valor ? fmtCOP(p.valor) + ' COP' : 'Precio a convenir';
+    $('fx-area').textContent = p.area + ' m²';
+    $('fx-hab').textContent = String(p.hab || '—');
+    $('fx-banos').textContent = String(p.banos || '—');
+    $('fx-valor2').textContent = p.valor ? fmtCOP(p.valor) : '—';
+    $('fx-admin').textContent = p.admin ? fmtCOP(p.admin) + '/mes' : 'No aplica';
+    $('fx-estado').textContent = p.activa ? 'Disponible' : 'No disponible';
+    $('fx-zonas').textContent = p.zonas || 'No registra';
+
+    const fotos = p.fotos ?? [];
+    $('fx-fotos').hidden = fotos.length === 0;
+    $('fx-fotos').className = 'ficha__fotos' + (fotos.length === 1 ? ' ficha__fotos--una' : '');
+    $('fx-fotos').innerHTML = fotos
+      .map(
+        (src, i) =>
+          `<div class="ficha__foto${i === 0 ? ' ficha__foto--main' : ''}"><img src="${src}" alt="${esc(p.nombre)} — foto ${i + 1}" onerror="this.closest('.ficha__foto').remove()" /></div>`
+      )
+      .join('');
+
+    $('fx-agente').textContent = onb?.nombre || 'Asesor inmobiliario';
+    $('fx-empresa').textContent = onb?.inmobiliaria || '';
+    $('fx-empresa').hidden = !onb?.inmobiliaria;
+    $('fx-celular').textContent = onb?.celular ? '📱 ' + onb.celular : '';
+    $('fx-correo').textContent = onb?.correo ? '✉️ ' + onb.correo : '';
+    $('fx-fecha').textContent = new Date().toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    $('ficha-overlay').hidden = false;
+    document.body.classList.add('ficha-open');
+    ph()?.capture?.('gestor_ficha_generada', { tipo: p.tipo, ciudad: p.ciudad });
+  }
+
+  function closeFicha() {
+    $('ficha-overlay').hidden = true;
+    document.body.classList.remove('ficha-open');
+  }
+
+  $('ficha-print').addEventListener('click', () => window.print());
+  $('ficha-close').addEventListener('click', closeFicha);
+  $('ficha-overlay').addEventListener('click', (e) => {
+    if (e.target === $('ficha-overlay')) closeFicha();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (!$('ficha-overlay').hidden) closeFicha();
+    if (!$('pub-overlay').hidden) closePublicar();
+  });
+
+  // ─────────────────────────────────────────────
+  // Arranque
+  // ─────────────────────────────────────────────
+  renderFotos();
+
+  const onb = getOnboarding();
+  if (onb) {
+    showApp(onb);
+  } else {
+    $('onboarding').hidden = false;
+    initOnboarding();
+  }
+</script>
+
+<style is:global>
+  [hidden] { display: none !important; }
+
+  /* ══════════ Layout general ══════════ */
+  .gp {
+    background: var(--gray-bg);
+    min-height: 100vh;
+    padding: 110px 16px 80px;
+    transition: background-color var(--transition);
+  }
+
+  /* ══════════ Onboarding ══════════ */
+  .gp__onboarding { display: flex; justify-content: center; }
+
+  .onb-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+    padding: 40px;
+    width: 100%;
+    max-width: 620px;
+  }
+  .onb-card h1 { margin: 6px 0 8px; }
+  .onb-card__sub { font-size: var(--text-small); color: var(--muted); margin-bottom: 28px; }
+
+  .onb-q { margin-bottom: 22px; }
+  .onb-q__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .onb-q__label .opt { font-weight: 400; color: var(--muted); }
+  .onb-q__pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .onb-q__pills button {
+    font-family: var(--font-ui);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .onb-q__pills button:hover { color: var(--navy); border-color: var(--border); }
+  .onb-q__pills button.selected {
+    background: rgba(0, 199, 180, 0.08);
+    border-color: var(--teal);
+    color: var(--teal-deep);
+  }
+
+  .onb-sep {
+    height: 1px;
+    background: var(--border);
+    margin: 26px 0 22px;
+  }
+  .onb-contact__hint { font-size: 12.5px; color: var(--muted); margin: -6px 0 14px; }
+  .onb-contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .onb-field { display: flex; flex-direction: column; gap: 6px; }
+  .onb-field label { font-size: 12.5px; font-weight: 600; color: var(--navy); }
+  .onb-field .opt { font-weight: 400; color: var(--muted); }
+
+  .onb-card__error { font-size: 13px; color: var(--red); margin-bottom: 12px; }
+  .onb-card__cta {
+    width: 100%;
+    background: var(--grad-cta);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-btn);
+    padding: 14px;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 199, 180, 0.3);
+    transition: all var(--transition);
+  }
+  .onb-card__cta:hover { filter: brightness(1.06); box-shadow: 0 6px 20px rgba(0, 199, 180, 0.4); }
+  .onb-card__note { font-size: 11.5px; color: var(--muted); text-align: center; margin-top: 12px; }
+
+  /* ══════════ App ══════════ */
+  .gp__app { max-width: 1080px; margin: 0 auto; }
+
+  .gp__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .gp__header h1 { font-size: 26px; margin: 4px 0 4px; }
+  .gp__sub { font-size: var(--text-small); color: var(--muted); }
+  .gp__segment {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal-deep);
+    background: rgba(0, 199, 180, 0.08);
+    border: 1px solid rgba(0, 199, 180, 0.35);
+    border-radius: 999px;
+    padding: 6px 14px;
+    white-space: nowrap;
+  }
+
+  .gp__tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 24px;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .gp__tabs [role='tab'] {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    border-radius: 9px;
+    padding: 9px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition);
+  }
+  .gp__tabs [role='tab']:hover { color: var(--navy); }
+  .gp__tabs [role='tab'].active {
+    background: var(--white);
+    color: var(--navy);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ══════════ Dashboard ══════════ */
+  .potencial {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: linear-gradient(135deg, rgba(0, 199, 180, 0.06) 0%, rgba(59, 126, 255, 0.04) 100%);
+    border: 1px solid rgba(0, 153, 168, 0.3);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+  }
+  .potencial__label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--teal-deep);
+    margin-bottom: 6px;
+  }
+  .potencial__text {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text);
+    max-width: 640px;
+  }
+  .potencial__score {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 700;
+    background: var(--grad-flow);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .kpi {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .kpi__label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .kpi__value {
+    font-family: var(--font-mono);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .kpi__value.teal { color: var(--teal-deep); font-size: 21px; }
+  .kpi__value.green { color: var(--green); }
+  .kpi__value.red { color: var(--red); }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .chart {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .chart h3 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .chart__rows { display: flex; flex-direction: column; gap: 10px; }
+  .chart__empty { font-size: 13px; color: var(--muted); }
+
+  .crow { display: flex; align-items: center; gap: 10px; }
+  .crow__label {
+    flex: 0 0 108px;
+    font-size: 12.5px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .crow__track {
+    flex: 1;
+    height: 10px;
+    background: var(--surface);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .crow__bar {
+    height: 100%;
+    background: var(--teal-deep);
+    border-radius: 0 4px 4px 0;
+    min-width: 4px;
+    transition: width 0.4s ease;
+  }
+  .crow__val {
+    flex: 0 0 20px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: right;
+  }
+
+  /* ══════════ Inputs comunes ══════════ */
+  .gp-input {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--navy);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 9px 12px;
+    width: 100%;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .gp-input:hover { border-color: var(--muted); }
+  .gp-input:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(0, 199, 180, 0.15);
+  }
+  .gp-input.invalid { border-color: var(--red); }
+  .gp-input::placeholder { color: var(--muted); opacity: 0.7; }
+
+  /* ══════════ Respaldo (exportar / importar) ══════════ */
+  .databar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+  .databar__text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .databar__text b { color: var(--navy); font-weight: 600; }
+  .databar__btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .databar__btns button {
+    font-family: var(--font-ui);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition);
+  }
+  .databar__btns button:hover { color: var(--teal-deep); border-color: var(--teal); }
+
+  .impbox {
+    background: rgba(0, 199, 180, 0.05);
+    border: 1.5px solid rgba(0, 153, 168, 0.35);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+  }
+  .impbox p { font-size: 13.5px; color: var(--navy); margin-bottom: 10px; }
+  .impbox__btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .impbox__btns button {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--grad-cta);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .impbox__btns button:hover { filter: brightness(1.06); }
+  .impbox__btns button.ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .impbox__btns button.ghost:hover { color: var(--navy); filter: none; }
+
+  /* ══════════ Tabla + filtros ══════════ */
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .table-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+  }
+  .ptable { width: 100%; border-collapse: collapse; min-width: 760px; }
+  .ptable th {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    color: var(--muted);
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .ptable td {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ptable tbody tr:last-child td { border-bottom: none; }
+  .ptable tbody tr { transition: background-color var(--transition); }
+  .ptable tbody tr:hover { background: var(--surface); }
+  .ptable .strong { font-weight: 600; color: var(--navy); }
+  .pname { display: flex; align-items: center; gap: 10px; }
+  .pname__thumb {
+    flex-shrink: 0;
+    width: 38px;
+    height: 30px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .pname__thumb--empty {
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    opacity: 0.5;
+  }
+  .ptable .num { font-family: var(--font-mono); white-space: nowrap; }
+  .ptable th.num { font-family: var(--font-ui); }
+
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+  .badge--on { color: var(--green); background: rgba(34, 197, 94, 0.12); }
+  .badge--off { color: var(--red); background: rgba(255, 84, 112, 0.12); }
+
+  .actions { white-space: nowrap; }
+  .actions button {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 5px 9px;
+    margin-right: 4px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .actions button:hover { color: var(--teal-deep); border-color: var(--teal); }
+
+  .empty { text-align: center; padding: 48px 20px; }
+  .empty__icon { font-size: 32px; margin-bottom: 8px; }
+  .empty p { font-size: 14px; color: var(--muted); }
+
+  /* ══════════ Formulario ══════════ */
+  .pform {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: 32px;
+    max-width: 760px;
+  }
+  .pform h2 { font-size: 19px; margin-bottom: 4px; }
+  .pform__hint { font-size: 12.5px; color: var(--muted); margin-bottom: 22px; }
+
+  .pform__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .pform__field { display: flex; flex-direction: column; gap: 6px; }
+  .pform__field.span-2 { grid-column: span 2; }
+  .pform__field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .pform__field output {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--teal-deep);
+  }
+  .pform textarea.gp-input { resize: vertical; }
+
+  /* ── Fotos ── */
+  .fotos { display: flex; flex-direction: column; gap: 10px; }
+
+  .fotos__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 10px;
+  }
+  .fotos__grid:empty { display: none; }
+
+  .foto {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .foto--portada { border-color: var(--teal); }
+  .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .foto__tag {
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: var(--grad-cta);
+    border-radius: 5px;
+    padding: 2px 7px;
+  }
+  .foto__del {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(7, 11, 20, 0.6);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background-color var(--transition);
+  }
+  .foto__del:hover { background: var(--red); }
+
+  .fotos__drop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .fotos__drop:hover,
+  .fotos__drop.dragging {
+    border-color: var(--teal);
+    background: rgba(0, 199, 180, 0.05);
+  }
+  .fotos__drop-icon { font-size: 22px; }
+  .fotos__drop-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .fotos__drop-text b { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+  .fotos__note { font-size: 12px; color: var(--teal-deep); }
+
+  .pform__error { font-size: 13px; color: var(--red); margin-top: 16px; }
+
+  .pform__actions { display: flex; gap: 10px; margin-top: 22px; }
+  .pform__save {
+    flex: 1;
+    background: var(--grad-cta);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-btn);
+    padding: 13px;
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 199, 180, 0.3);
+    transition: all var(--transition);
+  }
+  .pform__save:hover { filter: brightness(1.06); }
+  .pform__clear {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-btn);
+    padding: 13px 22px;
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .pform__clear:hover { color: var(--navy); border-color: var(--muted); }
+
+  /* ══════════ CTA Livvo ══════════ */
+  .gp__cta {
+    margin-top: 40px;
+    background: linear-gradient(135deg, #0d1424 0%, #070b14 100%);
+    border: 1px solid #1a2240;
+    border-radius: var(--radius-card);
+    padding: 32px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: 0 8px 28px rgba(13, 20, 36, 0.25);
+  }
+  /* En oscuro el navy se funde con el fondo: lo separamos con tinte teal */
+  [data-theme='dark'] .gp__cta {
+    background: linear-gradient(135deg, rgba(0, 199, 180, 0.09) 0%, rgba(59, 126, 255, 0.05) 100%),
+      linear-gradient(135deg, #0d1424 0%, #111827 100%);
+    border-color: rgba(0, 199, 180, 0.3);
+  }
+  .gp__cta h2 { color: #f0f4ff; font-size: 21px; margin-bottom: 6px; }
+  .gp__cta p { color: #8b96af; font-size: 14px; max-width: 480px; }
+  .gp__cta .btn { flex-shrink: 0; }
+
+  /* ══════════ Toast ══════════ */
+  .gp-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%, 12px);
+    background: var(--navy);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 11px 20px;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 300;
+  }
+  [data-theme='dark'] .gp-toast { background: var(--surface); color: var(--navy); }
+  .gp-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ══════════ Modal Publicar ══════════ */
+  body.modal-open { overflow: hidden; }
+
+  .pub-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 11, 20, 0.55);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+    z-index: 200;
+  }
+  .pub-modal {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    width: 100%;
+    max-width: 560px;
+    padding: 26px 28px;
+  }
+  .pub-modal__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+  .pub-modal__head h2 { font-size: 20px; margin-top: 4px; }
+  .pub-modal__head button {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .pub-modal__head button:hover { color: var(--navy); border-color: var(--muted); }
+  .pub-modal__hint { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+
+  #pub-texto {
+    width: 100%;
+    font-family: var(--font-ui);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--navy);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    resize: vertical;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  #pub-texto:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(0, 199, 180, 0.15);
+  }
+
+  .pub-modal__btns { display: flex; gap: 10px; margin-top: 16px; }
+  .pub-modal__btns button {
+    flex: 1;
+    font-family: var(--font-ui);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-btn);
+    padding: 12px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .pub-primary { background: var(--grad-cta); box-shadow: 0 4px 14px rgba(0, 199, 180, 0.3); }
+  .pub-wa { background: var(--green); box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3); }
+  .pub-modal__btns button:hover { filter: brightness(1.06); }
+
+  /* ══════════ Ficha (siempre clara — es un documento) ══════════ */
+  .ficha-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 11, 20, 0.55);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+    z-index: 200;
+  }
+  body.ficha-open { overflow: hidden; }
+
+  .ficha-modal {
+    background: #f4f6fa;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 640px;
+    overflow: hidden;
+  }
+  .ficha-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #ffffff;
+    border-bottom: 1px solid #dde3ef;
+  }
+  .ficha-toolbar > span { font-size: 13px; font-weight: 600; color: #64748b; }
+  .ficha-toolbar__btns { display: flex; gap: 8px; }
+  .ficha-toolbar button {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    border: 1px solid #dde3ef;
+    background: #ffffff;
+    color: #0d1424;
+    transition: all var(--transition);
+  }
+  .ficha-toolbar #ficha-print {
+    background: linear-gradient(135deg, #00c7b4 0%, #0099a8 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 199, 180, 0.3);
+  }
+  .ficha-toolbar #ficha-print:hover { filter: brightness(1.06); }
+  .ficha-toolbar #ficha-close:hover { background: #eef1f8; }
+
+  .ficha {
+    background: #ffffff;
+    margin: 18px;
+    border-radius: 12px;
+    border: 1px solid #dde3ef;
+    padding: 36px 40px 0;
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-ui);
+  }
+  .ficha__brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .ficha__logo {
+    font-family: var(--font-ui);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .ficha__logo b { color: #0d1424; font-weight: 700; }
+  .ficha__logo i { color: #00c7b4; font-style: normal; }
+  .ficha__logo em { color: #00c7b4; font-style: normal; margin-left: 2px; font-size: 1.15em; }
+  .ficha__badge {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #0099a8;
+    background: rgba(0, 199, 180, 0.06);
+    border: 1.5px solid #0099a8;
+    border-radius: 999px;
+    padding: 5px 14px;
+  }
+
+  .ficha__nombre { font-size: 26px; color: #0d1424; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .ficha__ubicacion { font-size: 14px; color: #64748b; margin-bottom: 20px; }
+
+  /* Galería: portada grande arriba, resto en tira debajo */
+  .ficha__fotos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .ficha__fotos--una { grid-template-columns: 1fr; }
+  .ficha__foto {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dde3ef;
+    background: #f4f6fa;
+    aspect-ratio: 4 / 3;
+  }
+  .ficha__foto--main {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+  }
+  .ficha__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ficha__contacto {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, rgba(0, 199, 180, 0.05) 0%, rgba(59, 126, 255, 0.03) 100%);
+    border: 1px solid rgba(0, 153, 168, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .ficha__contacto h4 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #0099a8;
+    margin-bottom: 8px;
+  }
+  .ficha__contacto-nombre { font-size: 15px; font-weight: 700; color: #0d1424; }
+  .ficha__contacto-empresa { font-size: 12.5px; color: #64748b; }
+  .ficha__contacto-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #0d1424;
+  }
+
+  .ficha__precio {
+    background: linear-gradient(135deg, rgba(0, 199, 180, 0.05) 0%, rgba(59, 126, 255, 0.03) 100%);
+    border: 1px solid rgba(0, 153, 168, 0.35);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+  }
+  .ficha__precio span {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
+  .ficha__precio strong {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: #0099a8;
+    line-height: 1;
+  }
+
+  .ficha__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .ficha__sec {
+    background: #f4f6fa;
+    border: 1px solid #dde3ef;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .ficha__grid .ficha__sec { margin-bottom: 0; }
+  .ficha__sec h4 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #0099a8;
+    margin-bottom: 10px;
+  }
+  .ficha__sec p { font-size: 13.5px; color: #0d1424; }
+  .ficha__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+  .ficha__row span { color: #64748b; }
+  .ficha__row b { font-family: var(--font-mono); font-weight: 700; color: #0d1424; white-space: nowrap; }
+
+  .ficha__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid #dde3ef;
+    padding: 14px 0 18px;
+    font-size: 11.5px;
+    color: #64748b;
+  }
+  .ficha__bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00c7b4 0%, #3b7eff 50%, #00c7b4 100%);
+  }
+
+  /* ══════════ Impresión: solo la ficha ══════════ */
+  @media print {
+    body.ficha-open nav,
+    body.ficha-open main,
+    body.ficha-open footer,
+    .ficha-toolbar,
+    .pub-overlay,
+    .gp-toast { display: none !important; }
+    body.ficha-open { background: #fff !important; overflow: visible !important; }
+    body.ficha-open .ficha-overlay {
+      position: static !important;
+      display: block !important;
+      background: none !important;
+      backdrop-filter: none !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+    body.ficha-open .ficha-modal {
+      background: none !important;
+      box-shadow: none !important;
+      max-width: none !important;
+      border-radius: 0 !important;
+    }
+    body.ficha-open .ficha {
+      margin: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      /* sin esto el navegador descarta fondos y fotos al imprimir */
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body.ficha-open .ficha * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    /* que la galería y el contacto no queden partidos entre páginas */
+    body.ficha-open .ficha__fotos,
+    body.ficha-open .ficha__contacto,
+    body.ficha-open .ficha__sec { break-inside: avoid; }
+  }
+
+  /* ══════════ Responsive ══════════ */
+  @media (max-width: 860px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid { grid-template-columns: 1fr; }
+    .filters { grid-template-columns: repeat(2, 1fr); }
+    .gp__cta { flex-direction: column; align-items: flex-start; }
+    .potencial { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .databar { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 640px) {
+    .gp { padding: 90px 12px 60px; }
+    .onb-card { padding: 26px 20px; }
+    .onb-contact { grid-template-columns: 1fr; }
+    .ficha__fotos { grid-template-columns: repeat(2, 1fr); }
+    .ficha__contacto { flex-direction: column; align-items: flex-start; }
+    .ficha__contacto-datos { text-align: left; }
+    .gp__header { flex-direction: column; align-items: flex-start; }
+    .pform { padding: 24px 18px; }
+    .pform__grid { grid-template-columns: 1fr; }
+    .pform__field.span-2 { grid-column: span 1; }
+    .pform__actions { flex-direction: column; }
+    .filters { grid-template-columns: 1fr; }
+    .ficha { padding: 24px 20px 0; }
+    .ficha__grid { grid-template-columns: 1fr; }
+    .pub-modal { padding: 20px 18px; }
+    .pub-modal__btns { flex-direction: column; }
+    .databar__btns button { flex: 1; }
+  }
+</style>

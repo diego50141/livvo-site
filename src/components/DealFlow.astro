@@ -3,7 +3,7 @@
 // Cuatro estados encadenados que rotan solos. La lógica es un temporizador
 // de ~20 líneas; el resto son transiciones CSS.
 const steps = [
-  { key: 'agent', label: 'Empleado IA' },
+  { key: 'agent', label: 'Agente IA' },
   { key: 'chat', label: 'Conversación' },
   { key: 'card', label: 'Contacto' },
   { key: 'deal', label: 'Negocio' },
@@ -39,7 +39,7 @@ const turns = [
   class="deal"
   data-deal
   data-step="0"
-  aria-label="Del empleado IA que creas al negocio en el embudo"
+  aria-label="Del agente IA que creas al negocio en el embudo"
 >
   <span class="deal__glow" aria-hidden="true"></span>
 
@@ -118,7 +118,7 @@ const turns = [
             </p>
           ))
         }
-        <span class="chat__by">Luisa · Empleado IA</span>
+        <span class="chat__by">Luisa · Agente IA</span>
       </div>
     </div>
 

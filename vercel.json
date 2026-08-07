@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/empleados-ia", "destination": "/agentes-ia", "permanent": true }
+  ]
+}

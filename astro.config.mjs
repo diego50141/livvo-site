@@ -7,6 +7,11 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://livvo.tech',
 
+  // La URL vieja de Agentes IA; en Vercel el 308 real lo da vercel.json
+  redirects: {
+    '/empleados-ia': '/agentes-ia',
+  },
+
   vite: {
     plugins: [tailwindcss()],
   },

@@ -9,9 +9,12 @@ import { APP_URL } from '../config';
     <a href="/" class="navbar__logo" aria-label="Livvo — inicio">
       <Logo size={26} />
     </a>
-    <Button href={APP_URL} target="_blank" variant="ghost" size="sm" id="nav-login">
-      Ingresar
-    </Button>
+    <div class="navbar__right">
+      <a href="/ph" class="navbar__link">IA para Propiedad Horizontal</a>
+      <Button href={APP_URL} target="_blank" variant="ghost" size="sm" id="nav-login">
+        Ingresar
+      </Button>
+    </div>
   </div>
 </nav>
 
@@ -31,4 +34,23 @@ import { APP_URL } from '../config';
     height: 68px;
   }
   .navbar__logo { display: inline-flex; text-decoration: none; }
+  .navbar__right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+  .navbar__link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .navbar__link:hover {
+    color: var(--teal-deep);
+  }
+  /* en móvil el enlace queda disponible desde el footer */
+  @media (max-width: 640px) {
+    .navbar__link { display: none; }
+  }
 </style>

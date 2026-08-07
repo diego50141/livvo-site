@@ -48,7 +48,7 @@ const steps = [
   {
     n: '02',
     title: 'Centraliza tu atención al cliente',
-    desc: 'Administra todas tus comunicaciones y operaciones comerciales en una sola plataforma y una sola línea de WhatsApp: renta, venta, compra, mantenimiento y jurídico en un solo lugar, con tu equipo completo y empleados IA con un flujo definido para cada caso.',
+    desc: 'Administra todas tus comunicaciones y operaciones comerciales en una sola plataforma y una sola línea.',
     ctaLabel: 'Conversar con Livvo →',
     ctaHref: WHATSAPP_URL,
     ctaVariant: 'primary',
@@ -130,6 +130,26 @@ const products = [
         title: 'Agendamiento de visitas',
         desc: 'Luisa coordina la cita en la misma conversación, sin idas y vueltas de mensajes con tu equipo.',
       },
+      {
+        icon: 'coin',
+        title: 'Cobranza automatizada',
+        desc: 'Recordatorios de pago y gestión de cartera por WhatsApp, con un tono firme y cordial que cuida la relación con tu cliente.',
+      },
+      {
+        icon: 'file-check',
+        title: 'Acompañamiento en escrituración',
+        desc: 'Acompaña a compradores y vendedores durante todo el trámite: documentos pendientes, citas en notaría y estado del proceso, paso a paso.',
+      },
+      {
+        icon: 'wrench',
+        title: 'Gestión de mantenimiento',
+        desc: 'Recibe las solicitudes de tus inquilinos, coordina proveedores y hace seguimiento automático hasta cerrar cada caso.',
+      },
+      {
+        icon: 'shield',
+        title: 'Soporte jurídico',
+        desc: 'Resuelve consultas sobre contratos, requisitos y garantías en segundos, y escala a tu equipo solo los casos que necesitan un abogado.',
+      },
     ],
   },
 ];
@@ -144,6 +164,13 @@ const featureIcons: Record<string, string> = {
   'calendar-check':
     '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 15h3M8 18h6"/>',  link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
   chart: '<path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/>',
+  coin: '<circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15.5 9.5c0-1.1-1.57-2-3.5-2s-3.5.9-3.5 2 1.2 1.6 3.5 2 3.5.9 3.5 2-1.57 2-3.5 2-3.5-.9-3.5-2"/>',
+  'file-check':
+    '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/>',
+  wrench:
+    '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  shield:
+    '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
 };
 
 const plans = [

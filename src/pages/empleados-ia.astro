@@ -10,6 +10,8 @@ import fotoLuisa from '../assets/equipo/luisa.png';
 import fotoLucia from '../assets/equipo/lucia.png';
 import fotoLaura from '../assets/equipo/laura.png';
 import fotoLina from '../assets/equipo/lina.jpg';
+import fotoLorena from '../assets/equipo/lorena.jpg';
+import fotoLiliana from '../assets/equipo/liliana.png';
 
 const features = [
   {
@@ -60,8 +62,20 @@ const team = [
   {
     foto: fotoLina,
     nombre: 'Lina',
-    rol: 'Jurídica IA',
+    rol: 'Cobranza IA',
     desc: 'Gestiona la cobranza y los recordatorios de pago por WhatsApp, con el tono firme y cordial que protege la relación con tu cliente.',
+  },
+  {
+    foto: fotoLorena,
+    nombre: 'Lorena',
+    rol: 'Jurídica IA',
+    desc: 'Resuelve consultas sobre contratos, requisitos y garantías con base en tus propios documentos, y escala a tu abogado solo los casos que lo necesitan.',
+  },
+  {
+    foto: fotoLiliana,
+    nombre: 'Liliana',
+    rol: 'Escrituración IA',
+    desc: 'Acompaña a compradores y vendedores durante la escrituración: documentos pendientes, citas en notaría y estado del trámite, sin que tu equipo responda caso por caso.',
   },
 ];
 
@@ -78,7 +92,7 @@ const featureIcons: Record<string, string> = {
 
 <Base
   title="Empleados IA — Livvo"
-  description="Luisa y su equipo de Empleados IA atienden el WhatsApp de tu inmobiliaria 24/7: ventas, mantenimiento, administración y cobranza, con tu tono y bajo tus reglas."
+  description="Luisa y su equipo de Empleados IA atienden el WhatsApp de tu inmobiliaria 24/7: ventas, mantenimiento, administración, cobranza, escrituración y jurídico, con tu tono y bajo tus reglas."
 >
   <Navbar />
 
@@ -91,8 +105,8 @@ const featureIcons: Record<string, string> = {
           <h1>Empleados IA que <em class="grad-text">venden por ti.</em></h1>
           <p class="product-hero__sub">
             Luisa responde en segundos, califica cada lead, recomienda inmuebles de tu portafolio y
-            agenda visitas — mientras Lucía, Laura y Lina se encargan del mantenimiento, la
-            administración y la cobranza. Con tu tono y bajo tus reglas, 24/7.
+            agenda visitas — mientras su equipo se encarga del mantenimiento, la administración, la
+            cobranza, la escrituración y lo jurídico. Con tu tono y bajo tus reglas, 24/7.
           </p>
           <div class="product-hero__ctas">
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="empleados-demo-cta">
@@ -171,13 +185,19 @@ const featureIcons: Record<string, string> = {
       <div class="team fade-up">
         {team.map(({ foto, nombre, rol, desc }) => (
           <article class="tcard">
-            <Image
-              src={foto}
-              alt={`${nombre}, ${rol} de Livvo`}
-              width={240}
-              densities={[1, 2]}
-              class="tcard__foto"
-            />
+            {foto ? (
+              <Image
+                src={foto}
+                alt={`${nombre}, ${rol} de Livvo`}
+                width={240}
+                densities={[1, 2]}
+                class="tcard__foto"
+              />
+            ) : (
+              <span class="tcard__foto tcard__foto--placeholder" aria-hidden="true">
+                {nombre.charAt(0)}
+              </span>
+            )}
             <h3 class="tcard__nombre">{nombre}</h3>
             <span class="tcard__rol">{rol}</span>
             <p class="tcard__desc">{desc}</p>
@@ -413,6 +433,17 @@ const featureIcons: Record<string, string> = {
     margin: 0 auto var(--space-4);
     border-radius: 50%;
     border: 3px solid rgba(0, 199, 180, 0.35);
+  }
+  /* avatar temporal mientras el Empleado IA no tiene foto */
+  .tcard .tcard__foto--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--teal-deep);
+    background: rgba(0, 199, 180, 0.1);
   }
   .tcard__nombre {
     font-size: var(--text-h3);

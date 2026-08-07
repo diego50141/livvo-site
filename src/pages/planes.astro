@@ -1,0 +1,335 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Button from '../components/Button.astro';
+import Section from '../components/Section.astro';
+import PricingCard from '../components/PricingCard.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_URL } from '../config';
+
+// Cuatro planes con dimensiones comparables y en el mismo orden:
+// usuarios → propiedades → conversaciones → líneas → CRM/agentes.
+const plans = [
+  {
+    name: 'Gratis',
+    price: '$0',
+    period: '',
+    tagline: 'Para independientes y equipos de 1',
+    features: [
+      '1 usuario',
+      'Hasta 30 propiedades',
+      '250 conversaciones al mes',
+      '1 línea de WhatsApp',
+      'CRM inmobiliario',
+      'Autogestión: crea tu propio agente IA y automatizaciones',
+    ],
+    featured: false,
+    ctaLabel: 'Comenzar gratis',
+  },
+  {
+    name: 'Plan Esencial',
+    price: '$399.000',
+    priceAnnual: '$359.000',
+    period: 'COP / mes',
+    tagline: 'Para equipos pequeños en crecimiento',
+    features: [
+      '2 usuarios',
+      'Hasta 80 propiedades',
+      '500 conversaciones al mes',
+      '1 línea de WhatsApp',
+      'CRM inmobiliario',
+      'Autogestión: crea tu propio agente IA y automatizaciones',
+    ],
+    featured: false,
+    ctaLabel: 'Comenzar ahora',
+  },
+  {
+    name: 'Plan Profesional',
+    price: '$799.000',
+    priceAnnual: '$719.000',
+    period: 'COP / mes',
+    tagline: 'Para equipos con alto volumen de propiedades',
+    features: [
+      '4 usuarios',
+      'Hasta 200 propiedades',
+      '1.000 conversaciones al mes',
+      '2 líneas de WhatsApp',
+      'CRM inmobiliario',
+      'Agentes IA de ventas y atención al cliente ilimitados',
+    ],
+    featured: true,
+    ctaLabel: 'Comenzar ahora',
+  },
+  {
+    name: 'Plan Corporativo',
+    price: 'A medida',
+    period: '',
+    tagline: 'Para operaciones de gran escala',
+    features: [
+      'Usuarios ilimitados',
+      'Propiedades a medida',
+      'Volumen de conversaciones a medida',
+      'Operación 24/7 de tus agentes IA',
+      'Campañas de WhatsApp',
+      'Módulo de plantillas de Meta',
+      'Soporte premium 24/7',
+      'Gerente de cuenta dedicado',
+      'Canales adicionales (Instagram, Messenger, etc.)',
+      'Acceso al API de Livvo',
+    ],
+    featured: false,
+    ctaLabel: 'Hablar con ventas →',
+  },
+];
+---
+
+<Base
+  title="Planes y precios — Livvo"
+  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: empieza gratis con tu propia línea de WhatsApp y agente IA, y escala con CRM inmobiliario, más líneas y agentes ilimitados."
+>
+  <Navbar />
+
+  <main>
+    <Section
+      id="precios"
+      eyebrow="Planes"
+      title="Empieza gratis. Escala cuando quieras."
+      subtitle="Precios en pesos colombianos. Sin contrato de permanencia: cancelas cuando quieras."
+    >
+      <div class="billing-toggle fade-up" role="group" aria-label="Periodicidad de facturación">
+        <button type="button" class="billing-toggle__btn is-active" data-billing="monthly">
+          Mensual
+        </button>
+        <button type="button" class="billing-toggle__btn" data-billing="annual">
+          Anual <span class="billing-toggle__badge">Ahorra 10 %</span>
+        </button>
+      </div>
+
+      <div class="pricing-grid fade-up">
+        {
+          plans.map((plan) => (
+            <PricingCard
+              name={plan.name}
+              price={plan.price}
+              priceAnnual={plan.priceAnnual}
+              period={plan.period}
+              tagline={plan.tagline}
+              features={plan.features}
+              featured={plan.featured}
+              ctaLabel={plan.ctaLabel}
+              ctaHref={WHATSAPP_URL}
+              ctaTarget="_blank"
+            />
+          ))
+        }
+      </div>
+      <div class="setup-card fade-up">
+        <div class="setup-card__info">
+          <div class="setup-card__badge">Pago único · Mes 1</div>
+          <div class="setup-card__name">Implementación inicial</div>
+          <p class="setup-card__desc">
+            Aplica para los planes Profesional y Corporativo: configuramos y entrenamos tus agentes
+            IA y plataforma para que estén listos para trabajar. Gratis y Esencial son autoservicio.
+          </p>
+          <ul class="setup-card__features">
+            <li><span class="setup-card__check">✓</span>Sesión de descubrimiento para entender tu negocio</li>
+            <li><span class="setup-card__check">✓</span>Configuración y entrenamiento de tus agentes IA</li>
+            <li><span class="setup-card__check">✓</span>Integración con tu WhatsApp</li>
+            <li><span class="setup-card__check">✓</span>Incluye 1.000 conversaciones el primer mes</li>
+          </ul>
+        </div>
+        <div class="setup-card__price-box">
+          <span class="setup-card__from">desde</span>
+          <div class="setup-card__price">$1.199.000</div>
+          <span class="setup-card__period">COP · pago único</span>
+        </div>
+      </div>
+      <div class="pricing-terms fade-up">
+        <span>Prueba gratuita de 15 días</span>
+        <span>Sin tarjeta de crédito</span>
+        <span>Facturación en pesos colombianos</span>
+      </div>
+      <div class="pricing-cta fade-up">
+        <p>¿No sabes cuál te conviene? Te ayudamos a elegir.</p>
+        <Button href={WHATSAPP_URL} target="_blank" size="lg">Prueba 15 días gratis →</Button>
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  // Toggle mensual/anual: cambia el monto de las tarjetas que declaran
+  // precio anual (data-price-annual); Gratis y Corporativo no cambian.
+  const billingBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-billing]'));
+  const billingPrices = Array.from(document.querySelectorAll<HTMLElement>('[data-price-annual]'));
+
+  billingBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const annual = btn.dataset.billing === 'annual';
+      billingBtns.forEach((b) => b.classList.toggle('is-active', b === btn));
+      billingPrices.forEach((p) => {
+        const amount = p.querySelector('.pricing__amount');
+        const period = p.querySelector('.pricing__period');
+        if (amount) amount.textContent = annual ? p.dataset.priceAnnual! : p.dataset.priceMonthly!;
+        if (period)
+          period.textContent = annual ? ' COP / mes · pago anual' : ' COP / mes';
+      });
+    });
+  });
+</script>
+
+<style>
+  .billing-toggle {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    width: fit-content;
+    margin: calc(-1 * var(--space-6)) auto var(--space-8);
+    padding: 4px;
+    background: var(--gray-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+  .billing-toggle__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition),
+      box-shadow var(--transition);
+  }
+  .billing-toggle__btn.is-active {
+    background: var(--white);
+    color: var(--navy);
+    box-shadow: var(--shadow-sm);
+  }
+  .billing-toggle__badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    background: rgba(0, 199, 180, 0.1);
+    border: 1px solid rgba(0, 199, 180, 0.4);
+    border-radius: 20px;
+    padding: 2px 8px;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+  .setup-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-8);
+    margin-top: var(--space-6);
+  }
+  .setup-card__badge {
+    display: inline-block;
+    background: var(--grad-cta);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: var(--space-3);
+  }
+  .setup-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .setup-card__desc {
+    font-size: var(--text-small);
+    color: var(--muted);
+    margin-top: var(--space-1);
+    max-width: 560px;
+  }
+  .setup-card__features {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3) var(--space-6);
+    font-size: 14.5px;
+  }
+  .setup-card__features li { display: flex; gap: var(--space-2); }
+  .setup-card__check { color: var(--teal); font-weight: 700; }
+  .setup-card__price-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .setup-card__from { font-size: 13px; color: var(--muted); }
+  .setup-card__price {
+    font-family: var(--font-mono);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -1px;
+  }
+  .setup-card__period { font-size: 14px; color: var(--muted); }
+  .pricing-terms {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+    margin-top: var(--space-12);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .pricing-cta {
+    text-align: center;
+    max-width: 620px;
+    margin: var(--space-12) auto 0;
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--border);
+  }
+  .pricing-cta p {
+    font-size: var(--text-body);
+    color: var(--muted);
+    margin: 0 0 var(--space-6);
+  }
+
+  @media (max-width: 1100px) {
+    .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-inline: auto; }
+  }
+  @media (max-width: 1024px) {
+    .setup-card {
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 440px;
+      margin-inline: auto;
+    }
+    .setup-card__features { grid-template-columns: 1fr; }
+    .setup-card__price-box { align-items: flex-start; text-align: left; }
+  }
+</style>

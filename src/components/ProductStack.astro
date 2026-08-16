@@ -2,6 +2,16 @@
 // Visual del hero: las tres pantallas reales del producto en capas.
 // Solo CSS — sin JS ni librerías — para no sumar peso al LCP.
 // El orden del DOM va de atrás hacia adelante.
+
+interface Props {
+  // En un hero las tres capas deben cargar de inmediato: en diferido se ven
+  // tres tarjetas vacías durante el primer instante. Debajo del pliegue
+  // (la home) el diferido sigue siendo lo correcto.
+  eager?: boolean;
+}
+
+const { eager = false } = Astro.props;
+
 const shots = [
   { src: '/screenshots/panel.jpg', alt: 'Panel de métricas de Livvo', layer: 'back' },
   { src: '/screenshots/embudo.jpg', alt: 'Embudo de negocios de Livvo', layer: 'mid' },
@@ -19,7 +29,7 @@ const shots = [
           {alt}
           width="1568"
           height="652"
-          loading={layer === 'front' ? 'eager' : 'lazy'}
+          loading={eager || layer === 'front' ? 'eager' : 'lazy'}
           decoding="async"
         />
       </figure>

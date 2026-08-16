@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
@@ -9,29 +10,16 @@ import DealFlow from '../components/DealFlow.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 import fotoLuisa from '../assets/equipo/luisa.png';
-import fotoLucia from '../assets/equipo/lucia.png';
-import fotoLaura from '../assets/equipo/laura.png';
-import fotoLina from '../assets/equipo/lina.jpg';
-import fotoLorena from '../assets/equipo/lorena.jpg';
-import fotoLiliana from '../assets/equipo/liliana.png';
 
-// Conversación del hero: se reproduce en loop, turno a turno, y cuenta el
-// ciclo completo — responde, califica, recomienda, agenda y entrega el lead.
-const heroChat = [
-  { from: 'client' as const, label: 'Carolina', text: 'Hola, vi el apartamento en Chapinero. ¿Sigue disponible?' },
-  { from: 'luisa' as const, text: '¡Hola, Carolina! Sí, sigue disponible. ¿Lo buscas para compra o arriendo?' },
-  { from: 'client' as const, label: 'Carolina', text: 'Para compra, con un presupuesto de $450 millones.' },
-  { from: 'reasoning' as const, label: 'Luisa calificando' },
-  {
-    from: 'luisa' as const,
-    text: 'Perfecto. Tengo 3 opciones en Chapinero y Chicó dentro de tu presupuesto. ¿Te gustaría verlas este sábado?',
-  },
-  { from: 'client' as const, label: 'Carolina', text: 'Sí, en la mañana.' },
-  {
-    from: 'luisa' as const,
-    text: 'Listo, agendé tu visita el sábado a las 10:00 a.m. Un asesor te confirma hoy mismo.',
-  },
-];
+// Orden de la home: problema → Luisa (IA) → Livvo Chat (plataforma) →
+// plataforma completa (los dos juntos, con CTA a cada uno).
+// El servicio administrado ("Livvo Administración") y el resto del equipo IA
+// (Lucía, Laura, Lina, Lorena, Liliana) quedan fuera del home: el equipo vive
+// en /agentes-ia, al que se llega desde el cierre de la sección de Luisa.
+//
+// Una familia de layout por sección (regla anti-plantilla): cifras, grilla de
+// iconos, bento con capturas, lista a dos columnas, marquesina, CTA y
+// acordeón. Ninguna se repite.
 
 // El problema del sector: tres costos concretos de operar con herramientas
 // sueltas y trabajo manual. Los números son el gancho; el título la tesis.
@@ -56,165 +44,142 @@ const problemStats = [
   },
 ];
 
-// Cómo funciona: tres pasos que responden uno a uno a las tres tarjetas de
-// la sección "El problema" (leads perdidos → propiedades → seguimiento manual).
-const steps = [
+// Luisa: seis capacidades, en el orden real de una conversación
+// (responder → calificar → recomendar → agendar → seguir → escalar).
+const luisaSkills = [
   {
-    n: '01',
-    title: 'Cero leads perdidos',
-    desc: 'Conectamos portales inmobiliarios, pauta digital y WhatsApp en una sola plataforma y una sola línea. Todo llega a un flujo unificado.',
+    icon: 'ph:clock',
+    title: 'Responde en segundos, 24/7',
+    desc: 'Nunca deja a un lead esperando. Madrugada, domingo o festivo: la primera respuesta llega en segundos y con el tono de tu marca.',
   },
   {
-    n: '02',
-    title: 'Tu portafolio en orden',
-    desc: 'Propiedades y clientes centralizados en una sola base, lista para que los agentes recomienden con fotos, descripciones y detalles.',
+    icon: 'ph:funnel',
+    title: 'Califica cada lead',
+    desc: 'Pregunta por operación, presupuesto, zona y forma de pago, y arma el perfil completo antes de que un asesor invierta un minuto.',
   },
   {
-    n: '03',
-    title: 'Seguimiento en piloto automático',
-    desc: 'Los agentes califican, resuelven objeciones, recomiendan propiedades, agendan citas y envían recordatorios 24/7. Tus asesores solo reciben leads calificados, listos para cerrar.',
+    icon: 'ph:house-line',
+    title: 'Recomienda propiedades',
+    desc: 'Busca en tu portafolio y envía las opciones que encajan con lo que el cliente pidió, con fotos, precio y detalles.',
   },
-] as const;
+  {
+    icon: 'ph:calendar-check',
+    title: 'Agenda la visita',
+    desc: 'Cierra la cita en la misma conversación, la sincroniza con Google Calendar y después confirma y recuerda.',
+  },
+  {
+    icon: 'ph:target',
+    title: 'Rescata leads fríos',
+    desc: 'Retoma a quien dejó de responder con seguimientos programados, en vez de dejar que el negocio se enfríe solo.',
+  },
+  {
+    icon: 'ph:hand-arrow-up',
+    title: 'Escala a tu asesor',
+    desc: 'Cuando detecta intención real de compra o algo que no sabe, pasa la conversación a un humano con todo el contexto a la vista.',
+  },
+];
 
-// Sección Producto: los dos agentes protagonistas (venta y servicio) y el
-// resto del equipo. Fotos compartidas con /agentes-ia.
-const featuredAgents = [
+// Livvo Chat en bento sobre una grilla de 6 columnas. Los anchos alternan
+// (4+2 / 2+4 / 3+3) para que no sea una grilla regular de tarjetas iguales:
+// esa familia de layout ya la usa la sección de Luisa. Las dos celdas grandes
+// van tintadas para que la sección tenga variación sin depender de imágenes.
+const chatCells = [
+  {
+    key: 'bandeja',
+    span: 4,
+    tinted: true,
+    icon: 'ph:tray',
+    title: 'Bandeja compartida',
+    desc: 'Todo el equipo atiende desde una sola bandeja: conversaciones asignables, notas internas, etiquetas e historial completo de cada cliente.',
+  },
+  {
+    key: 'embudo',
+    span: 2,
+    icon: 'ph:kanban',
+    title: 'Embudo inmobiliario',
+    desc: 'De lead nuevo a cierre ganado, con las etapas del sector y los valores en pesos.',
+  },
+  {
+    key: 'propiedades',
+    span: 2,
+    icon: 'ph:buildings',
+    title: 'Gestor de propiedades',
+    desc: 'Tu portafolio y tus clientes centralizados. Es la base de la que Luisa saca sus recomendaciones.',
+  },
+  {
+    key: 'campanas',
+    span: 4,
+    tinted: true,
+    icon: 'ph:megaphone-simple',
+    title: 'Campañas y difusiones',
+    desc: 'Envíos masivos por WhatsApp con plantillas aprobadas por Meta: nuevos proyectos, open house y seguimiento de cartera, con métricas de entrega.',
+  },
+  {
+    key: 'panel',
+    span: 3,
+    icon: 'ph:chart-bar',
+    title: 'Reportes de la operación',
+    desc: 'Tiempos de respuesta, conversaciones atendidas, citas agendadas y negocios por asesor. Sabes qué está pasando sin preguntar.',
+  },
+  {
+    key: 'automatizaciones',
+    span: 3,
+    icon: 'ph:lightning',
+    title: 'Automatizaciones y API',
+    desc: 'Reglas «si pasa X, haz Y», webhooks salientes y API pública para conectar Livvo con las herramientas que ya usas.',
+  },
+];
+
+// Plataforma completa: el recap final con los dos productos y su CTA propio.
+const products = [
+  {
+    key: 'chat',
+    name: 'Livvo Chat',
+    desc: 'La plataforma que centraliza todas las conversaciones de WhatsApp y otros canales en un solo lugar, con múltiples agentes.',
+    href: '/plataforma-de-atencion-al-cliente',
+    external: false,
+  },
   {
     key: 'luisa',
-    foto: fotoLuisa,
-    nombre: 'Luisa',
-    rol: 'Agente de ventas',
-    points: [
-      'Responde 24/7, en segundos y con el tono de tu marca.',
-      'Califica cada lead: presupuesto, zona y liquidez.',
-      'Envía propiedades de tu portafolio que encajan con la búsqueda.',
-      'Agenda citas en la misma conversación.',
-    ],
-  },
-  {
-    key: 'lucia',
-    foto: fotoLucia,
-    nombre: 'Lucía',
-    rol: 'Agente de servicio',
-    points: [
-      'Se conecta con tu base de propiedades y clientes.',
-      'Atiende inquilinos y propietarios 24/7.',
-      'Resuelve el 80 % de las consultas sin intervención humana.',
-    ],
+    name: 'Luisa IA',
+    desc: 'La inteligencia artificial que califica leads en tiempo real, agenda visitas automáticamente y mantiene tu inmobiliaria disponible 24 horas, 7 días a la semana.',
+    href: '/agentes-ia',
+    external: false,
   },
 ];
 
-const otherAgents = [
-  {
-    foto: fotoLaura,
-    nombre: 'Laura',
-    rol: 'Administrativa IA',
-    desc: 'Consultas de pagos, certificados y trámites, resueltas al momento.',
-  },
-  {
-    foto: fotoLina,
-    nombre: 'Lina',
-    rol: 'Cobranza IA',
-    desc: 'Recordatorios de pago y gestión de cartera por WhatsApp, con tono firme y cordial.',
-  },
-  {
-    foto: fotoLorena,
-    nombre: 'Lorena',
-    rol: 'Jurídica IA',
-    desc: 'Contratos, requisitos y garantías con base en tus propios documentos.',
-  },
-  {
-    foto: fotoLiliana,
-    nombre: 'Liliana',
-    rol: 'Escrituración IA',
-    desc: 'Acompaña el trámite completo: documentos, notaría y estado del proceso.',
-  },
-];
-
-const featureIcons: Record<string, string> = {
-  chat: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
-  filter: '<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>',
-  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-  home: '<path d="M3 9.5 12 3l9 6.5"/><path d="M5 8.5V21h14V8.5"/><path d="M9 21v-6h6v6"/>',
-  calendar:
-    '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>',
-  'calendar-check':
-    '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 15h3M8 18h6"/>',  link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
-  chart: '<path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/>',
-  coin: '<circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15.5 9.5c0-1.1-1.57-2-3.5-2s-3.5.9-3.5 2 1.2 1.6 3.5 2 3.5.9 3.5 2-1.57 2-3.5 2-3.5-.9-3.5-2"/>',
-  'file-check':
-    '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/>',
-  wrench:
-    '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
-  shield:
-    '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
-  cloud: '<path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.5A4 4 0 0 0 6 19z"/>',  database:
-    '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 5v14c0 1.66-4.03 3-9 3s-9-1.34-9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>',
-};
-
-// Tecnología y seguridad: solo afirmaciones ya validadas en el sitio
-// (/presentacion) — API oficial de Meta, datos exportables. No inventar
-// certificaciones ni garantías que no tengamos.
+// Tecnología y seguridad: lista a dos columnas, sin tarjetas. Es una sección
+// de confianza, no de producto: separadores finos en vez de cajas.
 const techItems = [
   {
-    icon: 'chat',
+    icon: 'ph:whatsapp-logo',
     title: 'API oficial de WhatsApp Business',
     desc: 'Tu línea opera sobre la Meta Cloud API, no sobre soluciones no oficiales que ponen en riesgo tu número.',
   },
   {
-    icon: 'calendar',
+    icon: 'ph:calendar-blank',
     title: 'Google Calendar integrado',
-    desc: 'Integración nativa con Google Calendar: coordinación de citas sin salir de Livvo.',
+    desc: 'Integración nativa: coordinación de citas sin salir de Livvo.',
   },
   {
-    icon: 'cloud',
+    icon: 'ph:cloud-check',
     title: 'Infraestructura en la nube',
-    desc: 'Infraestructura en la nube con monitoreo 24/7. Tus agentes nunca dejan de trabajar.',
+    desc: 'Monitoreo 24/7. Tus agentes nunca dejan de trabajar.',
   },
   {
-    icon: 'database',
+    icon: 'ph:database',
     title: 'Tus datos son tuyos',
     desc: 'Exportables vía API y alojados con seguridad de nivel empresarial.',
   },
   {
-    icon: 'file-check',
+    icon: 'ph:clock-counter-clockwise',
     title: 'Historial completo de conversaciones',
     desc: 'Cada chat queda registrado y auditable. Nada se pierde, aunque un asesor se vaya.',
   },
   {
-    icon: 'shield',
+    icon: 'ph:shield-check',
     title: 'Roles y permisos por usuario',
     desc: 'Cada asesor ve lo suyo; tú tienes visibilidad de toda la operación.',
-  },
-];
-
-// Dos formas de trabajar: servicio administrado (Livvo opera) vs. plataforma
-// (el equipo del cliente opera con nuestra tecnología, planes en /planes).
-const workModes = [
-  {
-    key: 'administracion',
-    name: 'Livvo Administración',
-    tagline: 'Delega en Livvo tus campañas de marketing y adquisición de leads.',
-    desc: 'Livvo gestiona tus campañas y adquisición de leads de inicio a fin, sin necesidad de contratar personal adicional. Solo te encargas de atender clientes calificados.',
-    points: ['Fee por cierre exitoso: cero riesgo', 'Garantía de reposición'],
-    ctaLabel: 'Agendar demo →',
-    ctaHref: WHATSAPP_URL,
-    ctaVariant: 'primary',
-  },
-  {
-    key: 'plataforma',
-    name: 'Plataforma',
-    tagline: 'Tu equipo comercial opera con nuestra tecnología.',
-    desc: 'Acceso a crear tus propias automatizaciones y agentes IA, y a nuestros agentes especializados en inmobiliarias.',
-    points: [
-      'Gestor de propiedades e inquilinos que alimenta tus agentes IA',
-      'Flujos especializados en el sector inmobiliario',
-      'KAM dedicado',
-      'Integración con tus sistemas actuales',
-    ],
-    ctaLabel: 'Ver planes →',
-    ctaHref: '/planes',
-    ctaVariant: 'outline',
   },
 ];
 
@@ -238,11 +203,15 @@ const integrationRows = [
 const faqItems = [
   {
     q: '¿Qué hace exactamente Livvo?',
-    a: 'Livvo es el sistema comercial de IA para inmobiliarias que integra en una sola plataforma conversaciones, negocios y agentes de inteligencia artificial. El objetivo es eliminar el trabajo operativo de tu equipo y aumentar tu tasa de cierre.',
+    a: 'Livvo son dos productos que trabajan juntos: Luisa, la agente de inteligencia artificial que atiende, califica y agenda por WhatsApp 24/7, y Livvo Chat, la plataforma donde tu equipo gestiona conversaciones, propiedades y negocios en un solo lugar. El objetivo es eliminar el trabajo operativo de tu equipo y aumentar tu tasa de cierre.',
+  },
+  {
+    q: '¿Puedo usar la plataforma sin la IA?',
+    a: 'Sí. Livvo Chat funciona por sí solo como CRM de WhatsApp: bandeja compartida, embudo, propiedades y campañas. Luisa se activa cuando quieras, y a partir de ahí trabaja sobre esa misma base. Por eso el resultado es mucho mejor con los dos que con uno solo.',
   },
   {
     q: '¿La IA reemplaza a mis asesores?',
-    a: 'No. Imagínalos como una primera línea que nunca duerme: los agentes IA responden, califican y agendan; tus asesores entran cuando hay una visita que atender o un negocio que cerrar, con todo el historial de la conversación a la vista, y pueden intervenir en cualquier momento si lo ven necesario.',
+    a: 'No. Imagínala como una primera línea que nunca duerme: Luisa responde, califica y agenda; tus asesores entran cuando hay una visita que atender o un negocio que cerrar, con todo el historial de la conversación a la vista, y pueden intervenir en cualquier momento si lo ven necesario.',
   },
   {
     q: '¿Qué pasa si la IA no sabe responder algo?',
@@ -250,11 +219,11 @@ const faqItems = [
   },
   {
     q: '¿Sirve solo para vender, o también para arriendos y postventa?',
-    a: 'También. Los mismos agentes IA atienden a inquilinos y propietarios: requisitos, mantenimiento, renovaciones y estado de un proceso, sin que tu equipo tenga que responder caso por caso.',
+    a: 'También. Además de Luisa hay agentes IA especializados en servicio, administración, cobranza, jurídico y escrituración, que atienden a inquilinos y propietarios: requisitos, mantenimiento, renovaciones y estado de un proceso. Puedes conocerlos en la página de Agentes IA.',
   },
   {
     q: '¿Funciona con los leads que llegan de los portales?',
-    a: 'Sí. Los leads de Fincaraíz, Metrocuadrado, Ciencuadras o tu propia página entran a la misma bandeja y reciben respuesta en segundos, sin importar la hora.',
+    a: 'Sí. Los leads de Fincaraíz, Metrocuadrado, Ciencuadras o tu propia página entran a la misma bandeja de Livvo Chat y reciben respuesta en segundos, sin importar la hora.',
   },
   {
     q: '¿Puedo seguir usando el número de WhatsApp que ya tiene mi inmobiliaria?',
@@ -274,18 +243,21 @@ const faqItems = [
   },
   {
     q: '¿Qué pasa si quiero cancelar?',
-    a: 'No hay contrato de permanencia — cancelas cuando quieras, sin penalidades. Te acompañamos durante la implementación para asegurarnos de que veas resultados desde el primer mes.',
+    a: 'No hay contrato de permanencia. Cancelas cuando quieras, sin penalidades, y te acompañamos durante la implementación para asegurarnos de que veas resultados desde el primer mes.',
   },
 ];
 
 const faqSubtitle = 'Más información sobre Livvo';
 ---
 
-<Base>
+<Base
+  title="Livvo: toda la atención de tu inmobiliaria en un solo lugar"
+  description="Livvo son dos productos: Luisa, la agente de IA que atiende, califica y agenda citas por WhatsApp 24/7, y Livvo Chat, la plataforma donde tu equipo gestiona conversaciones, propiedades y negocios."
+>
   <Navbar />
 
   <main>
-  <!-- HERO — partículas teal como energía ambiental -->
+  <!-- HERO: el paraguas, los dos productos en un solo lugar -->
   <div class="hero-scene">
     <div id="hero-particles" class="hero-scene__particles" aria-hidden="true"></div>
     <header class="hero">
@@ -295,12 +267,11 @@ const faqSubtitle = 'Más información sobre Livvo';
             Automatización para <span class="hero__badge-word" id="hero-badge-word">inmobiliarias</span>
           </span>
           <h1 class="hero__title">
-            Agenda más citas. <em class="grad-text">Sin crecer tu equipo.</em>
+            Toda la atención de tu inmobiliaria <em class="grad-text">en un solo lugar.</em>
           </h1>
           <p class="hero__sub">
-            Livvo automatiza tu operación comercial y atención al cliente con agentes que
-            prospectan, agendan citas, envían propiedades, hacen cobranza y gestionan
-            solicitudes de arrendatarios en WhatsApp 24/7. Se integra con tus sistemas actuales.
+            <strong>Luisa</strong> atiende, califica y agenda 24/7.
+            <strong>Livvo Chat</strong> es donde trabaja tu equipo.
           </p>
           <div class="hero__ctas">
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Prueba 15 días gratis →</Button>
@@ -313,10 +284,9 @@ const faqSubtitle = 'Más información sobre Livvo';
     </header>
   </div>
 
-  <!-- EL PROBLEMA — lo que cuesta operar fragmentado y a mano -->
+  <!-- EL PROBLEMA: cifras. Familia de layout propia (número protagonista) -->
   <Section
     id="problema"
-    eyebrow="El problema"
     title="Tu operación comercial está fragmentada."
     subtitle="Marketing, ventas y atención al cliente dependen de herramientas sueltas y trabajo manual que no alcanzan para cumplir las metas."
     alt
@@ -332,90 +302,116 @@ const faqSubtitle = 'Más información sobre Livvo';
     </div>
   </Section>
 
-  <!-- CÓMO FUNCIONA — tres pasos, espejo de las tres tarjetas del problema -->
+  <!-- LUISA: grilla de capacidades con icono. Única sección con esta familia -->
   <Section
-    id="como-funciona"
-    eyebrow="Cómo funciona"
-    title="Un solo flujo: del lead perdido al negocio cerrado."
-    subtitle="Tu nuevo equipo comercial y de atención al cliente trabaja mientras duermes."
+    id="luisa"
+    eyebrow="Inteligencia artificial"
+    title="Conoce a Luisa, la agente que atiende por ti."
+    subtitle="Comercial y servicio al cliente en la misma conversación. Trabaja sobre tu portafolio, con el tono de tu marca, todos los días del año."
   >
-    <div class="how-grid fade-up">
-      {steps.map(({ n, title, desc }) => (
-        <article class="how-card">
-          <span class="how-card__num">{n}</span>
-          <h3 class="how-card__title">{title}</h3>
-          <p class="how-card__desc">{desc}</p>
+    <div class="luisa-strip fade-up">
+      <Image
+        class="luisa-strip__photo"
+        src={fotoLuisa}
+        alt="Luisa, agente de IA de Livvo"
+        width={220}
+        densities={[1, 2]}
+      />
+      <div>
+        <h3 class="luisa-strip__name">Luisa</h3>
+        <span class="luisa-strip__rol">Agente comercial y de atención al cliente</span>
+        <p class="luisa-strip__desc">
+          Atiende por WhatsApp y por la web. Habla como tu equipo, conoce tu portafolio
+          y no deja una sola consulta sin responder.
+        </p>
+      </div>
+    </div>
+
+    <div class="skills-grid fade-up">
+      {luisaSkills.map(({ icon, title, desc }) => (
+        <article class="skill-card">
+          <span class="skill-card__icon" aria-hidden="true">
+            <Icon name={icon} width={22} height={22} />
+          </span>
+          <h3 class="skill-card__title">{title}</h3>
+          <p class="skill-card__desc">{desc}</p>
         </article>
       ))}
     </div>
-    <div class="how-cta fade-up">
-      <Button href={WHATSAPP_URL} target="_blank" size="lg">Prueba 15 días gratis →</Button>
+
+    <div class="product-close fade-up">
+      <div class="product-close__text">
+        <h3 class="product-close__title">Luisa, tu nueva asistente virtual con IA.</h3>
+        <p class="product-close__desc">
+          Califica leads, agenda visitas y aumenta el número de citas de tu inmobiliaria
+          con atención 24 horas, 7 días a la semana.
+        </p>
+      </div>
+      <Button href="/agentes-ia" variant="outline" size="lg">Más información →</Button>
     </div>
   </Section>
 
-  <!-- PRODUCTO — Luisa y Lucía primero; el resto del equipo debajo -->
+  <!-- LIVVO CHAT: bento. Tres celdas con captura real, tres de texto -->
   <Section
-    id="producto"
-    eyebrow="Producto"
-    title="Agentes que saben vender y atender clientes de manera personalizada, y se alimentan de tu base de propiedades y clientes."
-    subtitle="Atienden, califican, envían propiedades y agendan citas por WhatsApp y web. Tu equipo solo se enfoca en cerrar."
+    id="livvo-chat"
+    eyebrow="Plataforma de atención al cliente"
+    title="Livvo Chat: todo tu WhatsApp, ordenado."
+    subtitle="Una sola línea, una sola bandeja y todo tu equipo adentro. Cada conversación, propiedad y negocio en un solo lugar, no en el celular de un asesor."
+    alt
   >
-    <div class="agents-featured fade-up">
-      {featuredAgents.map(({ key, foto, nombre, rol, points }) => (
-        <article class:list={['agent-card', `agent-card--${key}`]}>
-          <div class="agent-card__head">
-            <Image
-              class="agent-card__photo"
-              src={foto}
-              alt={`${nombre}, ${rol} de Livvo`}
-              width={180}
-              densities={[1, 2]}
-            />
-            <div>
-              <h3 class="agent-card__name">{nombre}</h3>
-              <span class="agent-card__rol">{rol}</span>
-            </div>
+    <div class="bento fade-up">
+      {chatCells.map(({ key, span, tinted, icon, title, desc }) => (
+        <article
+          class:list={['bento__cell', `bento__cell--${span}`, { 'bento__cell--tinted': tinted }]}
+        >
+          <span class="bento__icon" aria-hidden="true">
+            <Icon name={icon} width={22} height={22} />
+          </span>
+          <h3 class="bento__title">{title}</h3>
+          <p class="bento__desc">{desc}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="product-close fade-up">
+      <div class="product-close__text">
+        <h3 class="product-close__title">Unifica la atención al cliente de tu inmobiliaria.</h3>
+        <p class="product-close__desc">
+          Centraliza todas las conversaciones de WhatsApp en un solo lugar. Gestiona equipos,
+          transfiere solicitudes y haz seguimiento de los resultados con una plataforma
+          diseñada para el sector inmobiliario.
+        </p>
+      </div>
+      <Button href="/plataforma-de-atencion-al-cliente" variant="outline" size="lg">
+        Más información →
+      </Button>
+    </div>
+  </Section>
+
+  <!-- PLATAFORMA COMPLETA: los dos productos, cada uno con su CTA -->
+  <Section
+    id="plataforma-completa"
+    title="Todo lo que tu inmobiliaria necesita para vender y atender."
+    subtitle="Unifica todas las interacciones en un solo número de WhatsApp y deja que Luisa IA califique leads y agende visitas automáticamente."
+  >
+    <div class="product-grid fade-up">
+      {products.map(({ key, name, desc, href, external }) => (
+        <article class:list={['product-card', `product-card--${key}`]}>
+          <h3 class="product-card__name">{name}</h3>
+          <p class="product-card__desc">{desc}</p>
+          <div class="product-card__cta">
+            <Button href={href} target={external ? '_blank' : undefined} variant="outline">
+              Más información →
+            </Button>
           </div>
-          <ul class="agent-card__points">
-            {points.map((p) => (
-              <li>{p}</li>
-            ))}
-          </ul>
         </article>
       ))}
-    </div>
-
-    <header class="agents-more fade-up">
-      <h3 class="agents-more__title">No solo la venta.</h3>
-      <p class="agents-more__sub">
-        El resto del equipo cubre toda la operación: administración, cobranza, jurídico y escrituración.
-      </p>
-    </header>
-    <div class="agents-grid fade-up">
-      {otherAgents.map(({ foto, nombre, rol, desc }) => (
-        <article class="agent-mini">
-          <Image
-            class="agent-mini__photo"
-            src={foto}
-            alt={`${nombre}, ${rol} de Livvo`}
-            width={88}
-            densities={[1, 2]}
-          />
-          <h4 class="agent-mini__name">{nombre}</h4>
-          <span class="agent-mini__rol">{rol}</span>
-          <p class="agent-mini__desc">{desc}</p>
-        </article>
-      ))}
-    </div>
-    <div class="agents-cta fade-up">
-      <a class="agents-cta__link" href="/agentes-ia">Conocer a todo el equipo →</a>
     </div>
   </Section>
 
-  <!-- INTEGRACIONES -->
+  <!-- INTEGRACIONES: marquesina. Única del sitio en esta página -->
   <Section
     id="integraciones"
-    eyebrow="Integraciones"
     title="Livvo se conecta con los sistemas que ya usas."
     subtitle="Integración con los principales CRMs, portales y ERPs del mercado inmobiliario."
     alt
@@ -442,72 +438,48 @@ const faqSubtitle = 'Más información sobre Livvo';
     </div>
   </Section>
 
-  <!-- TECNOLOGÍA Y SEGURIDAD — reutiliza las tarjetas de features en teal -->
+  <!-- TECNOLOGÍA: lista a dos columnas, sin tarjetas (sección de confianza) -->
   <Section
     id="tecnologia"
-    eyebrow="Tecnología y seguridad"
     title="Tecnología en la que puedes confiar."
     subtitle="Infraestructura y APIs oficiales para que tu operación nunca se detenga."
   >
-    <div class="features-grid fade-up">
+    <ul class="trust-list fade-up">
       {techItems.map(({ icon, title, desc }) => (
-        <article class="feature-card feature-card--admin">
-          <span class="feature-card__icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              set:html={featureIcons[icon]}
-            />
+        <li class="trust-item">
+          <span class="trust-item__icon" aria-hidden="true">
+            <Icon name={icon} width={20} height={20} />
           </span>
-          <h3 class="feature-card__title">{title}</h3>
-          <p class="feature-card__desc">{desc}</p>
-        </article>
+          <div>
+            <h3 class="trust-item__title">{title}</h3>
+            <p class="trust-item__desc">{desc}</p>
+          </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </Section>
 
-  <!-- DOS FORMAS DE TRABAJAR — administrado vs. plataforma -->
+  <!-- PLANES: cierre hacia /planes -->
   <Section
     id="planes"
-    eyebrow="Planes"
-    title="Dos formas de trabajar."
-    subtitle="El mismo resultado. Tú decides cuánto control quieres."
+    title="Los dos productos, un solo plan."
+    subtitle="Empieza gratis con tu línea de WhatsApp y tu agente IA. Escala cuando tu operación lo pida."
     alt
   >
-    <div class="work-grid fade-up">
-      {workModes.map(({ key, name, tagline, desc, points, ctaLabel, ctaHref, ctaVariant }) => (
-        <article class:list={['work-card', `work-card--${key}`]}>
-          <h3 class="work-card__name">{name}</h3>
-          <p class="work-card__tagline">{tagline}</p>
-          <p class="work-card__desc">{desc}</p>
-          <ul class="work-card__points">
-            {points.map((p) => (
-              <li>{p}</li>
-            ))}
-          </ul>
-          <div class="work-card__cta">
-            <Button
-              href={ctaHref}
-              target={ctaHref.startsWith('http') ? '_blank' : undefined}
-              variant={ctaVariant}
-              size="lg"
-            >
-              {ctaLabel}
-            </Button>
-          </div>
-        </article>
-      ))}
+    <div class="plan-cta fade-up">
+      <ul class="plan-cta__terms">
+        <li>Prueba gratuita de 15 días</li>
+        <li>Sin tarjeta de crédito</li>
+        <li>Sin contrato de permanencia</li>
+      </ul>
+      <div class="plan-cta__buttons">
+        <Button href="/planes" size="lg">Ver planes y precios →</Button>
+      </div>
     </div>
   </Section>
 
-  <!-- FAQ -->
-  <Section id="faq" eyebrow="FAQ" title="Preguntas frecuentes" subtitle={faqSubtitle}>
+  <!-- FAQ: acordeón -->
+  <Section id="faq" title="Preguntas frecuentes" subtitle={faqSubtitle}>
     <div class="fade-up">
       <FAQ items={faqItems} />
       <div class="faq-footer fade-up">
@@ -592,8 +564,7 @@ const faqSubtitle = 'Más información sobre Livvo';
 </script>
 
 <style>
-  /* La escena contiene hero + chat y aporta el fondo; los anillos
-     pueden desbordar entre secciones sin salirse de la escena */
+  /* La escena contiene hero + chat y aporta el fondo */
   .hero-scene {
     position: relative;
     overflow: hidden;
@@ -664,12 +635,17 @@ const faqSubtitle = 'Más información sobre Livvo';
     margin: 0 0 var(--space-6);
   }
   .hero__title em { font-style: normal; }
+  /* subtítulo corto a propósito: el hero entero debe caber en el viewport */
   .hero__sub {
-    font-size: var(--text-body);
+    font-size: 18px;
     line-height: var(--lh-relaxed);
     color: var(--muted);
-    max-width: 520px;
+    max-width: 460px;
     margin: 0 0 var(--space-8);
+  }
+  .hero__sub strong {
+    color: var(--text);
+    font-weight: 700;
   }
   .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; }
   .hero__chat {
@@ -693,7 +669,7 @@ const faqSubtitle = 'Más información sobre Livvo';
     .hero__content { animation: none; }
   }
 
-  /* ---- El problema: tres costos de la operación fragmentada ---- */
+  /* ---- El problema: la cifra es el protagonista ---- */
   .problem-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -735,115 +711,32 @@ const faqSubtitle = 'Más información sobre Livvo';
     .problem-grid { grid-template-columns: 1fr; }
   }
 
-  /* ---- Cómo funciona: tres pasos, espejo de las tarjetas del problema ---- */
-  .how-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-6);
-    align-items: stretch;
-  }
-  .how-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
-    padding: var(--space-8) var(--space-6);
-    transition: box-shadow var(--transition), border-color var(--transition),
-      transform var(--transition);
-  }
-  .how-card:hover {
-    box-shadow: var(--shadow-hover);
-    border-color: rgba(0, 199, 180, 0.45);
-    transform: translateY(-2px);
-  }
-  .how-card__num {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--teal-deep);
-    margin-bottom: var(--space-4);
-  }
-  .how-card__title {
-    font-size: var(--text-h3);
-    margin: 0 0 var(--space-2);
-  }
-  .how-card__desc {
-    color: var(--muted);
-    font-size: var(--text-small);
-    line-height: var(--lh-body);
-    margin: 0;
-  }
-  .how-cta {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--space-12);
-  }
-  @media (max-width: 900px) {
-    .how-grid { grid-template-columns: 1fr; }
-  }
-
-  /* Tecnología y seguridad: 6 tarjetas en dos filas de tres */
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-6);
-  }
-  .feature-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
-    padding: var(--space-6);
-    transition: box-shadow var(--transition), border-color var(--transition),
-      background-color var(--transition), transform var(--transition);
-  }
-  .feature-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
-  }
-  /* ---- Producto: Luisa y Lucía destacadas + el resto del equipo ---- */
-  .agents-featured {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-6);
-    align-items: stretch;
-  }
-  .agent-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
-    padding: var(--space-8);
-    transition: box-shadow var(--transition), border-color var(--transition),
-      transform var(--transition);
-  }
-  .agent-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
-  }
-  .agent-card--luisa:hover { border-color: rgba(108, 99, 255, 0.45); }
-  .agent-card--lucia:hover { border-color: rgba(0, 199, 180, 0.45); }
-  .agent-card__head {
+  /* ---- Luisa: ficha de identidad + grilla de capacidades ---- */
+  .luisa-strip {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
-    margin-bottom: var(--space-6);
+    gap: var(--space-8);
+    max-width: 720px;
+    margin: 0 auto var(--space-12);
+    padding: var(--space-8);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
   }
-  .agent-card__photo {
-    width: 90px;
-    height: 90px;
+  .luisa-strip__photo {
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
+    border: 3px solid rgba(108, 99, 255, 0.4);
   }
-  .agent-card--luisa .agent-card__photo { border: 3px solid rgba(108, 99, 255, 0.4); }
-  .agent-card--lucia .agent-card__photo { border: 3px solid rgba(0, 199, 180, 0.4); }
-  .agent-card__name {
+  .luisa-strip__name {
     font-size: var(--text-h2);
     margin: 0;
   }
-  .agent-card__rol {
+  .luisa-strip__rol {
     display: inline-block;
     margin-top: var(--space-1);
     font-size: 12px;
@@ -852,123 +745,46 @@ const faqSubtitle = 'Más información sobre Livvo';
     text-transform: uppercase;
     border-radius: 20px;
     padding: 4px 12px;
-    border: 1px solid;
-  }
-  .agent-card--luisa .agent-card__rol {
     color: var(--violet);
-    border-color: rgba(108, 99, 255, 0.4);
+    border: 1px solid rgba(108, 99, 255, 0.4);
     background: rgba(108, 99, 255, 0.08);
   }
-  .agent-card--lucia .agent-card__rol {
-    color: var(--teal-deep);
-    border-color: rgba(0, 199, 180, 0.4);
-    background: rgba(0, 199, 180, 0.08);
-  }
-  .agent-card__points {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--space-3);
-  }
-  .agent-card__points li {
-    position: relative;
-    padding-left: 26px;
+  .luisa-strip__desc {
     color: var(--muted);
     font-size: var(--text-small);
     line-height: var(--lh-body);
+    margin: var(--space-4) 0 0;
   }
-  .agent-card__points li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-weight: 700;
+  @media (max-width: 640px) {
+    .luisa-strip {
+      flex-direction: column;
+      text-align: center;
+      padding: var(--space-6);
+      gap: var(--space-6);
+    }
   }
-  .agent-card--luisa .agent-card__points li::before { color: var(--violet); }
-  .agent-card--lucia .agent-card__points li::before { color: var(--teal-deep); }
 
-  .agents-more {
-    text-align: center;
-    max-width: 640px;
-    margin: var(--space-12) auto var(--space-8);
-  }
-  .agents-more__title {
-    font-size: var(--text-h2);
-    margin: 0 0 var(--space-2);
-  }
-  .agents-more__sub {
-    color: var(--muted);
-    font-size: var(--text-small);
-    line-height: var(--lh-body);
-    margin: 0;
-  }
-  .agents-grid {
+  .skills-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-6);
   }
-  .agent-mini {
+  .skill-card {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-sm);
     padding: var(--space-6);
-    text-align: center;
     transition: box-shadow var(--transition), border-color var(--transition),
-      transform var(--transition);
+      background-color var(--transition), transform var(--transition);
   }
-  .agent-mini:hover {
+  .skill-card:hover {
     box-shadow: var(--shadow-hover);
+    background: rgba(108, 99, 255, 0.07);
     border-color: rgba(108, 99, 255, 0.45);
     transform: translateY(-2px);
   }
-  .agent-mini__photo {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: var(--space-3);
-  }
-  .agent-mini__name {
-    font-size: var(--text-h3);
-    margin: 0;
-  }
-  .agent-mini__rol {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: var(--ls-label);
-    text-transform: uppercase;
-    color: var(--violet);
-    margin: var(--space-1) 0 var(--space-3);
-  }
-  .agent-mini__desc {
-    color: var(--muted);
-    font-size: var(--text-small);
-    line-height: var(--lh-body);
-    margin: 0;
-  }
-  .agents-cta {
-    text-align: center;
-    margin-top: var(--space-8);
-  }
-  .agents-cta__link {
-    font-size: var(--text-small);
-    font-weight: 700;
-    color: var(--violet);
-    text-decoration: none;
-  }
-  .agents-cta__link:hover { text-decoration: underline; }
-  @media (max-width: 900px) {
-    .agents-featured { grid-template-columns: 1fr; }
-    .agents-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 560px) {
-    .agents-grid { grid-template-columns: 1fr; }
-  }
-
-  .feature-card__icon {
+  .skill-card__icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -976,35 +792,139 @@ const faqSubtitle = 'Más información sobre Livvo';
     height: 44px;
     border-radius: 12px;
     margin-bottom: var(--space-4);
+    background: rgba(108, 99, 255, 0.1);
+    color: var(--violet);
     transition: background-color var(--transition), color var(--transition);
   }
-  .feature-card__title {
+  .skill-card:hover .skill-card__icon {
+    background: var(--violet);
+    color: #fff;
+  }
+  .skill-card__title {
     font-size: var(--text-h3);
     margin: 0 0 var(--space-2);
   }
-  .feature-card__desc {
+  .skill-card__desc {
     color: var(--muted);
     font-size: var(--text-small);
     line-height: var(--lh-body);
     margin: 0;
   }
+  @media (max-width: 1024px) {
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .skills-grid { grid-template-columns: 1fr; }
+  }
 
-  /* Tecnología y seguridad — teal (acento primario del DS) */
-  .feature-card--admin .feature-card__icon {
+  /* ---- Livvo Chat en bento: 6 celdas sobre 6 columnas (4+2 / 2+4 / 3+3) ---- */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-4);
+  }
+  .bento__cell {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-8) var(--space-6);
+    transition: box-shadow var(--transition), border-color var(--transition),
+      background-color var(--transition), transform var(--transition);
+  }
+  .bento__cell:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(0, 199, 180, 0.45);
+    transform: translateY(-2px);
+  }
+  /* los anchos alternan para romper la rejilla regular */
+  .bento__cell--4 { grid-column: span 4; }
+  .bento__cell--3 { grid-column: span 3; }
+  .bento__cell--2 { grid-column: span 2; }
+
+  /* las dos celdas grandes van tintadas: variación sin depender de imágenes */
+  .bento__cell--tinted {
+    background: rgba(0, 199, 180, 0.06);
+    border-color: rgba(0, 199, 180, 0.22);
+  }
+
+  .bento__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    margin-bottom: var(--space-4);
     background: rgba(0, 199, 180, 0.1);
     color: var(--teal-deep);
+    transition: background-color var(--transition), color var(--transition);
   }
-  .feature-card--admin:hover {
-    background: rgba(0, 199, 180, 0.07);
-    border-color: rgba(0, 199, 180, 0.45);
-  }
-  .feature-card--admin:hover .feature-card__icon {
+  .bento__cell--tinted .bento__icon { background: rgba(0, 199, 180, 0.16); }
+  .bento__cell:hover .bento__icon {
     background: var(--grad-cta);
     color: #fff;
   }
+  .bento__title {
+    font-size: var(--text-h3);
+    margin: 0 0 var(--space-2);
+  }
+  .bento__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  /* tablet: 2 columnas, la grande ocupa el ancho completo */
+  @media (max-width: 900px) {
+    .bento { grid-template-columns: repeat(2, 1fr); }
+    .bento__cell--4 { grid-column: span 2; }
+    .bento__cell--3,
+    .bento__cell--2 { grid-column: span 1; }
+  }
+  @media (max-width: 560px) {
+    .bento { grid-template-columns: 1fr; }
+    .bento__cell--4,
+    .bento__cell--3,
+    .bento__cell--2 { grid-column: span 1; }
+  }
 
-  /* ---- Dos formas de trabajar: administrado vs. plataforma ---- */
-  .work-grid {
+  /* ---- Banda de cierre de cada producto ---- */
+  .product-close {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    max-width: 960px;
+    margin: var(--space-12) auto 0;
+    padding: var(--space-8);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+  }
+  .product-close__text { max-width: 560px; }
+  .product-close__title {
+    font-size: var(--text-h2);
+    margin: 0 0 var(--space-2);
+  }
+  .product-close__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  @media (max-width: 900px) {
+    .product-close {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-6);
+      padding: var(--space-6);
+    }
+  }
+
+  /* ---- Plataforma completa: los dos productos con su CTA ---- */
+  .product-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-6);
@@ -1012,7 +932,7 @@ const faqSubtitle = 'Más información sobre Livvo';
     max-width: 960px;
     margin-inline: auto;
   }
-  .work-card {
+  .product-card {
     display: flex;
     flex-direction: column;
     background: var(--white);
@@ -1023,61 +943,36 @@ const faqSubtitle = 'Más información sobre Livvo';
     transition: box-shadow var(--transition), border-color var(--transition),
       transform var(--transition);
   }
-  .work-card:hover {
+  .product-card:hover {
     box-shadow: var(--shadow-hover);
-    border-color: rgba(0, 199, 180, 0.45);
     transform: translateY(-2px);
   }
-  .work-card__name {
+  .product-card--luisa:hover { border-color: rgba(108, 99, 255, 0.45); }
+  .product-card--chat:hover { border-color: rgba(0, 199, 180, 0.45); }
+  .product-card__name {
     font-size: var(--text-h2);
     margin: 0 0 var(--space-3);
   }
-  .work-card__tagline {
-    font-weight: 700;
-    line-height: var(--lh-body);
-    margin: 0 0 var(--space-3);
-  }
-  .work-card__desc {
+  .product-card--luisa .product-card__name { color: var(--violet); }
+  .product-card--chat .product-card__name { color: var(--teal-deep); }
+  .product-card__desc {
     color: var(--muted);
     font-size: var(--text-small);
     line-height: var(--lh-body);
-    margin: 0 0 var(--space-6);
-  }
-  .work-card__points {
-    list-style: none;
     margin: 0 0 var(--space-8);
-    padding: 0;
-    display: grid;
-    gap: var(--space-3);
   }
-  .work-card__points li {
-    position: relative;
-    padding-left: 26px;
-    color: var(--muted);
-    font-size: var(--text-small);
-    line-height: var(--lh-body);
-  }
-  .work-card__points li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-weight: 700;
-    color: var(--teal-deep);
-  }
-  .work-card__cta { margin-top: auto; }
+  .product-card__cta { margin-top: auto; }
   @media (max-width: 900px) {
-    .work-grid { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: 1fr; }
   }
 
-  /* ---- Integraciones: dos cintas contra-rotantes de sistemas ---- */
+  /* ---- Integraciones: dos cintas contra-rotantes ---- */
   .integrations {
     display: grid;
     gap: var(--space-4);
   }
   .integrations__marquee {
     overflow: hidden;
-    /* desvanecer en los bordes */
     mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   }
@@ -1085,12 +980,12 @@ const faqSubtitle = 'Más información sobre Livvo';
     display: flex;
     gap: var(--space-6);
     width: max-content;
-    padding-block: var(--space-2); /* aire para la sombra de las pills */
+    padding-block: var(--space-2);
     animation: integrations-scroll 40s linear infinite;
   }
   .integrations__track--reverse {
     animation-direction: reverse;
-    animation-duration: 48s; /* velocidad distinta: se siente orgánico */
+    animation-duration: 48s;
   }
   .integrations__group {
     display: flex;
@@ -1100,7 +995,6 @@ const faqSubtitle = 'Más información sobre Livvo';
     animation-play-state: paused;
   }
   @keyframes integrations-scroll {
-    /* -50% menos medio gap: el loop se repite sin salto */
     to { transform: translateX(calc(-50% - var(--space-3))); }
   }
   .integration-pill {
@@ -1150,9 +1044,90 @@ const faqSubtitle = 'Más información sobre Livvo';
       flex-wrap: wrap;
       justify-content: center;
     }
-    /* sin animación no hace falta la copia duplicada */
     .integrations__group[aria-hidden='true'] { display: none; }
     .integrations__marquee { mask-image: none; -webkit-mask-image: none; }
+  }
+
+  /* ---- Tecnología: lista a dos columnas, sin tarjetas ---- */
+  .trust-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 var(--space-12);
+    max-width: 980px;
+    margin-inline: auto;
+    padding: 0;
+  }
+  .trust-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  /* sin línea bajo la última fila de cada columna */
+  .trust-item:nth-last-child(-n + 2) { border-bottom: none; }
+  .trust-item__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(0, 199, 180, 0.1);
+    color: var(--teal-deep);
+  }
+  .trust-item__title {
+    font-size: var(--text-h3);
+    margin: 0 0 var(--space-1);
+  }
+  .trust-item__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    .trust-list { grid-template-columns: 1fr; gap: 0; }
+    .trust-item:nth-last-child(-n + 2) { border-bottom: 1px solid var(--border); }
+    .trust-item:last-child { border-bottom: none; }
+  }
+
+  /* ---- Planes: cierre hacia /planes ---- */
+  .plan-cta {
+    text-align: center;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  .plan-cta__terms {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3) var(--space-8);
+    margin: 0 0 var(--space-8);
+    padding: 0;
+  }
+  .plan-cta__terms li {
+    position: relative;
+    padding-left: 24px;
+    font-size: var(--text-small);
+    color: var(--muted);
+  }
+  .plan-cta__terms li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 700;
+    color: var(--teal-deep);
+  }
+  .plan-cta__buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
   }
 
   .faq-footer {
@@ -1166,13 +1141,5 @@ const faqSubtitle = 'Más información sobre Livvo';
     font-size: var(--text-body);
     color: var(--muted);
     margin-bottom: var(--space-6);
-  }
-
-  @media (max-width: 1024px) {
-    .features-grid { grid-template-columns: repeat(2, 1fr); }
-    .feature-card { padding: var(--space-6) var(--space-4); }
-  }
-  @media (max-width: 640px) {
-    .features-grid { grid-template-columns: 1fr; }
   }
 </style>

@@ -70,7 +70,6 @@ const features = [
       alt
       eyebrow="Tecnología RAG"
       title="Entrenados con el reglamento de tu copropiedad"
-      subtitle="Los agentes operan con Generación Aumentada por Recuperación (RAG): leen el reglamento y los documentos específicos de tu PH y responden con base en ellos, no con respuestas genéricas."
     >
       <div class="phfeatures fade-up">
         {features.map(({ icon, title, desc }) => (
@@ -91,7 +90,9 @@ const features = [
         <p>
           La mejor forma de evaluar un agente de IA es conversar con uno. Escríbenos por WhatsApp
           y mira cómo atiende a un residente, radica una PQRS y gestiona la cobranza en una
-          conversación real.
+          conversación real. Cada conversación queda registrada en
+          <a href="/plataforma-de-atencion-al-cliente">Livvo Chat</a>, la misma plataforma donde
+          trabaja tu equipo de administración.
         </p>
         <Button href={WHATSAPP_URL} target="_blank" size="lg" id="ph-cta-final">
           Prueba 15 días gratis →
@@ -206,6 +207,14 @@ const features = [
     font-size: 16px;
     line-height: var(--lh-body);
     margin: 0 0 24px;
+  }
+  .ph-cta a {
+    color: var(--teal-deep);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .ph-cta a:hover {
+    text-decoration: underline;
   }
 
   @media (max-width: 1024px) {

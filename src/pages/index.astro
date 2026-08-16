@@ -247,11 +247,10 @@ const faqItems = [
   },
 ];
 
-const faqSubtitle = 'Más información sobre Livvo';
 ---
 
 <Base
-  title="Livvo: toda la atención de tu inmobiliaria en un solo lugar"
+  title="Livvo: agenda más visitas sin contratar más asesores"
   description="Livvo son dos productos: Luisa, la agente de IA que atiende, califica y agenda citas por WhatsApp 24/7, y Livvo Chat, la plataforma donde tu equipo gestiona conversaciones, propiedades y negocios."
 >
   <Navbar />
@@ -267,11 +266,11 @@ const faqSubtitle = 'Más información sobre Livvo';
             Automatización para <span class="hero__badge-word" id="hero-badge-word">inmobiliarias</span>
           </span>
           <h1 class="hero__title">
-            Toda la atención de tu inmobiliaria <em class="grad-text">en un solo lugar.</em>
+            Agenda más visitas. <em class="grad-text">Sin contratar más asesores.</em>
           </h1>
           <p class="hero__sub">
             <strong>Luisa</strong> atiende, califica y agenda 24/7.
-            <strong>Livvo Chat</strong> es donde trabaja tu equipo.
+            <strong>Livvo Chat</strong> es la plataforma que unifica la atención al cliente.
           </p>
           <div class="hero__ctas">
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Prueba 15 días gratis →</Button>
@@ -287,8 +286,8 @@ const faqSubtitle = 'Más información sobre Livvo';
   <!-- EL PROBLEMA: cifras. Familia de layout propia (número protagonista) -->
   <Section
     id="problema"
+    eyebrow="El problema"
     title="Tu operación comercial está fragmentada."
-    subtitle="Marketing, ventas y atención al cliente dependen de herramientas sueltas y trabajo manual que no alcanzan para cumplir las metas."
     alt
   >
     <div class="problem-grid fade-up">
@@ -307,7 +306,6 @@ const faqSubtitle = 'Más información sobre Livvo';
     id="luisa"
     eyebrow="Inteligencia artificial"
     title="Conoce a Luisa, la agente que atiende por ti."
-    subtitle="Comercial y servicio al cliente en la misma conversación. Trabaja sobre tu portafolio, con el tono de tu marca, todos los días del año."
   >
     <div class="luisa-strip fade-up">
       <Image
@@ -356,7 +354,6 @@ const faqSubtitle = 'Más información sobre Livvo';
     id="livvo-chat"
     eyebrow="Plataforma de atención al cliente"
     title="Livvo Chat: todo tu WhatsApp, ordenado."
-    subtitle="Una sola línea, una sola bandeja y todo tu equipo adentro. Cada conversación, propiedad y negocio en un solo lugar, no en el celular de un asesor."
     alt
   >
     <div class="bento fade-up">
@@ -391,8 +388,8 @@ const faqSubtitle = 'Más información sobre Livvo';
   <!-- PLATAFORMA COMPLETA: los dos productos, cada uno con su CTA -->
   <Section
     id="plataforma-completa"
+    eyebrow="Plataforma completa"
     title="Todo lo que tu inmobiliaria necesita para vender y atender."
-    subtitle="Unifica todas las interacciones en un solo número de WhatsApp y deja que Luisa IA califique leads y agende visitas automáticamente."
   >
     <div class="product-grid fade-up">
       {products.map(({ key, name, desc, href, external }) => (
@@ -412,8 +409,8 @@ const faqSubtitle = 'Más información sobre Livvo';
   <!-- INTEGRACIONES: marquesina. Única del sitio en esta página -->
   <Section
     id="integraciones"
+    eyebrow="Integraciones"
     title="Livvo se conecta con los sistemas que ya usas."
-    subtitle="Integración con los principales CRMs, portales y ERPs del mercado inmobiliario."
     alt
   >
     <div class="integrations fade-up">
@@ -441,8 +438,8 @@ const faqSubtitle = 'Más información sobre Livvo';
   <!-- TECNOLOGÍA: lista a dos columnas, sin tarjetas (sección de confianza) -->
   <Section
     id="tecnologia"
+    eyebrow="Tecnología y seguridad"
     title="Tecnología en la que puedes confiar."
-    subtitle="Infraestructura y APIs oficiales para que tu operación nunca se detenga."
   >
     <ul class="trust-list fade-up">
       {techItems.map(({ icon, title, desc }) => (
@@ -462,8 +459,8 @@ const faqSubtitle = 'Más información sobre Livvo';
   <!-- PLANES: cierre hacia /planes -->
   <Section
     id="planes"
+    eyebrow="Planes"
     title="Los dos productos, un solo plan."
-    subtitle="Empieza gratis con tu línea de WhatsApp y tu agente IA. Escala cuando tu operación lo pida."
     alt
   >
     <div class="plan-cta fade-up">
@@ -479,7 +476,7 @@ const faqSubtitle = 'Más información sobre Livvo';
   </Section>
 
   <!-- FAQ: acordeón -->
-  <Section id="faq" title="Preguntas frecuentes" subtitle={faqSubtitle}>
+  <Section id="faq" eyebrow="Preguntas frecuentes" title="Lo que nos preguntan antes de empezar.">
     <div class="fade-up">
       <FAQ items={faqItems} />
       <div class="faq-footer fade-up">

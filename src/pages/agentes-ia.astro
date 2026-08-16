@@ -104,6 +104,7 @@ const team = [
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="empleados-demo-cta">
               Prueba 15 días gratis →
             </Button>
+            <Button href="/planes" variant="outline" size="lg">Ver planes y precios</Button>
           </div>
         </div>
 
@@ -140,10 +141,6 @@ const team = [
           densities={[1, 2]}
           class="star-head__foto"
         />
-        <p class="star-head__subtitle">
-          La primera línea de tu equipo comercial: atiende, califica, recomienda y agenda, sin
-          dejar un lead en visto.
-        </p>
       </div>
       <div class="pfeatures fade-up">
         {features.map(({ icon, title, desc }) => (
@@ -159,11 +156,7 @@ const team = [
     </Section>
 
     <!-- EL RESTO DEL EQUIPO -->
-    <Section
-      eyebrow="El equipo completo"
-      title="Luisa no trabaja sola"
-      subtitle="Agentes IA especializados para cada área de tu inmobiliaria, en el mismo WhatsApp."
-    >
+    <Section eyebrow="El equipo completo" title="Luisa no trabaja sola">
       <div class="team fade-up">
         {team.map(({ foto, nombre, rol, desc }) => (
           <article class="tcard">
@@ -191,6 +184,24 @@ const team = [
         y tus reglas de negocio) y trabaja con el nivel de autonomía que tú decidas: responde solo
         o prepara borradores que tu equipo revisa y aprueba.
       </p>
+    </Section>
+
+    <!-- PUENTE A LIVVO CHAT: espejo del puente hacia Luisa en la página de la plataforma -->
+    <Section
+      alt
+      eyebrow="Plataforma de atención al cliente"
+      title="Luisa trabaja dentro de Livvo Chat"
+    >
+      <div class="product-cta fade-up">
+        <p>
+          Cada conversación que atienden Luisa y su equipo queda registrada en Livvo Chat, la
+          bandeja compartida donde trabaja tu equipo humano: embudo, propiedades, campañas y
+          reportes en un solo lugar. Tú ves toda la operación; ellas hacen el trabajo operativo.
+        </p>
+        <Button href="/plataforma-de-atencion-al-cliente" variant="outline" size="lg">
+          Conocer Livvo Chat →
+        </Button>
+      </div>
     </Section>
 
     <!-- CTA FINAL -->
@@ -332,12 +343,6 @@ const team = [
     font-size: clamp(32px, 4vw, 44px);
     letter-spacing: -1px;
   }
-  .star-head__subtitle {
-    font-size: var(--text-h2);
-    line-height: var(--lh-body);
-    color: var(--muted);
-    margin: var(--space-4) 0 0;
-  }
 
   .pfeatures {
     display: grid;
@@ -386,7 +391,7 @@ const team = [
     margin: 0;
   }
 
-  /* ---- Equipo de Empleados IA ---- */
+  /* ---- Equipo de agentes IA ---- */
   .team {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -416,7 +421,7 @@ const team = [
     border-radius: 50%;
     border: 3px solid rgba(0, 199, 180, 0.35);
   }
-  /* avatar temporal mientras el Empleado IA no tiene foto */
+  /* avatar temporal mientras el agente IA no tiene foto */
   .tcard .tcard__foto--placeholder {
     display: flex;
     align-items: center;

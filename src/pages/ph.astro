@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
@@ -8,45 +9,36 @@ import { WHATSAPP_URL } from '../config';
 
 const features = [
   {
-    icon: 'chat',
+    icon: 'ph:chat-circle-dots',
     title: 'Atención al residente 24/7',
     desc: 'Responde dudas sobre el reglamento de convivencia, envía estados de cuenta individuales y agenda zonas comunes de forma autónoma, por WhatsApp.',
   },
   {
-    icon: 'clipboard',
+    icon: 'ph:clipboard-text',
     title: 'Gestión automática de PQRS',
     desc: 'Radica cada solicitud, la clasifica por nivel de urgencia y asigna los reportes de daños al técnico correspondiente, con seguimiento hasta el cierre.',
   },
   {
-    icon: 'trend',
+    icon: 'ph:trend-up',
     title: 'Cobranza preventiva y predictiva',
     desc: 'Analiza los patrones de pago para identificar qué residentes podrían entrar en mora y envía recordatorios automáticos adaptados a cada caso.',
   },
   {
-    icon: 'scan',
+    icon: 'ph:scan',
     title: 'Lectura automatizada de facturas (OCR)',
     desc: 'Procesa cuentas de cobro y facturas de proveedores con solo tomarles una foto, cruzando los datos directamente con tu sistema contable.',
   },
   {
-    icon: 'shield',
+    icon: 'ph:shield-check',
     title: 'Portería y seguridad asistida',
     desc: 'Agiliza el ingreso de visitantes con validación de datos, controla la mensajería y se conecta con tu citofonía inteligente.',
   },
 ];
 
-const featureIcons: Record<string, string> = {
-  chat: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
-  clipboard:
-    '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/>',
-  trend: '<path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/>',
-  scan: '<path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
-  shield:
-    '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
-};
 ---
 
 <Base
-  title="Agentes IA para Propiedad Horizontal — Livvo"
+  title="Agentes IA para Propiedad Horizontal: Livvo"
   description="Agentes de IA que leen el reglamento de tu copropiedad y responden con base en él: atención al residente 24/7, PQRS, cobranza, facturas y portería, en el WhatsApp de tu administración."
 >
   <Navbar />
@@ -62,7 +54,7 @@ const featureIcons: Record<string, string> = {
         </h1>
         <p class="ph-hero__sub">
           Agentes de IA que leen el reglamento de tu copropiedad y responden con base en él:
-          atención al residente 24/7, PQRS, cobranza, facturas y portería — en el mismo WhatsApp
+          atención al residente 24/7, PQRS, cobranza, facturas y portería, en el mismo WhatsApp
           de tu administración.
         </p>
         <div class="ph-hero__ctas">
@@ -78,23 +70,13 @@ const featureIcons: Record<string, string> = {
       alt
       eyebrow="Tecnología RAG"
       title="Entrenados con el reglamento de tu copropiedad"
-      subtitle="Los agentes operan con Generación Aumentada por Recuperación (RAG): leen el reglamento y los documentos específicos de tu PH y responden con base en ellos — no con respuestas genéricas."
+      subtitle="Los agentes operan con Generación Aumentada por Recuperación (RAG): leen el reglamento y los documentos específicos de tu PH y responden con base en ellos, no con respuestas genéricas."
     >
       <div class="phfeatures fade-up">
         {features.map(({ icon, title, desc }) => (
           <article class="phfeature">
             <span class="phfeature__icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                set:html={featureIcons[icon]}
-              />
+              <Icon name={icon} width={22} height={22} />
             </span>
             <h3 class="phfeature__title">{title}</h3>
             <p class="phfeature__desc">{desc}</p>

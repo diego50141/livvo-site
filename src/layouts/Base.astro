@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  ogImage?: string; // ruta en /public; por defecto el OG genérico del sitio
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   description =
     'Agentes de IA para inmobiliarias, constructoras y desarrolladoras que prospectan, agendan citas, envían propiedades, hacen cobranza y atienden arrendatarios en WhatsApp 24/7.',
   noindex = false,
+  ogImage = '/og.png',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -34,7 +36,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="es_CO" />
-    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

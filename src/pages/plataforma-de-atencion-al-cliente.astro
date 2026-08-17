@@ -21,9 +21,12 @@ import fotoLuisa from '../assets/equipo/luisa.png';
 // Seis funcionalidades, cada una con tres puntos concretos. Todas las
 // afirmaciones están respaldadas por lo que ya documentan /presentacion y
 // /planes; no inventar métricas ni certificaciones.
+// Cada tarjeta abre con su viñeta ilustrada (render del design system,
+// patrón Realmate; fuentes editables en el scratchpad de la sesión).
 const features = [
   {
     icon: 'ph:tray',
+    illus: '/illustrations/features/feat-whatsapp.png',
     title: 'WhatsApp unificado',
     desc: 'Centraliza todas las conversaciones del equipo en un solo número. Se acabaron los celulares sueltos y los clientes que solo conoce un asesor.',
     points: [
@@ -34,6 +37,7 @@ const features = [
   },
   {
     icon: 'ph:arrows-left-right',
+    illus: '/illustrations/features/feat-distribucion.png',
     title: 'Distribución de conversaciones',
     desc: 'Transfiere una conversación a otro equipo con todo el contexto detrás. Arriendos, ventas o cobranza: cada cliente donde debe estar.',
     points: [
@@ -44,6 +48,7 @@ const features = [
   },
   {
     icon: 'ph:kanban',
+    illus: '/illustrations/features/feat-embudo.png',
     title: 'Embudo inmobiliario',
     desc: 'Un pipeline con las etapas reales del sector, no un CRM genérico adaptado a las malas.',
     points: [
@@ -54,6 +59,7 @@ const features = [
   },
   {
     icon: 'ph:buildings',
+    illus: '/illustrations/features/feat-propiedades.png',
     title: 'Gestor de propiedades',
     desc: 'Tu portafolio y tus clientes centralizados, con fotos, precios y detalles. Es la misma base de la que Luisa saca sus recomendaciones.',
     points: [
@@ -64,6 +70,7 @@ const features = [
   },
   {
     icon: 'ph:megaphone-simple',
+    illus: '/illustrations/features/feat-campanas.png',
     title: 'Campañas y difusiones',
     desc: 'Reactiva leads fríos, anuncia un proyecto nuevo o haz seguimiento de cartera con envíos masivos por WhatsApp.',
     points: [
@@ -74,6 +81,7 @@ const features = [
   },
   {
     icon: 'ph:chart-bar',
+    illus: '/illustrations/features/feat-reportes.png',
     title: 'Reportes de la operación',
     desc: 'Sabes qué está pasando sin tener que preguntar. Tiempos de respuesta, volumen y resultados por asesor.',
     points: [
@@ -188,6 +196,7 @@ const faqItems = [
 <Base
   title="Plataforma de atención al cliente para inmobiliarias: Livvo Chat"
   description="Livvo Chat centraliza todas las conversaciones de WhatsApp de tu inmobiliaria en un solo lugar: bandeja compartida, embudo inmobiliario, gestor de propiedades, campañas y reportes."
+  ogImage="/og/livvo-chat.png"
 >
   <Navbar />
 
@@ -223,8 +232,18 @@ const faqItems = [
       alt
     >
       <div class="pfeatures fade-up">
-        {features.map(({ icon, title, desc, points }) => (
+        {features.map(({ icon, illus, title, desc, points }) => (
           <article class="pfeature">
+            <span class="pfeature__illus">
+              <img
+                src={illus}
+                alt={`Ilustración: ${title}`}
+                width="960"
+                height="840"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
             <span class="pfeature__icon" aria-hidden="true">
               <Icon name={icon} width={22} height={22} />
             </span>
@@ -407,29 +426,48 @@ const faqItems = [
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-sm);
     padding: var(--space-8) var(--space-6);
+    overflow: hidden;
     transition: box-shadow var(--transition), border-color var(--transition),
       transform var(--transition);
+  }
+  /* la viñeta ilustrada sangra hasta los bordes superiores de la tarjeta */
+  .pfeature__illus {
+    display: block;
+    margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-6)) var(--space-6);
+    border-bottom: 1px solid var(--border);
+    /* fondo blanco fijo: las viñetas son claras también en dark */
+    background: #ffffff;
+  }
+  .pfeature__illus img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .pfeature:hover {
     box-shadow: var(--shadow-hover);
     border-color: rgba(0, 199, 180, 0.45);
     transform: translateY(-2px);
   }
+  /* chip circular del DS (mismo que el home), en teal */
   .pfeature__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
     margin-bottom: var(--space-4);
-    background: rgba(0, 199, 180, 0.1);
+    background:
+      radial-gradient(circle at 50% 130%, rgba(0, 199, 180, 0.28) 0%, transparent 72%),
+      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 16px rgba(13, 20, 36, 0.08);
     color: var(--teal-deep);
-    transition: background-color var(--transition), color var(--transition);
+    transition: box-shadow var(--transition), transform var(--transition);
   }
   .pfeature:hover .pfeature__icon {
-    background: var(--grad-cta);
-    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 199, 180, 0.22);
   }
   .pfeature__title {
     font-size: var(--text-h3);

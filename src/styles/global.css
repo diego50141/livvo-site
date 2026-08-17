@@ -95,6 +95,26 @@
   --shadow-hover: 0 8px 32px rgba(0,0,0,0.55);
 }
 
+/* Sección oscura dentro de la página clara (ritmo dark/white tipo Nexiu):
+   re-declara a nivel de bloque los mismos tokens del tema dark, así todas
+   las tarjetas y textos internos se adaptan solos. */
+.theme-dark-scope {
+  --white:      #0D1424;
+  --gray-bg:    #070B14;
+  --surface:    #111827;
+  --border:     #1A2240;
+  --navy:       #F0F4FF;
+  --text:       #F0F4FF;
+  --muted:      #8B96AF;
+  --teal-deep:  #00C7B4;
+  --blue-light: #10203E;
+  --blue-mid:   #27406E;
+  --shadow-sm:    0 2px 8px rgba(0,0,0,0.45);
+  --shadow-md:    0 6px 20px rgba(0,0,0,0.5);
+  --shadow-glow:  0 6px 20px rgba(0,0,0,0.45), 0 0 20px rgba(0,199,180,0.22);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.55);
+}
+
 /* Colores y fuentes expuestos como utilidades Tailwind
    (bg-teal, text-muted, font-display, …). `inline` hace que
    resuelvan la variable al usarse, así el toggle dark aplica. */

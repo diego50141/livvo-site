@@ -110,15 +110,21 @@ const turns = [
             <strong>Andrés Mejía</strong>
             <span class="chat__meta">WhatsApp · ahora</span>
           </div>
+          <span class="chat__chip"><span class="chat__chip-dot"></span>WhatsApp</span>
         </header>
         {
           turns.map(({ from, text }, i) => (
             <p class:list={['bubble', `bubble--${from}`]} style={`--n:${i}`}>
+              {from === 'ai' && i === 1 && (
+                <span class="bubble__tag">
+                  <span class="bubble__spark" aria-hidden="true">✦</span>
+                  Luisa · Agente IA
+                </span>
+              )}
               {text}
             </p>
           ))
         }
-        <span class="chat__by">Luisa · Agente IA</span>
       </div>
     </div>
 
@@ -129,15 +135,19 @@ const turns = [
           <span class="card__avatar">A</span>
           <div>
             <strong>Andrés Mejía</strong>
-            <span class="card__meta">+57 318 774 1903</span>
+            <span class="card__meta card__meta--mono">+57 318 774 1903</span>
           </div>
-          <span class="card__tag">arrendar</span>
         </header>
+        <div class="card__tags">
+          <span class="card__tag card__tag--teal">Arriendo</span>
+          <span class="card__tag card__tag--blue">Santa Bárbara</span>
+          <span class="card__tag card__tag--gold">Lead caliente</span>
+        </div>
         <dl class="card__rows">
           <div><dt>Zona</dt><dd>Santa Bárbara, Bogotá</dd></div>
-          <div><dt>Presupuesto</dt><dd>Hasta $2.500.000</dd></div>
+          <div><dt>Presupuesto</dt><dd class="card__val--mono">Hasta $2.500.000</dd></div>
           <div><dt>Requisitos</dt><dd>2 hab, parqueadero, mascotas</dd></div>
-          <div><dt>Visita</dt><dd>Sábado 10:00 a. m.</dd></div>
+          <div><dt>Visita</dt><dd class="card__val--mono">Sábado 10:00 a. m.</dd></div>
         </dl>
       </article>
     </div>
@@ -146,9 +156,16 @@ const turns = [
     <div class="deal__scene deal__scene--deal">
       <div class="funnel">
         {
-          ['Lead nuevo', 'Contactado', 'Visita agendada'].map((col, i) => (
+          [
+            { col: 'Lead nuevo', dot: '#3B7EFF' },
+            { col: 'Contactado', dot: '#FFB547' },
+            { col: 'Visita agendada', dot: '#22C55E' },
+          ].map(({ col, dot }, i) => (
             <div class="funnel__col">
-              <span class="funnel__title">{col}</span>
+              <span class="funnel__title">
+                <span class="funnel__dot" style={`background:${dot}`} aria-hidden="true" />
+                {col}
+              </span>
               {i === 0 && <span class="funnel__ghost" />}
               {i === 1 && <span class="funnel__ghost" />}
               {i === 1 && <span class="funnel__ghost funnel__ghost--short" />}
@@ -156,7 +173,7 @@ const turns = [
                 <span class="funnel__card">
                   <span class="funnel__card-name">Andrés Mejía</span>
                   <span class="funnel__card-meta">Santa Bárbara · $2.3M</span>
-                  <span class="funnel__card-tag">arrendar</span>
+                  <span class="funnel__card-tag">Arriendo</span>
                 </span>
               )}
             </div>
@@ -511,6 +528,29 @@ const turns = [
   }
   .chat__meta,
   .card__meta { font-size: 11.5px; color: var(--muted); }
+  .card__meta--mono { font-family: var(--font-mono); font-size: 10.5px; }
+  /* chip del canal, como en las ilustraciones */
+  .chat__chip {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    background: rgba(0, 199, 180, 0.08);
+    border: 1px solid rgba(0, 153, 168, 0.35);
+    border-radius: 10px;
+    padding: 3px 9px;
+  }
+  .chat__chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green, #22c55e);
+  }
   .bubble {
     margin: 0 0 8px;
     padding: 9px 11px;
@@ -523,23 +563,39 @@ const turns = [
     background: var(--surface);
     border-top-left-radius: 4px;
   }
+  /* Luisa habla con su color exclusivo (violeta), como en las ilustraciones */
   .bubble--ai {
     margin-left: auto;
-    background: color-mix(in srgb, var(--teal) 16%, var(--white));
-    border: 1px solid color-mix(in srgb, var(--teal) 30%, transparent);
+    background: linear-gradient(135deg, #6c63ff 0%, #4a44cc 100%);
+    color: #fff;
     border-top-right-radius: 4px;
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.28);
+  }
+  .bubble__tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+    margin-bottom: 3px;
+  }
+  .bubble__spark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 8px;
   }
   /* los turnos entran uno tras otro, como en un chat real */
   .deal[data-step='1'] .bubble {
     animation: row-in 0.4s ease both;
     animation-delay: calc(0.2s + var(--n) * 0.5s);
-  }
-  .chat__by {
-    display: block;
-    text-align: right;
-    font-size: 11px;
-    color: var(--teal-deep);
-    font-weight: 600;
   }
 
   /* ---- 3 · ficha de contacto ---- */
@@ -551,21 +607,42 @@ const turns = [
     padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
   }
+  /* etiquetas del contacto, con los colores de las ilustraciones */
+  .card__tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+  }
   .card__tag,
   .funnel__card-tag {
-    margin-left: auto;
     padding: 3px 10px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--blue) 14%, transparent);
-    color: var(--blue);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
   }
-  /* la etiqueta cae sobre la ficha cuando entra la escena */
+  .card__tag--teal,
+  .funnel__card-tag {
+    background: rgba(0, 199, 180, 0.1);
+    color: var(--teal-deep);
+  }
+  .card__tag--blue {
+    background: color-mix(in srgb, var(--blue) 12%, transparent);
+    color: var(--blue);
+  }
+  .card__tag--gold {
+    background: rgba(255, 181, 71, 0.16);
+    color: #b97d1e;
+  }
+  /* las etiquetas caen sobre la ficha cuando entra la escena */
   .deal[data-step='2'] .card__tag {
-    animation: tag-drop 0.45s 0.25s ease both;
+    animation: tag-drop 0.45s ease both;
   }
+  .deal[data-step='2'] .card__tag:nth-child(1) { animation-delay: 0.25s; }
+  .deal[data-step='2'] .card__tag:nth-child(2) { animation-delay: 0.37s; }
+  .deal[data-step='2'] .card__tag:nth-child(3) { animation-delay: 0.49s; }
   @keyframes tag-drop {
     from { opacity: 0; transform: translateY(-10px) scale(0.9); }
   }
@@ -582,6 +659,7 @@ const turns = [
   .card__rows > div:last-child { border-bottom: 0; }
   .card__rows dt { color: var(--muted); margin: 0; }
   .card__rows dd { margin: 0; font-weight: 600; }
+  .card__val--mono { font-family: var(--font-mono); font-size: 11.5px; }
   /* los datos capturados aparecen uno a uno */
   .deal[data-step='2'] .card__rows > div { animation: row-in 0.4s ease both; }
   .deal[data-step='2'] .card__rows > div:nth-child(1) { animation-delay: 0.3s; }
@@ -610,11 +688,20 @@ const turns = [
     min-height: 190px;
   }
   .funnel__title {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     font-size: 10.5px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: var(--ls-label);
     color: var(--muted);
+  }
+  .funnel__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
   }
   .funnel__ghost {
     height: 42px;
@@ -630,12 +717,17 @@ const turns = [
     gap: 5px;
     padding: 10px;
     border-radius: 8px;
-    background: var(--white);
+    background: rgba(0, 199, 180, 0.07);
     border: 1px solid color-mix(in srgb, var(--teal) 45%, transparent);
     box-shadow: var(--shadow-glow);
   }
   .funnel__card-name { font-size: 12.5px; font-weight: 700; }
-  .funnel__card-meta { font-size: 11px; color: var(--muted); }
+  .funnel__card-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--teal-deep);
+  }
   .funnel__card-tag { margin-left: 0; }
   /* la tarjeta "aterriza" en la columna final */
   .deal[data-step='3'] .funnel__card {

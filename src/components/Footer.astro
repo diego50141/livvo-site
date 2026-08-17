@@ -5,7 +5,7 @@ import ThemeToggle from './ThemeToggle.astro';
 import { WHATSAPP_URL } from '../config';
 ---
 
-<footer class="footer">
+<footer class="footer theme-dark-scope">
   <div class="container-site">
     <div class="footer__main">
       <!-- Izquierda: marca -->
@@ -61,12 +61,12 @@ import { WHATSAPP_URL } from '../config';
 </footer>
 
 <style>
-  /* El footer sigue el tema: blanco en claro, oscuro en oscuro.
-     Los tokens (--white/--text/--muted) se remapean solos con data-theme. */
+  /* Patrón Nexiu: el footer usa el mismo fondo que las secciones oscuras
+     (--gray-bg en el scope dark) para fundirse con ellas, borde blanco sutil. */
   .footer {
-    background: var(--white);
+    background: var(--gray-bg);
     color: var(--text);
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
     padding: 64px 0 40px;
     transition: background-color var(--transition), border-color var(--transition);
   }

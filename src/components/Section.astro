@@ -5,12 +5,16 @@ interface Props {
   title?: string;
   subtitle?: string;
   alt?: boolean; // fondo alterno (--gray-bg)
+  dark?: boolean; // sección en navy oscuro (ritmo dark/white tipo Nexiu)
 }
 
-const { id, eyebrow, title, subtitle, alt = false } = Astro.props;
+const { id, eyebrow, title, subtitle, alt = false, dark = false } = Astro.props;
 ---
 
-<section {id} class:list={['section', { 'section--alt': alt }]}>
+<section
+  {id}
+  class:list={['section', { 'section--alt': alt, 'section--dark': dark, 'theme-dark-scope': dark }]}
+>
   <div class="container-site">
     {
       (eyebrow || title) && (
@@ -28,6 +32,13 @@ const { id, eyebrow, title, subtitle, alt = false } = Astro.props;
 <style>
   .section { padding: 96px 0; background: var(--white); transition: background-color var(--transition); }
   .section--alt { background: var(--gray-bg); }
+  /* fondo oscuro del DS con los brillos teal/azul de las ilustraciones */
+  .section--dark {
+    background:
+      radial-gradient(circle at 15% 25%, rgba(0, 199, 180, 0.09) 0%, transparent 45%),
+      radial-gradient(circle at 85% 75%, rgba(59, 126, 255, 0.07) 0%, transparent 45%),
+      linear-gradient(180deg, #070b14 0%, #0a0e1a 100%);
+  }
   .section__head {
     text-align: center;
     max-width: 760px;

@@ -85,6 +85,7 @@ const team = [
 <Base
   title="Agentes IA para inmobiliarias: Livvo"
   description="Luisa y su equipo de agentes IA atienden el WhatsApp de tu inmobiliaria 24/7: ventas, mantenimiento, administración, cobranza, escrituración y jurídico, con tu tono y bajo tus reglas."
+  ogImage="/og/luisa-ia.png"
 >
   <Navbar />
 
@@ -364,21 +365,26 @@ const team = [
     background: rgba(108, 99, 255, 0.07);
     border-color: rgba(108, 99, 255, 0.45);
   }
+  /* chip circular del DS (mismo que el home), en violeta */
   .pfeature__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
     margin-bottom: var(--space-4);
-    background: rgba(108, 99, 255, 0.1);
+    background:
+      radial-gradient(circle at 50% 130%, rgba(108, 99, 255, 0.26) 0%, transparent 72%),
+      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 16px rgba(13, 20, 36, 0.08);
     color: var(--violet);
-    transition: background-color var(--transition), color var(--transition);
+    transition: box-shadow var(--transition), transform var(--transition);
   }
   .pfeature:hover .pfeature__icon {
-    background: var(--grad-violet);
-    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(108, 99, 255, 0.24);
   }
   .pfeature__title {
     font-size: var(--text-h3);

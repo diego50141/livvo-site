@@ -170,21 +170,26 @@ const features = [
     background: rgba(0, 199, 180, 0.06);
     border-color: rgba(0, 199, 180, 0.45);
   }
+  /* chip circular del DS (mismo que el home), en teal */
   .phfeature__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
     margin-bottom: var(--space-4);
-    background: rgba(0, 199, 180, 0.1);
+    background:
+      radial-gradient(circle at 50% 130%, rgba(0, 199, 180, 0.28) 0%, transparent 72%),
+      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 16px rgba(13, 20, 36, 0.08);
     color: var(--teal-deep);
-    transition: background-color var(--transition), color var(--transition);
+    transition: box-shadow var(--transition), transform var(--transition);
   }
   .phfeature:hover .phfeature__icon {
-    background: var(--grad-cta);
-    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 199, 180, 0.22);
   }
   .phfeature__title {
     font-size: var(--text-h3);

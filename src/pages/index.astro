@@ -195,31 +195,28 @@ const integrationRows = [
 const faqItems = [
   {
     q: '¿Qué hace exactamente Livvo?',
-    a: 'Livvo son dos productos que trabajan juntos: Luisa, la agente de inteligencia artificial que atiende, califica y agenda por WhatsApp 24/7, y Livvo Chat, la plataforma donde tu equipo gestiona conversaciones, propiedades y negocios en un solo lugar. El objetivo es eliminar el trabajo operativo de tu equipo y aumentar tu tasa de cierre.',
+    a: 'Livvo es una plataforma de atención al cliente e inteligencia artificial para agencias inmobiliarias. Luisa, la agente de inteligencia artificial que atiende, califica y agenda por WhatsApp 24/7, y Livvo Chat, la plataforma donde tu equipo gestiona conversaciones, propiedades y negocios en un solo lugar con automatizaciones integradas',
   },
   {
     q: '¿Puedo usar la plataforma sin la IA?',
-    a: 'Sí. Livvo Chat funciona por sí solo como CRM de WhatsApp: bandeja compartida, embudo, propiedades y campañas. Luisa se activa cuando quieras, y a partir de ahí trabaja sobre esa misma base. Por eso el resultado es mucho mejor con los dos que con uno solo.',
+    a: 'Sí. Livvo Chat funciona por sí solo como plataforma de atención al cliente: bandeja compartida, embudo, propiedades, automatizaciones y campañas. Luisa se activa cuando quieras, y a partir de ahí trabaja sobre esa misma base. Por eso el resultado es mucho mejor con los dos que con uno solo.',
   },
   {
     q: '¿La IA reemplaza a mis asesores?',
-    a: 'No. Imagínala como una primera línea que nunca duerme: Luisa responde, califica y agenda; tus asesores entran cuando hay una visita que atender o un negocio que cerrar, con todo el historial de la conversación a la vista, y pueden intervenir en cualquier momento si lo ven necesario.',
+    a: 'No. Imagínala como una primera línea que nunca duerme: Luisa responde, califica, envia propiedades y agenda; tus asesores entran cuando hay una visita que atender o un negocio que cerrar, con todo el historial de la conversación a la vista, y pueden intervenir en cualquier momento si lo ven necesario.',
   },
   {
     q: '¿Qué pasa si la IA no sabe responder algo?',
-    a: 'Escala la conversación a un asesor humano en el mismo chat, sin que el cliente tenga que repetir nada. Además tú defines el nivel de autonomía: puede responder sola o dejar el borrador listo para que alguien lo apruebe antes de enviarlo.',
+    a: 'Escala la conversación a un asesor humano en el mismo chat, sin que el cliente tenga que repetir nada.',
   },
   {
-    q: '¿Sirve solo para vender, o también para arriendos y postventa?',
-    a: 'También. Además de Luisa hay agentes IA especializados en servicio, administración, cobranza, jurídico y escrituración, que atienden a inquilinos y propietarios: requisitos, mantenimiento, renovaciones y estado de un proceso. Puedes conocerlos en la página de Agentes IA.',
+    q: '¿Sirve solo para atención al cliente y venta, o también para arriendos y postventa?',
+    a: 'También. Además de Luisa hay agentes IA especializados en servicio, administración, cobranza, jurídico y escrituración. Puedes conocerlos en la página de Agentes IA.',
   },
-  {
-    q: '¿Funciona con los leads que llegan de los portales?',
-    a: 'Sí. Los leads de Fincaraíz, Metrocuadrado, Ciencuadras o tu propia página entran a la misma bandeja de Livvo Chat y reciben respuesta en segundos, sin importar la hora.',
-  },
+
   {
     q: '¿Puedo seguir usando el número de WhatsApp que ya tiene mi inmobiliaria?',
-    a: 'Sí. Migramos tu línea actual a WhatsApp Business API para que tus clientes sigan escribiendo al mismo número, y todo el equipo atiende desde una bandeja compartida en vez de desde celulares sueltos.',
+    a: 'Sí, migramos tu línea actual a WhatsApp Business API para que tus clientes sigan escribiendo al mismo número, y todo el equipo atiende desde una bandeja compartida en vez de desde celulares sueltos.',
   },
   {
     q: '¿De quién son los contactos y las conversaciones?',
@@ -227,16 +224,12 @@ const faqItems = [
   },
   {
     q: '¿Cuánto tiempo toma implementarlo?',
-    a: 'Entre 1 y 3 días dependiendo de la personalización. Incluye entrenamiento del agente y conexión con WhatsApp Business API.',
+    a: 'Entre 3 y 5 días dependiendo de la personalización. Incluye entrenamiento del agente y conexión con WhatsApp Business API.',
   },
   {
     q: '¿De qué depende el precio?',
     a: 'Del volumen de conversaciones al mes, del número de propiedades que administres y de cuántos usuarios de tu equipo entran a la plataforma.',
-  },
-  {
-    q: '¿Qué pasa si quiero cancelar?',
-    a: 'No hay contrato de permanencia. Cancelas cuando quieras, sin penalidades, y te acompañamos durante la implementación para asegurarnos de que veas resultados desde el primer mes.',
-  },
+  }
 ];
 
 ---
@@ -328,7 +321,7 @@ const faqItems = [
       />
       <div>
         <h3 class="luisa-strip__name">Luisa</h3>
-        <span class="luisa-strip__rol">Agente comercial y de atención al cliente</span>
+        <span class="luisa-strip__rol">Agente de ventas y atención al cliente</span>
         <p class="luisa-strip__desc">
           Atiende por WhatsApp y por la web. Habla como tu equipo, conoce tu portafolio
           y no deja una sola consulta sin responder.
@@ -470,24 +463,8 @@ const faqItems = [
     </ul>
   </Section>
 
-  <!-- PLANES: cierre hacia /planes -->
-  <Section
-    id="planes"
-    dark
-    eyebrow="Planes"
-    title="Los dos productos, un solo plan."
-  >
-    <div class="plan-cta fade-up">
-      <ul class="plan-cta__terms">
-        <li>Prueba gratuita de 15 días</li>
-        <li>Sin tarjeta de crédito</li>
-        <li>Sin contrato de permanencia</li>
-      </ul>
-      <div class="plan-cta__buttons">
-        <Button href="/planes" size="lg">Ver planes y precios →</Button>
-      </div>
-    </div>
-  </Section>
+  <!-- PLANES: oculta por ahora (patrón Realmate: sin pricing público en el
+       home). La página /planes sigue existiendo; restaurar desde git si vuelve. -->
 
   <!-- FAQ: acordeón -->
   <Section id="faq" dark eyebrow="Preguntas frecuentes" title="Lo que nos preguntan antes de empezar.">
@@ -1156,42 +1133,6 @@ const faqItems = [
     .trust-list { grid-template-columns: 1fr; gap: 0; }
     .trust-item:nth-last-child(-n + 2) { border-bottom: 1px solid var(--border); }
     .trust-item:last-child { border-bottom: none; }
-  }
-
-  /* ---- Planes: cierre hacia /planes ---- */
-  .plan-cta {
-    text-align: center;
-    max-width: 720px;
-    margin-inline: auto;
-  }
-  .plan-cta__terms {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-3) var(--space-8);
-    margin: 0 0 var(--space-8);
-    padding: 0;
-  }
-  .plan-cta__terms li {
-    position: relative;
-    padding-left: 24px;
-    font-size: var(--text-small);
-    color: var(--muted);
-  }
-  .plan-cta__terms li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-weight: 700;
-    color: var(--teal-deep);
-  }
-  .plan-cta__buttons {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-4);
-    flex-wrap: wrap;
   }
 
   .faq-footer {

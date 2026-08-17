@@ -12,41 +12,50 @@ import { WHATSAPP_URL } from '../config';
       <div class="footer__col footer__brand">
         <Logo />
         <p class="footer__desc">
-          Aumenta tu tasa de conversión de clientes potenciales con IA diseñada específicamente
-          para el mercado inmobiliario.
+          Livvo es una plataforma de atención al cliente e inteligencia artificial para agencias inmobiliarias.
         </p>
         <div class="footer__actions">
           <Button href={WHATSAPP_URL} target="_blank" size="sm">Prueba 15 días gratis →</Button>
         </div>
       </div>
 
-      <!-- Centro: menú (antes vivía en el navbar) -->
-      <nav class="footer__col footer__nav" aria-label="Menú del sitio">
-        <h3 class="footer__nav-title">Menu</h3>
+      <!-- Livvo Chat: producto de bandeja compartida -->
+      <nav class="footer__col footer__nav" aria-label="Livvo Chat">
+        <h3 class="footer__nav-title">Livvo Chat</h3>
         <ul>
           <li><a href="/plataforma-de-atencion-al-cliente">Plataforma de atención al cliente</a></li>
+          <li><a href="/plataforma-de-atencion-al-cliente#integraciones">Integraciones</a></li>
+        </ul>
+      </nav>
+
+      <!-- Luisa IA: producto de agente conversacional -->
+      <nav class="footer__col footer__nav" aria-label="Luisa IA">
+        <h3 class="footer__nav-title">Luisa IA</h3>
+        <ul>
           <li><a href="/agentes-ia">Agentes IA</a></li>
-          <li><a href="/ph">IA para Propiedad Horizontal</a></li>
-          <li><a href="/planes">Planes</a></li>
-          <li><a href="/#integraciones">Integraciones</a></li>
           <li><a href="/#faq">Preguntas frecuentes</a></li>
         </ul>
       </nav>
 
-      <!-- Herramientas (antes: dropdown del navbar) -->
-      <nav class="footer__col footer__nav" aria-label="Herramientas">
-        <h3 class="footer__nav-title">Herramientas</h3>
+      <!-- Acerca de: enlaces de compañía -->
+      <nav class="footer__col footer__nav" aria-label="Acerca de">
+        <h3 class="footer__nav-title">Acerca de</h3>
         <ul>
-          <li><a href="/herramientas/calculadora-roi">Calculadora de ROI</a></li>
-          <li><a href="/herramientas/gestor-propiedades">Gestor de Propiedades</a></li>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/plataforma-de-atencion-al-cliente">Livvo Chat</a></li>
+          <li><a href="/agentes-ia">Luisa IA</a></li>
+          <li><a href="/planes">Planes</a></li>
+          <li><a href={WHATSAPP_URL} target="_blank">Contacto</a></li>
         </ul>
       </nav>
 
-      <!-- Derecha: legal -->
-      <nav class="footer__col footer__nav" aria-label="Enlaces legales">
-        <h3 class="footer__nav-title">Legal</h3>
+      <!-- Recursos: herramientas gratuitas -->
+      <nav class="footer__col footer__nav" aria-label="Recursos">
+        <h3 class="footer__nav-title">Recursos</h3>
         <ul>
-          <li><a href="/terminos-de-uso">Términos de uso</a></li>
+          <li><a href="/herramientas/gestor-propiedades">Gestor de Propiedades</a></li>
+          <li><a href="/herramientas/calculadora-roi">Calculadora de ROI</a></li>
+          <li><a href="/herramientas/agente-de-requerimientos">Agente de Requerimientos</a></li>
         </ul>
       </nav>
     </div>
@@ -55,6 +64,7 @@ import { WHATSAPP_URL } from '../config';
       <p>
         ©Livvo tecnologia S.A.S-Todos los derechos reservados
       </p>
+      <a class="footer__legal-link" href="/terminos-de-uso">Términos de uso</a>
       <ThemeToggle />
     </div>
   </div>
@@ -73,7 +83,7 @@ import { WHATSAPP_URL } from '../config';
 
   .footer__main {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
     gap: var(--space-8);
     margin-bottom: var(--space-12);
   }
@@ -138,13 +148,21 @@ import { WHATSAPP_URL } from '../config';
     padding-top: var(--space-8);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-6);
   }
   .footer__bottom p {
     font-size: 12px;
     color: var(--muted);
-    margin: 0;
+    margin: 0 auto 0 0;
+  }
+  .footer__legal-link {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .footer__legal-link:hover {
+    color: var(--navy);
   }
 
   @media (max-width: 768px) {
@@ -158,6 +176,9 @@ import { WHATSAPP_URL } from '../config';
     .footer__bottom {
       flex-direction: column;
       text-align: center;
+    }
+    .footer__bottom p {
+      margin: 0;
     }
   }
 </style>

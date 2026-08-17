@@ -1,7 +1,48 @@
 ---
+import { Icon } from 'astro-icon/components';
 import Button from './Button.astro';
 import Logo from './Logo.astro';
-import { APP_URL } from '../config';
+import { APP_URL, WHATSAPP_URL } from '../config';
+
+// Distribución tipo Realmate: logo | enlaces al centro | Ingresar.
+// Luisa IA y Livvo Chat abren un mega-menú al pasar el cursor: tarjeta del
+// producto (imagen + descripción + CTAs) y lista de funciones con icono.
+// Sin columna de casos de clientes.
+const megas = [
+  {
+    key: 'luisa',
+    label: 'Luisa IA',
+    href: '/agentes-ia',
+    desc: 'La inteligencia artificial que califica leads en tiempo real, agenda visitas automáticamente y mantiene tu inmobiliaria disponible 24/7.',
+    features: [
+      { icon: 'ph:clock', label: 'Responde en segundos, 24/7' },
+      { icon: 'ph:funnel', label: 'Califica cada lead' },
+      { icon: 'ph:house-line', label: 'Recomienda propiedades' },
+      { icon: 'ph:calendar-check', label: 'Agenda visitas automáticamente' },
+      { icon: 'ph:target', label: 'Rescata leads fríos' },
+      { icon: 'ph:hand-arrow-up', label: 'Escala a tu asesor' },
+    ],
+  },
+  {
+    key: 'chat',
+    label: 'Livvo Chat',
+    href: '/plataforma-de-atencion-al-cliente',
+    desc: 'La plataforma que centraliza todas las conversaciones de WhatsApp y otros canales en un solo lugar, con múltiples agentes.',
+    features: [
+      { icon: 'ph:tray', label: 'Bandeja compartida' },
+      { icon: 'ph:kanban', label: 'Embudo inmobiliario' },
+      { icon: 'ph:buildings', label: 'Gestor de propiedades' },
+      { icon: 'ph:megaphone-simple', label: 'Campañas y difusiones' },
+      { icon: 'ph:chart-bar', label: 'Reportes de la operación' },
+      { icon: 'ph:lightning', label: 'Automatizaciones y API' },
+    ],
+  },
+];
+
+const recursos = [
+  { href: '/herramientas/calculadora-roi', label: 'Calculadora de ROI' },
+  { href: '/herramientas/gestor-propiedades', label: 'Gestor de Propiedades' },
+];
 ---
 
 <nav class="navbar">
@@ -9,9 +50,74 @@ import { APP_URL } from '../config';
     <a href="/" class="navbar__logo" aria-label="Livvo — inicio">
       <Logo size={26} />
     </a>
-    <Button href={APP_URL} target="_blank" variant="ghost" size="sm" id="nav-login">
-      Ingresar
-    </Button>
+
+    <div class="navbar__links">
+      {
+        megas.map(({ key, label, href, desc, features }) => (
+          <div class="navbar__item navbar__item--mega">
+            <a class="navbar__link" {href} aria-haspopup="true">
+              {label}
+              <Icon name="ph:caret-down" width={14} height={14} aria-hidden="true" />
+            </a>
+            <div class="navbar__mega">
+              <div class:list={['mega', `mega--${key}`]}>
+                <div class="mega__card">
+                  <span class="mega__shot">
+                    <img
+                      src={key === 'luisa'
+                        ? '/illustrations/luisa-ia-mega.png'
+                        : '/illustrations/livvo-chat-mega.png'}
+                      alt={key === 'luisa'
+                        ? 'Ilustración de Luisa, la agente IA de Livvo'
+                        : 'Ilustración de la plataforma Livvo Chat'}
+                      width="1280"
+                      height="580"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </span>
+                  <h3 class="mega__name">{label}</h3>
+                  <p class="mega__desc">{desc}</p>
+                  <div class="mega__ctas">
+                    <Button href={WHATSAPP_URL} target="_blank" size="sm">Prueba gratis</Button>
+                    <Button {href} variant="outline" size="sm">Más información</Button>
+                  </div>
+                </div>
+                <ul class="mega__list">
+                  {features.map(({ icon, label: flabel }) => (
+                    <li class="mega__feature">
+                      <span class="mega__ficon" aria-hidden="true">
+                        <Icon name={icon} width={18} height={18} />
+                      </span>
+                      {flabel}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+      <div class="navbar__item">
+        <button class="navbar__link navbar__link--btn" type="button" aria-haspopup="true">
+          Recursos
+          <Icon name="ph:caret-down" width={14} height={14} aria-hidden="true" />
+        </button>
+        <div class="navbar__dropdown">
+          {recursos.map(({ href, label }) => (
+            <a class="navbar__dropdown-link" {href}>
+              {label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar__actions">
+      <Button href={APP_URL} target="_blank" variant="outline" size="sm" id="nav-login">
+        Ingresar
+      </Button>
+    </div>
   </div>
 </nav>
 
@@ -28,7 +134,199 @@ import { APP_URL } from '../config';
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--space-6);
     height: 68px;
   }
   .navbar__logo { display: inline-flex; text-decoration: none; }
+
+  /* enlaces centrados entre el logo y las acciones */
+  .navbar__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-inline: auto;
+  }
+  .navbar__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-ui);
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition);
+  }
+  .navbar__link:hover {
+    background: rgba(0, 199, 180, 0.08);
+    color: var(--teal-deep);
+  }
+
+  /* desplegable simple (Recursos): solo CSS, abre con hover o foco */
+  .navbar__item { position: relative; }
+  .navbar__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    min-width: 240px;
+    padding: var(--space-2);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+    display: grid;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition), transform var(--transition),
+      visibility var(--transition);
+  }
+  .navbar__item:hover .navbar__dropdown,
+  .navbar__item:focus-within .navbar__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  .navbar__dropdown-link {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    transition: background-color var(--transition), color var(--transition);
+  }
+  .navbar__dropdown-link:hover {
+    background: rgba(0, 199, 180, 0.08);
+    color: var(--teal-deep);
+  }
+
+  /* ---- Mega-menú de producto (patrón Realmate, sin columna de clientes) ----
+     El panel se ancla al navbar (no al enlace) para poder centrarlo en la
+     página; el item queda static y .navbar es el ancestro posicionado. */
+  .navbar__item--mega { position: static; }
+  .navbar__mega {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    /* colchón transparente: evita que el hover se pierda al cruzar al panel */
+    padding-top: 10px;
+    width: min(860px, calc(100vw - 48px));
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition), transform var(--transition),
+      visibility var(--transition);
+  }
+  .navbar__item--mega:hover .navbar__mega,
+  .navbar__item--mega:focus-within .navbar__mega {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  .mega {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: var(--space-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-hover);
+    padding: var(--space-6);
+  }
+
+  .mega__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  /* ilustración estilizada del producto (render del design system) */
+  .mega__shot {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    margin-bottom: var(--space-4);
+  }
+  .mega__shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .mega__name {
+    font-size: var(--text-h3);
+    margin: 0 0 var(--space-2);
+  }
+  .mega--luisa .mega__name { color: var(--violet); }
+  .mega--chat .mega__name { color: var(--teal-deep); }
+  .mega__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0 0 var(--space-5);
+  }
+  .mega__ctas {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+
+  .mega__list {
+    list-style: none;
+    display: grid;
+    align-content: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+  }
+  .mega__feature {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: background-color var(--transition);
+  }
+  .mega__feature:hover { background: var(--gray-bg); }
+  .mega__ficon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+  .mega--luisa .mega__ficon {
+    background: rgba(108, 99, 255, 0.1);
+    color: var(--violet);
+  }
+  .mega--chat .mega__ficon {
+    background: rgba(0, 199, 180, 0.1);
+    color: var(--teal-deep);
+  }
+
+  .navbar__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* móvil: los enlaces viven en el footer; el navbar conserva logo y acciones */
+  @media (max-width: 960px) {
+    .navbar__links { display: none; }
+  }
 </style>

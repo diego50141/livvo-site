@@ -11,6 +11,13 @@ import Section from '../../components/Section.astro';
 // desktop. Esta página solo enlaza hacia allá — el login vive en ese dominio.
 const APP_URL = 'https://portalinmobiliariofast.vercel.app/login';
 
+// Número real de Livvo, mismo que usa el Agente de Requerimientos. Su webhook
+// hacia portal_inmobiliario_fast está inactivo hoy (para no interferir con
+// ese bot) — el botón queda listo, pendiente activar el número en Kapso.
+const WHATSAPP_BOT_NUMBER = '12053048641';
+const WHATSAPP_BOT_MESSAGE = 'Hola, quiero crear mi catálogo de propiedades';
+const WHATSAPP_BOT_URL = `https://wa.me/${WHATSAPP_BOT_NUMBER}?text=${encodeURIComponent(WHATSAPP_BOT_MESSAGE)}`;
+
 // Solo se listan campos y formatos que el producto ya tiene hoy. No incluir
 // PDF, video, mapa, estadísticas de visitas ni estrato/piso/año de
 // construcción: el producto no los tiene todavía.
@@ -113,7 +120,57 @@ const beneficios = [
         <div class="ci-hero__visual">
           <div class="ci-card fade-up">
             <div class="ci-card__photo">
-              <Icon name="ph:house-line" />
+              <!-- Fotos de ejemplo ilustradas (sin fotografía real: sin riesgo de licencias),
+                   con crossfade puro en CSS — ver @keyframes ci-slide más abajo. -->
+              <div class="ci-card__slide" style="animation-delay: 0s;" aria-hidden="true">
+                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Sala">
+                  <rect width="400" height="200" fill="#DEE9FF" />
+                  <rect x="0" y="140" width="400" height="60" fill="#C7D9FA" />
+                  <rect x="40" y="40" width="90" height="90" rx="4" fill="#fff" opacity="0.6" />
+                  <rect x="55" y="55" width="60" height="60" fill="#A8C4FF" />
+                  <rect x="180" y="110" width="150" height="55" rx="10" fill="#0D1424" />
+                  <rect x="180" y="95" width="150" height="25" rx="10" fill="#0D1424" />
+                  <circle cx="330" cy="60" r="18" fill="#00C7B4" opacity="0.5" />
+                  <rect x="322" y="70" width="4" height="70" fill="#0099A8" opacity="0.4" />
+                </svg>
+              </div>
+              <div class="ci-card__slide" style="animation-delay: 3s;" aria-hidden="true">
+                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Cocina">
+                  <rect width="400" height="200" fill="#F1F3F8" />
+                  <rect x="0" y="120" width="400" height="80" fill="#0D1424" />
+                  <rect x="0" y="120" width="400" height="10" fill="#00C7B4" />
+                  <rect x="20" y="30" width="360" height="60" fill="#DEE9FF" />
+                  <rect x="40" y="45" width="60" height="35" fill="#A8C4FF" />
+                  <rect x="120" y="45" width="60" height="35" fill="#A8C4FF" />
+                  <rect x="200" y="45" width="60" height="35" fill="#A8C4FF" />
+                  <rect x="280" y="45" width="60" height="35" fill="#A8C4FF" />
+                  <circle cx="90" cy="150" r="14" fill="#3B7EFF" opacity="0.7" />
+                </svg>
+              </div>
+              <div class="ci-card__slide" style="animation-delay: 6s;" aria-hidden="true">
+                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Habitación">
+                  <rect width="400" height="200" fill="#EAF6F5" />
+                  <rect x="0" y="150" width="400" height="50" fill="#D8ECEA" />
+                  <rect x="60" y="100" width="220" height="60" rx="6" fill="#fff" />
+                  <rect x="60" y="100" width="220" height="16" rx="6" fill="#00C7B4" />
+                  <circle cx="90" cy="90" r="16" fill="#fff" />
+                  <circle cx="130" cy="90" r="16" fill="#fff" />
+                  <rect x="300" y="115" width="35" height="45" fill="#0D1424" opacity="0.85" />
+                  <circle cx="317" cy="108" r="6" fill="#FFB547" />
+                </svg>
+              </div>
+              <div class="ci-card__slide" style="animation-delay: 9s;" aria-hidden="true">
+                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fachada">
+                  <rect width="400" height="200" fill="#DEE9FF" />
+                  <circle cx="340" cy="50" r="24" fill="#FFB547" opacity="0.8" />
+                  <rect x="0" y="150" width="400" height="50" fill="#B7CCF5" />
+                  <polygon points="200,60 320,150 80,150" fill="#0D1424" />
+                  <rect x="120" y="95" width="160" height="55" fill="#fff" />
+                  <rect x="180" y="115" width="40" height="35" fill="#00C7B4" />
+                  <rect x="140" y="105" width="25" height="25" fill="#A8C4FF" />
+                  <rect x="235" y="105" width="25" height="25" fill="#A8C4FF" />
+                </svg>
+              </div>
               <span class="ci-card__badge">En venta</span>
               <span class="ci-card__photos"><Icon name="ph:camera" /> 8 fotos</span>
             </div>
@@ -219,8 +276,61 @@ const beneficios = [
     </Section>
   </main>
 
+  <!-- WIDGET FLOTANTE: crear catálogo por WhatsApp -->
+  <div class="wa-widget" id="wa-widget">
+    <div class="wa-widget__panel" id="wa-panel" hidden>
+      <button type="button" class="wa-widget__close" id="wa-close" aria-label="Cerrar">✕</button>
+      <p class="wa-widget__title">💬 Crea tu catálogo por WhatsApp</p>
+      <p class="wa-widget__desc">
+        Envíanos el anuncio de tu propiedad (texto + fotos) y te generamos la ficha
+        automáticamente.
+      </p>
+      <a
+        href={WHATSAPP_BOT_URL}
+        target="_blank"
+        rel="noopener"
+        class="wa-widget__cta"
+        id="ci-whatsapp-cta"
+      >
+        Abrir WhatsApp →
+      </a>
+    </div>
+    <button
+      type="button"
+      class="wa-widget__trigger"
+      id="wa-trigger"
+      aria-label="Crear catálogo por WhatsApp"
+      aria-expanded="false"
+    >
+      <Icon name="ph:whatsapp-logo" width={30} height={30} />
+    </button>
+  </div>
+
   <Footer />
 </Base>
+
+<script>
+  const widget = document.getElementById('wa-widget');
+  const trigger = document.getElementById('wa-trigger');
+  const panel = document.getElementById('wa-panel');
+  const closeBtn = document.getElementById('wa-close');
+
+  function setOpen(open: boolean) {
+    if (!panel || !trigger) return;
+    panel.hidden = !open;
+    trigger.setAttribute('aria-expanded', String(open));
+  }
+
+  trigger?.addEventListener('click', () => setOpen(panel?.hidden ?? true));
+  closeBtn?.addEventListener('click', () => setOpen(false));
+  document.addEventListener('click', (e) => {
+    if (!panel || panel.hidden) return;
+    if (widget && !widget.contains(e.target as Node)) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+</script>
 
 <style>
   /* ---- Hero ---- */
@@ -273,12 +383,24 @@ const beneficios = [
   .ci-card__photo {
     position: relative;
     height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba(0, 199, 180, 0.14) 0%, rgba(59, 126, 255, 0.1) 100%);
-    color: var(--teal-deep);
-    font-size: 56px;
+    overflow: hidden;
+    background: #dee9ff;
+  }
+  .ci-card__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: ci-slide-fade 12s infinite;
+  }
+  .ci-card__slide svg { width: 100%; height: 100%; display: block; }
+  @keyframes ci-slide-fade {
+    0%, 3% { opacity: 0; }
+    6%, 21% { opacity: 1; }
+    25%, 100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ci-card__slide { animation: none; opacity: 0; }
+    .ci-card__slide:first-child { opacity: 1; }
   }
   .ci-card__badge {
     position: absolute;
@@ -479,6 +601,70 @@ const beneficios = [
   .ci-cta { max-width: 620px; margin-inline: auto; text-align: center; }
   .ci-cta p { color: var(--muted); font-size: 16px; line-height: var(--lh-body); margin: 0 0 24px; }
 
+  /* ---- Widget flotante de WhatsApp ---- */
+  .wa-widget {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .wa-widget__trigger {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: none;
+    background: #25d366;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition: transform var(--transition);
+  }
+  .wa-widget__trigger:hover { transform: scale(1.06); }
+  .wa-widget__panel {
+    width: min(300px, calc(100vw - 40px));
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+    padding: 20px;
+    position: relative;
+  }
+  .wa-widget__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .wa-widget__title { font-weight: 700; color: var(--navy); margin: 0 0 8px; padding-right: 20px; }
+  .wa-widget__desc { font-size: 13.5px; color: var(--muted); line-height: var(--lh-body); margin: 0 0 14px; }
+  .wa-widget__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #25d366;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: var(--radius-btn);
+    text-decoration: none;
+    transition: filter var(--transition);
+  }
+  .wa-widget__cta:hover { filter: brightness(0.95); color: #fff; }
+
   @media (max-width: 1024px) {
     .ci-hero__inner { grid-template-columns: 1fr; text-align: center; gap: var(--space-8, 32px); }
     .ci-hero__sub { margin-inline: auto; }
@@ -497,5 +683,6 @@ const beneficios = [
     .ci-hero h1 { font-size: 34px; }
     .ci-incluye { grid-template-columns: 1fr; }
     .ci-beneficios { grid-template-columns: 1fr; }
+    .wa-widget { right: 16px; bottom: 16px; }
   }
 </style>

@@ -39,6 +39,7 @@ const steps = [
 const turns = [
   { from: 'client', text: 'Busco apartamento en Chapinero, 3 alcobas, hasta $450M' },
   { from: 'reasoning', label: 'Buscando en portales inmobiliarios' },
+  { from: 'typing' },
   {
     from: 'luisa',
     label: 'Agente de Requerimientos',
@@ -50,10 +51,18 @@ const turns = [
       '• Chapinero Alto · 3 alcobas · $438M (Fincaraíz)\n' +
       '• Chicó Norte · 3 alcobas · $449M (Metrocuadrado)',
   },
+  { from: 'typing' },
   {
     from: 'luisa',
     label: 'Agente de Requerimientos',
     text: '¿Quieres que te envíe las 100 propiedades completas? Escríbeme tu correo y te las mando.',
+  },
+  { from: 'client', text: 'Claro, mi correo es diego@inmobiliarialagranmanzana.com' },
+  { from: 'typing' },
+  {
+    from: 'luisa',
+    label: 'Agente de Requerimientos',
+    text: 'Perfecto, ya están las 100 propiedades en tu correo.',
   },
 ];
 ---

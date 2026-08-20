@@ -1,21 +1,23 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Button from '../../components/Button.astro';
 import Section from '../../components/Section.astro';
+import fotoPropiedad1 from '../../assets/catalogo-inmobiliario/propiedad-1.jpg';
+import fotoPropiedad2 from '../../assets/catalogo-inmobiliario/propiedad-2.jpg';
+import fotoPropiedad3 from '../../assets/catalogo-inmobiliario/propiedad-3.jpg';
 
 // El catálogo es un producto aparte (portal_inmobiliario_fast), con su propia
 // base de datos: cuenta por número de celular, compartida entre WhatsApp y
 // desktop. Esta página solo enlaza hacia allá — el login vive en ese dominio.
 const APP_URL = 'https://portalinmobiliariofast.vercel.app/login';
 
-// Número real de Livvo, mismo que usa el Agente de Requerimientos. Su webhook
-// hacia portal_inmobiliario_fast está inactivo hoy (para no interferir con
-// ese bot) — el botón queda listo, pendiente activar el número en Kapso.
-const WHATSAPP_BOT_NUMBER = '12053048641';
-const WHATSAPP_BOT_MESSAGE = 'Hola, quiero crear mi catálogo de propiedades';
+const WHATSAPP_BOT_NUMBER = '12052843965';
+const WHATSAPP_BOT_MESSAGE =
+  'Hola quiero crear mi ficha inmobiliaria web \nVENDEMOS APARTAMENTO EN SANTA ANA OCCIDENTAL';
 const WHATSAPP_BOT_URL = `https://wa.me/${WHATSAPP_BOT_NUMBER}?text=${encodeURIComponent(WHATSAPP_BOT_MESSAGE)}`;
 
 // Solo se listan campos y formatos que el producto ya tiene hoy. No incluir
@@ -32,6 +34,8 @@ const incluye = [
   { icon: 'ph:whatsapp-logo', label: 'Nombre y WhatsApp del agente' },
   { icon: 'ph:link-simple', label: 'Link propio para compartir' },
 ];
+
+const fotosPropiedad = [fotoPropiedad1, fotoPropiedad2, fotoPropiedad3];
 
 const pasos = [
   {
@@ -110,8 +114,11 @@ const beneficios = [
             listo para compartir con tus clientes.
           </p>
           <div class="ci-hero__ctas">
-            <Button href={APP_URL} target="_blank" size="lg" id="ci-hero-cta">
-              Crear mi catálogo gratis →
+            <Button href={WHATSAPP_BOT_URL} target="_blank" size="lg" id="ci-hero-cta-whatsapp">
+              <Icon name="ph:whatsapp-logo" /> Crear por WhatsApp
+            </Button>
+            <Button href={APP_URL} target="_blank" size="lg" variant="outline" id="ci-hero-cta-web">
+              <Icon name="ph:desktop" /> Crear desde el computador
             </Button>
           </div>
           <p class="ci-hero__note">Con tu número de WhatsApp · Sin tarjeta de crédito</p>
@@ -120,57 +127,19 @@ const beneficios = [
         <div class="ci-hero__visual">
           <div class="ci-card fade-up">
             <div class="ci-card__photo">
-              <!-- Fotos de ejemplo ilustradas (sin fotografía real: sin riesgo de licencias),
-                   con crossfade puro en CSS — ver @keyframes ci-slide más abajo. -->
-              <div class="ci-card__slide" style="animation-delay: 0s;" aria-hidden="true">
-                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Sala">
-                  <rect width="400" height="200" fill="#DEE9FF" />
-                  <rect x="0" y="140" width="400" height="60" fill="#C7D9FA" />
-                  <rect x="40" y="40" width="90" height="90" rx="4" fill="#fff" opacity="0.6" />
-                  <rect x="55" y="55" width="60" height="60" fill="#A8C4FF" />
-                  <rect x="180" y="110" width="150" height="55" rx="10" fill="#0D1424" />
-                  <rect x="180" y="95" width="150" height="25" rx="10" fill="#0D1424" />
-                  <circle cx="330" cy="60" r="18" fill="#00C7B4" opacity="0.5" />
-                  <rect x="322" y="70" width="4" height="70" fill="#0099A8" opacity="0.4" />
-                </svg>
-              </div>
-              <div class="ci-card__slide" style="animation-delay: 3s;" aria-hidden="true">
-                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Cocina">
-                  <rect width="400" height="200" fill="#F1F3F8" />
-                  <rect x="0" y="120" width="400" height="80" fill="#0D1424" />
-                  <rect x="0" y="120" width="400" height="10" fill="#00C7B4" />
-                  <rect x="20" y="30" width="360" height="60" fill="#DEE9FF" />
-                  <rect x="40" y="45" width="60" height="35" fill="#A8C4FF" />
-                  <rect x="120" y="45" width="60" height="35" fill="#A8C4FF" />
-                  <rect x="200" y="45" width="60" height="35" fill="#A8C4FF" />
-                  <rect x="280" y="45" width="60" height="35" fill="#A8C4FF" />
-                  <circle cx="90" cy="150" r="14" fill="#3B7EFF" opacity="0.7" />
-                </svg>
-              </div>
-              <div class="ci-card__slide" style="animation-delay: 6s;" aria-hidden="true">
-                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Habitación">
-                  <rect width="400" height="200" fill="#EAF6F5" />
-                  <rect x="0" y="150" width="400" height="50" fill="#D8ECEA" />
-                  <rect x="60" y="100" width="220" height="60" rx="6" fill="#fff" />
-                  <rect x="60" y="100" width="220" height="16" rx="6" fill="#00C7B4" />
-                  <circle cx="90" cy="90" r="16" fill="#fff" />
-                  <circle cx="130" cy="90" r="16" fill="#fff" />
-                  <rect x="300" y="115" width="35" height="45" fill="#0D1424" opacity="0.85" />
-                  <circle cx="317" cy="108" r="6" fill="#FFB547" />
-                </svg>
-              </div>
-              <div class="ci-card__slide" style="animation-delay: 9s;" aria-hidden="true">
-                <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fachada">
-                  <rect width="400" height="200" fill="#DEE9FF" />
-                  <circle cx="340" cy="50" r="24" fill="#FFB547" opacity="0.8" />
-                  <rect x="0" y="150" width="400" height="50" fill="#B7CCF5" />
-                  <polygon points="200,60 320,150 80,150" fill="#0D1424" />
-                  <rect x="120" y="95" width="160" height="55" fill="#fff" />
-                  <rect x="180" y="115" width="40" height="35" fill="#00C7B4" />
-                  <rect x="140" y="105" width="25" height="25" fill="#A8C4FF" />
-                  <rect x="235" y="105" width="25" height="25" fill="#A8C4FF" />
-                </svg>
-              </div>
+              <!-- Fotos reales de ejemplo, con crossfade puro en CSS
+                   — ver @keyframes ci-slide-fade más abajo. -->
+              {fotosPropiedad.map((foto, i) => (
+                <div class="ci-card__slide" style={`animation-delay: ${i * 4}s;`} aria-hidden="true">
+                  <Image
+                    src={foto}
+                    alt="Foto de ejemplo de una propiedad publicada en el catálogo"
+                    width={760}
+                    height={380}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                  />
+                </div>
+              ))}
               <span class="ci-card__badge">En venta</span>
               <span class="ci-card__photos"><Icon name="ph:camera" /> 8 fotos</span>
             </div>
@@ -269,9 +238,14 @@ const beneficios = [
           Carga una propiedad real y en minutos tienes su página web y tu catálogo listos para
           compartir.
         </p>
-        <Button href={APP_URL} target="_blank" size="lg" id="ci-cta-final">
-          Crear mi catálogo gratis →
-        </Button>
+        <div class="ci-cta__ctas">
+          <Button href={WHATSAPP_BOT_URL} target="_blank" size="lg" id="ci-cta-final-whatsapp">
+            <Icon name="ph:whatsapp-logo" /> Crear por WhatsApp
+          </Button>
+          <Button href={APP_URL} target="_blank" size="lg" variant="outline" id="ci-cta-final-web">
+            <Icon name="ph:desktop" /> Crear desde el computador
+          </Button>
+        </div>
       </div>
     </Section>
   </main>
@@ -392,11 +366,11 @@ const beneficios = [
     opacity: 0;
     animation: ci-slide-fade 12s infinite;
   }
-  .ci-card__slide svg { width: 100%; height: 100%; display: block; }
+  .ci-card__slide img { width: 100%; height: 100%; display: block; object-fit: cover; }
   @keyframes ci-slide-fade {
-    0%, 3% { opacity: 0; }
-    6%, 21% { opacity: 1; }
-    25%, 100% { opacity: 0; }
+    0%, 4% { opacity: 0; }
+    8%, 28% { opacity: 1; }
+    33%, 100% { opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .ci-card__slide { animation: none; opacity: 0; }
@@ -600,6 +574,12 @@ const beneficios = [
   /* ---- CTA final ---- */
   .ci-cta { max-width: 620px; margin-inline: auto; text-align: center; }
   .ci-cta p { color: var(--muted); font-size: 16px; line-height: var(--lh-body); margin: 0 0 24px; }
+  .ci-cta__ctas {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 
   /* ---- Widget flotante de WhatsApp ---- */
   .wa-widget {

@@ -1,0 +1,137 @@
+---
+// Sección "Agenda tu demo" (patrón Nexiu): texto + beneficios a la izquierda,
+// formulario de HubSpot embebido en una tarjeta blanca a la derecha.
+// El formulario vive en HubSpot (portal 51192341); campos y notificaciones
+// se editan allá, no aquí. Nota: los links share.hsforms.com son para abrir
+// standalone, no para <iframe> (quedan en blanco); el script js.hsforms.net
+// con portalId + formId es el método soportado para embeber.
+import { Icon } from 'astro-icon/components';
+import { WHATSAPP_URL } from '../config';
+
+const HUBSPOT_PORTAL_ID = '51192341';
+const HUBSPOT_FORM_ID = '46eecfd2-3efd-4f38-bdb4-bc433485f43b';
+const HUBSPOT_REGION = 'na1';
+
+const demoPoints = [
+  'Calificación automática',
+  'IA alimentada con tu portafolio de propiedades',
+  'Plataforma comercial con conversaciones, negocios y más',
+];
+---
+
+<section id="agenda-demo" class="demo section--dark theme-dark-scope">
+  <div class="container-site demo__inner">
+    <div class="demo__content fade-up">
+      <span class="eyebrow">Agenda tu demo</span>
+      <h2 class="demo__title">Hablemos de cómo podemos automatizar tu proceso comercial.</h2>
+      <p class="demo__sub">
+        Te mostramos en 25 minutos cómo se ve Livvo Chat y Luisa IA.
+      </p>
+      <ul class="demo__points">
+        {demoPoints.map((point) => (
+          <li class="demo__point">
+            <span class="demo__point-icon" aria-hidden="true">
+              <Icon name="ph:check-circle" width={22} height={22} />
+            </span>
+            {point}
+          </li>
+        ))}
+      </ul>
+      <p class="demo__alt">
+        ¿Prefieres probarlo tú mismo?
+        <a href={WHATSAPP_URL} target="_blank" rel="noopener">Prueba 15 días gratis →</a>
+      </p>
+    </div>
+
+    <div class="demo__form-card fade-up">
+      <div
+        class="hs-form-frame"
+        data-region={HUBSPOT_REGION}
+        data-form-id={HUBSPOT_FORM_ID}
+        data-portal-id={HUBSPOT_PORTAL_ID}
+      >
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline src="https://js.hsforms.net/forms/embed/51192341.js" defer></script>
+
+<style>
+  .demo {
+    padding: 96px 0;
+    background:
+      radial-gradient(circle at 15% 25%, rgba(0, 199, 180, 0.09) 0%, transparent 45%),
+      radial-gradient(circle at 85% 75%, rgba(59, 126, 255, 0.07) 0%, transparent 45%),
+      linear-gradient(180deg, #070b14 0%, #0a0e1a 100%);
+  }
+  .demo__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    align-items: center;
+    max-width: 1080px;
+  }
+  .demo__title {
+    margin: var(--space-4) 0 var(--space-4);
+    font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: -1px;
+  }
+  .demo__sub {
+    color: var(--muted);
+    font-size: var(--text-body);
+    line-height: var(--lh-relaxed);
+    margin: 0 0 var(--space-8);
+    max-width: 460px;
+  }
+  .demo__points {
+    list-style: none;
+    display: grid;
+    gap: var(--space-4);
+    padding: 0;
+    margin: 0 0 var(--space-8);
+  }
+  .demo__point {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-small);
+    color: var(--navy);
+  }
+  .demo__point-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--teal);
+  }
+  .demo__alt {
+    font-size: var(--text-small);
+    color: var(--muted);
+    margin: 0;
+  }
+  .demo__alt a {
+    color: var(--teal-deep);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 6px;
+  }
+  .demo__alt a:hover { text-decoration: underline; }
+
+  /* Tarjeta blanca fija: el iframe de HubSpot renderiza claro también en dark */
+  .demo__form-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-6);
+    min-height: 480px;
+  }
+
+  @media (max-width: 900px) {
+    .demo { padding: 64px 0; }
+    .demo__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+    .demo__sub { max-width: none; }
+  }
+</style>

@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
 import FAQ from '../components/FAQ.astro';
+import DemoForm from '../components/DemoForm.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 import fotoLuisa from '../assets/equipo/luisa.png';
@@ -465,6 +466,9 @@ const faqItems = [
 
   <!-- PLANES: oculta por ahora (patrón Realmate: sin pricing público en el
        home). La página /planes sigue existiendo; restaurar desde git si vuelve. -->
+
+  <!-- AGENDA TU DEMO: formulario de HubSpot (patrón Nexiu) -->
+  <DemoForm />
 
   <!-- FAQ: acordeón -->
   <Section id="faq" dark eyebrow="Preguntas frecuentes" title="Lo que nos preguntan antes de empezar.">

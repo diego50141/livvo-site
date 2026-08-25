@@ -38,11 +38,6 @@ const megas = [
     ],
   },
 ];
-
-const recursos = [
-  { href: '/herramientas/catalogo-inmobiliario', label: 'Catálogo Inmobiliario' },
-  { href: '/herramientas/agente-de-requerimientos', label: 'Agente de Requerimientos' },
-];
 ---
 
 <nav class="navbar theme-dark-scope">
@@ -98,19 +93,6 @@ const recursos = [
           </div>
         ))
       }
-      <div class="navbar__item">
-        <button class="navbar__link navbar__link--btn" type="button" aria-haspopup="true">
-          Recursos
-          <Icon name="ph:caret-down" width={14} height={14} aria-hidden="true" />
-        </button>
-        <div class="navbar__dropdown">
-          {recursos.map(({ href, label }) => (
-            <a class="navbar__dropdown-link" {href}>
-              {label}
-            </a>
-          ))}
-        </div>
-      </div>
     </div>
 
     <div class="navbar__actions">
@@ -169,45 +151,7 @@ const recursos = [
     color: var(--teal-deep);
   }
 
-  /* desplegable simple (Recursos): solo CSS, abre con hover o foco */
   .navbar__item { position: relative; }
-  .navbar__dropdown {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
-    min-width: 240px;
-    padding: var(--space-2);
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-md);
-    display: grid;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity var(--transition), transform var(--transition),
-      visibility var(--transition);
-  }
-  .navbar__item:hover .navbar__dropdown,
-  .navbar__item:focus-within .navbar__dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-  }
-  .navbar__dropdown-link {
-    font-family: var(--font-ui);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    text-decoration: none;
-    padding: 10px 14px;
-    border-radius: 10px;
-    transition: background-color var(--transition), color var(--transition);
-  }
-  .navbar__dropdown-link:hover {
-    background: rgba(0, 199, 180, 0.08);
-    color: var(--teal-deep);
-  }
 
   /* ---- Mega-menú de producto (patrón Realmate, sin columna de clientes) ----
      El panel se ancla al navbar (no al enlace) para poder centrarlo en la

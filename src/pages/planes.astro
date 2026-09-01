@@ -7,71 +7,50 @@ import PricingCard from '../components/PricingCard.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
-// Planes por volumen de conversaciones IA/mes (adaptación del modelo de Roma,
-// ver pricing_livvo.md sección 5.3): Inicia → Crece → Avanza → Despega → Corporativo.
+// Planes por volumen de contactos atendidos con IA/mes (adaptación del modelo de Roma,
+// ver pricing_livvo.md sección 5.3): Trial → Inicia → Crece → Corporativo.
 const plans = [
   {
+    name: 'Trial',
+    price: '$0',
+    period: 'USD / mes',
+    tagline: 'Prueba gratis por 7 días',
+    features: [
+      '100 conversaciones incluidas',
+      'Sin tarjeta de crédito',
+      '7 días gratis',
+    ],
+    featured: false,
+    ctaLabel: 'Comenzar ahora',
+  },
+  {
     name: 'Inicia',
-    price: '$375.000',
-    priceAnnual: '$300.000',
+    price: '$399.000',
+    priceAnnual: '$319.200',
     period: 'COP / mes',
     tagline: 'Para equipos pequeños en crecimiento',
     features: [
-      '500 conversaciones IA al mes',
-      'Conexión a WhatsApp (canal estándar)',
+      '500 contactos atendidos con IA al mes',
       'CRM inmobiliario',
       'Soporte por ticket',
-      'Conversación adicional: $1.300 COP',
+      'Contacto adicional: $1.300 COP',
     ],
     featured: false,
     ctaLabel: 'Comenzar ahora',
   },
   {
     name: 'Crece',
-    price: '$675.000',
-    priceAnnual: '$540.000',
+    price: '$799.000',
+    priceAnnual: '$639.200',
     period: 'COP / mes',
-    tagline: 'Para equipos que ya superan las 500 conversaciones',
+    tagline: 'Para equipos que ya superan los 500 contactos atendidos con IA',
     features: [
-      '1.000 conversaciones IA al mes',
-      'Conexión a WhatsApp (canal estándar)',
+      '1.000 contactos atendidos con IA al mes',
       'CRM inmobiliario',
       'Soporte por ticket, con prioridad',
-      'Conversación adicional: $1.050 COP',
-    ],
-    featured: false,
-    ctaLabel: 'Comenzar ahora',
-  },
-  {
-    name: 'Avanza',
-    price: '$1.350.000',
-    priceAnnual: '$1.080.000',
-    period: 'COP / mes',
-    tagline: 'Para equipos con alto volumen de leads',
-    features: [
-      '2.000 conversaciones IA al mes',
-      'Campañas de WhatsApp asistidas por IA',
-      'CRM inmobiliario',
-      'Soporte directo',
-      'Conversación adicional: $950 COP',
+      'Contacto adicional: $1.050 COP',
     ],
     featured: true,
-    ctaLabel: 'Comenzar ahora',
-  },
-  {
-    name: 'Despega',
-    price: '$2.150.000',
-    priceAnnual: '$1.720.000',
-    period: 'COP / mes',
-    tagline: 'Para operaciones de alto volumen',
-    features: [
-      '4.000 conversaciones IA al mes',
-      'Integración con tu CRM/ERP inmobiliario (WASI, SIMI, etc.)',
-      'Campañas de WhatsApp asistidas por IA',
-      'Soporte prioritario',
-      'Conversación adicional: $750 COP',
-    ],
-    featured: false,
     ctaLabel: 'Comenzar ahora',
   },
   {
@@ -80,8 +59,7 @@ const plans = [
     period: '',
     tagline: 'Para operaciones de gran escala',
     features: [
-      'Conversaciones IA ilimitadas',
-      'Usuarios y líneas de WhatsApp ilimitados',
+      'Contactos atendidos con IA ilimitados',
       'Integraciones a medida (CRM, ERP, API abierta)',
       'Operación 24/7 de tus agentes IA',
       'Soporte dedicado 24/7 con SLA garantizado',
@@ -95,7 +73,7 @@ const plans = [
 
 <Base
   title="Planes y precios — Livvo"
-  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: escala por volumen de conversaciones IA al mes, con CRM inmobiliario y agentes IA incluidos."
+  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: escala por volumen de contactos atendidos con IA al mes, con CRM inmobiliario y agentes IA incluidos."
 >
   <Navbar />
 
@@ -139,7 +117,6 @@ const plans = [
             <li><span class="setup-card__check">✓</span>Sesión de descubrimiento para entender tu negocio</li>
             <li><span class="setup-card__check">✓</span>Configuración y entrenamiento de tus agentes IA</li>
             <li><span class="setup-card__check">✓</span>Integración con tu WhatsApp</li>
-            <li><span class="setup-card__check">✓</span>Incluye 500 conversaciones el primer mes</li>
           </ul>
         </div>
         <div class="setup-card__price-box">
@@ -149,14 +126,14 @@ const plans = [
         </div>
       </div>
       <div class="pricing-terms fade-up">
-        <span>Prueba gratuita de 15 días</span>
+        <span>Prueba gratuita de 7 días</span>
         <span>Sin tarjeta de crédito</span>
-        <span>Te avisamos antes de cobrar conversaciones adicionales</span>
+        <span>Te avisamos antes de cobrar contactos adicionales</span>
         <span>Facturación en pesos colombianos</span>
       </div>
       <div class="pricing-cta fade-up">
         <p>¿No sabes cuál te conviene? Te ayudamos a elegir.</p>
-        <Button href={WHATSAPP_URL} target="_blank" size="lg">Prueba 15 días gratis →</Button>
+        <Button href={WHATSAPP_URL} target="_blank" size="lg">Prueba 7 días gratis →</Button>
       </div>
     </Section>
   </main>

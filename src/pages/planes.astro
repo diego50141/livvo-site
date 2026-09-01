@@ -7,75 +7,85 @@ import PricingCard from '../components/PricingCard.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
-// Cuatro planes con dimensiones comparables y en el mismo orden:
-// usuarios → propiedades → conversaciones → líneas → CRM/agentes.
+// Planes por volumen de conversaciones IA/mes (adaptación del modelo de Roma,
+// ver pricing_livvo.md sección 5.3): Inicia → Crece → Avanza → Despega → Corporativo.
 const plans = [
   {
-    name: 'Gratis',
-    price: '$0',
-    period: '',
-    tagline: 'Para independientes y equipos de 1',
-    features: [
-      '1 usuario',
-      'Hasta 30 propiedades',
-      '250 conversaciones al mes',
-      '1 línea de WhatsApp',
-      'CRM inmobiliario',
-      'Autogestión: crea tu propio agente IA y automatizaciones',
-    ],
-    featured: false,
-    ctaLabel: 'Comenzar gratis',
-  },
-  {
-    name: 'Plan Esencial',
-    price: '$399.000',
-    priceAnnual: '$359.000',
-    period: 'COP / mes',
+    name: 'Inicia',
+    price: '$375.000',
+    priceAnnual: '$300.000',
+    period: 'COP / mes',
     tagline: 'Para equipos pequeños en crecimiento',
     features: [
-      '2 usuarios',
-      'Hasta 80 propiedades',
-      '500 conversaciones al mes',
-      '1 línea de WhatsApp',
+      '500 conversaciones IA al mes',
+      'Conexión a WhatsApp (canal estándar)',
       'CRM inmobiliario',
-      'Autogestión: crea tu propio agente IA y automatizaciones',
+      'Soporte por ticket',
+      'Conversación adicional: $1.300 COP',
     ],
     featured: false,
     ctaLabel: 'Comenzar ahora',
   },
   {
-    name: 'Plan Profesional',
-    price: '$799.000',
-    priceAnnual: '$719.000',
-    period: 'COP / mes',
-    tagline: 'Para equipos con alto volumen de propiedades',
+    name: 'Crece',
+    price: '$675.000',
+    priceAnnual: '$540.000',
+    period: 'COP / mes',
+    tagline: 'Para equipos que ya superan las 500 conversaciones',
     features: [
-      '4 usuarios',
-      'Hasta 200 propiedades',
-      '1.000 conversaciones al mes',
-      '2 líneas de WhatsApp',
+      '1.000 conversaciones IA al mes',
+      'Conexión a WhatsApp (canal estándar)',
       'CRM inmobiliario',
-      'Agentes IA de ventas y atención al cliente ilimitados',
+      'Soporte por ticket, con prioridad',
+      'Conversación adicional: $1.050 COP',
+    ],
+    featured: false,
+    ctaLabel: 'Comenzar ahora',
+  },
+  {
+    name: 'Avanza',
+    price: '$1.350.000',
+    priceAnnual: '$1.080.000',
+    period: 'COP / mes',
+    tagline: 'Para equipos con alto volumen de leads',
+    features: [
+      '2.000 conversaciones IA al mes',
+      'Campañas de WhatsApp asistidas por IA',
+      'CRM inmobiliario',
+      'Soporte directo',
+      'Conversación adicional: $950 COP',
     ],
     featured: true,
     ctaLabel: 'Comenzar ahora',
   },
   {
-    name: 'Plan Corporativo',
+    name: 'Despega',
+    price: '$2.150.000',
+    priceAnnual: '$1.720.000',
+    period: 'COP / mes',
+    tagline: 'Para operaciones de alto volumen',
+    features: [
+      '4.000 conversaciones IA al mes',
+      'Integración con tu CRM/ERP inmobiliario (WASI, SIMI, etc.)',
+      'Campañas de WhatsApp asistidas por IA',
+      'Soporte prioritario',
+      'Conversación adicional: $750 COP',
+    ],
+    featured: false,
+    ctaLabel: 'Comenzar ahora',
+  },
+  {
+    name: 'Corporativo',
     price: 'A medida',
     period: '',
     tagline: 'Para operaciones de gran escala',
     features: [
-      'Usuarios ilimitados',
-      'Propiedades a medida',
-      'Volumen de conversaciones a medida',
+      'Conversaciones IA ilimitadas',
+      'Usuarios y líneas de WhatsApp ilimitados',
+      'Integraciones a medida (CRM, ERP, API abierta)',
       'Operación 24/7 de tus agentes IA',
-      'Campañas de WhatsApp',
-      'Módulo de plantillas de Meta',
-      'Soporte premium 24/7',
+      'Soporte dedicado 24/7 con SLA garantizado',
       'Gerente de cuenta dedicado',
-      'Canales adicionales (Instagram, Messenger, etc.)',
-      'Acceso al API de Livvo',
     ],
     featured: false,
     ctaLabel: 'Hablar con ventas →',
@@ -85,7 +95,7 @@ const plans = [
 
 <Base
   title="Planes y precios — Livvo"
-  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: empieza gratis con tu propia línea de WhatsApp y agente IA, y escala con CRM inmobiliario, más líneas y agentes ilimitados."
+  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: escala por volumen de conversaciones IA al mes, con CRM inmobiliario y agentes IA incluidos."
 >
   <Navbar />
 
@@ -96,7 +106,7 @@ const plans = [
           Mensual
         </button>
         <button type="button" class="billing-toggle__btn" data-billing="annual">
-          Anual <span class="billing-toggle__badge">Ahorra 10 %</span>
+          Anual <span class="billing-toggle__badge">Ahorra 20 %</span>
         </button>
       </div>
 
@@ -141,6 +151,7 @@ const plans = [
       <div class="pricing-terms fade-up">
         <span>Prueba gratuita de 15 días</span>
         <span>Sin tarjeta de crédito</span>
+        <span>Te avisamos antes de cobrar conversaciones adicionales</span>
         <span>Facturación en pesos colombianos</span>
       </div>
       <div class="pricing-cta fade-up">
@@ -155,7 +166,7 @@ const plans = [
 
 <script>
   // Toggle mensual/anual: cambia el monto de las tarjetas que declaran
-  // precio anual (data-price-annual); Gratis y Corporativo no cambian.
+  // precio anual (data-price-annual); Corporativo no cambia.
   const billingBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-billing]'));
   const billingPrices = Array.from(document.querySelectorAll<HTMLElement>('[data-price-annual]'));
 
@@ -168,7 +179,7 @@ const plans = [
         const period = p.querySelector('.pricing__period');
         if (amount) amount.textContent = annual ? p.dataset.priceAnnual! : p.dataset.priceMonthly!;
         if (period)
-          period.textContent = annual ? ' COP / mes · pago anual' : ' COP / mes';
+          period.textContent = annual ? ' COP / mes · pago anual' : ' COP / mes';
       });
     });
   });
@@ -221,7 +232,7 @@ const plans = [
 
   .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: var(--space-6);
     align-items: stretch;
   }
@@ -310,7 +321,10 @@ const plans = [
     margin: 0 0 var(--space-6);
   }
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
+    .pricing-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
     .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 640px) {

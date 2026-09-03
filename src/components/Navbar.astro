@@ -81,9 +81,7 @@ const megas = [
                 <ul class="mega__list">
                   {features.map(({ icon, label: flabel }) => (
                     <li class="mega__feature">
-                      <span class="mega__ficon" aria-hidden="true">
-                        <Icon name={icon} width={18} height={18} />
-                      </span>
+                      <Icon class="mega__ficon" name={icon} width={18} height={18} aria-hidden="true" />
                       {flabel}
                     </li>
                   ))}
@@ -247,30 +245,12 @@ const megas = [
     transition: background-color var(--transition);
   }
   .mega__feature:hover { background: var(--gray-bg); }
-  /* chip circular del DS, en tamaño de lista */
+  /* icono plano, sin chip ni glow */
   .mega__ficon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    box-shadow: 0 3px 10px rgba(13, 20, 36, 0.07);
   }
-  .mega--luisa .mega__ficon {
-    background:
-      radial-gradient(circle at 50% 130%, rgba(108, 99, 255, 0.26) 0%, transparent 72%),
-      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    color: var(--violet);
-  }
-  .mega--chat .mega__ficon {
-    background:
-      radial-gradient(circle at 50% 130%, rgba(0, 199, 180, 0.28) 0%, transparent 72%),
-      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    color: var(--teal-deep);
-  }
+  .mega--luisa .mega__ficon { color: var(--violet); }
+  .mega--chat .mega__ficon { color: var(--teal-deep); }
 
   .navbar__actions {
     display: flex;

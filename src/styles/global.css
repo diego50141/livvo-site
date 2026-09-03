@@ -233,10 +233,7 @@ a:hover { color: var(--blue); }
 }
 
 .grad-text {
-  background: var(--grad-flow);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--teal-deep);
 }
 
 .fade-up {

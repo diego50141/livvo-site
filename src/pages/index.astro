@@ -244,7 +244,6 @@ const faqItems = [
   <main>
   <!-- HERO: el paraguas, los dos productos en un solo lugar -->
   <div class="hero-scene theme-dark-scope">
-    <div id="hero-particles" class="hero-scene__particles" aria-hidden="true"></div>
     <header class="hero">
       <div class="container-site hero__inner">
         <div class="hero__content" id="hero-content">
@@ -259,7 +258,7 @@ const faqItems = [
             <strong>Livvo Chat</strong> es la plataforma que unifica la atención al cliente.
           </p>
           <div class="hero__ctas">
-            <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Prueba 15 días gratis →</Button>
+            <Button href={WHATSAPP_URL} target="_blank" size="lg" id="hero-demo-cta">Prueba 7 días gratis →</Button>
           </div>
         </div>
         <div class="hero__chat">
@@ -288,10 +287,10 @@ const faqItems = [
     <div class="problem-grid fade-up">
       {problemItems.map(({ icon, title, desc, stat, statLabel }) => (
         <article class="problem-card">
-          <span class="problem-card__icon" aria-hidden="true">
-            <Icon name={icon} width={26} height={26} />
-          </span>
-          <h3 class="problem-card__title">{title}</h3>
+          <div class="problem-card__head">
+            <Icon class="problem-card__icon" name={icon} width={20} height={20} aria-hidden="true" />
+            <h3 class="problem-card__title">{title}</h3>
+          </div>
           <p class="problem-card__desc">{desc}</p>
           <div class="problem-card__stat">
             <span class="problem-card__stat-value">
@@ -330,17 +329,17 @@ const faqItems = [
       </div>
     </div>
 
-    <div class="skills-grid fade-up">
+    <ul class="skills-list fade-up">
       {luisaSkills.map(({ icon, title, desc }) => (
-        <article class="skill-card">
-          <span class="skill-card__icon" aria-hidden="true">
-            <Icon name={icon} width={22} height={22} />
-          </span>
-          <h3 class="skill-card__title">{title}</h3>
-          <p class="skill-card__desc">{desc}</p>
-        </article>
+        <li class="skill-item">
+          <Icon class="skill-item__icon" name={icon} width={20} height={20} aria-hidden="true" />
+          <div>
+            <h3 class="skill-item__title">{title}</h3>
+            <p class="skill-item__desc">{desc}</p>
+          </div>
+        </li>
       ))}
-    </div>
+    </ul>
 
     <div class="product-close fade-up">
       <div class="product-close__text">
@@ -364,10 +363,10 @@ const faqItems = [
     <div class="bento fade-up">
       {chatCells.map(({ icon, title, desc }) => (
         <article class="bento__cell">
-          <span class="bento__icon" aria-hidden="true">
-            <Icon name={icon} width={26} height={26} />
-          </span>
-          <h3 class="bento__title">{title}</h3>
+          <div class="bento__head">
+            <Icon class="bento__icon" name={icon} width={20} height={20} aria-hidden="true" />
+            <h3 class="bento__title">{title}</h3>
+          </div>
           <p class="bento__desc">{desc}</p>
         </article>
       ))}
@@ -452,9 +451,7 @@ const faqItems = [
     <ul class="trust-list fade-up">
       {techItems.map(({ icon, title, desc }) => (
         <li class="trust-item">
-          <span class="trust-item__icon" aria-hidden="true">
-            <Icon name={icon} width={20} height={20} />
-          </span>
+          <Icon class="trust-item__icon" name={icon} width={20} height={20} aria-hidden="true" />
           <div>
             <h3 class="trust-item__title">{title}</h3>
             <p class="trust-item__desc">{desc}</p>
@@ -476,7 +473,7 @@ const faqItems = [
       <FAQ items={faqItems} />
       <div class="faq-footer fade-up">
         <p>Contáctanos si tienes alguna pregunta o problema.</p>
-        <Button href={WHATSAPP_URL} target="_blank" variant="primary">Prueba 15 días gratis →</Button>
+        <Button href={WHATSAPP_URL} target="_blank" variant="primary">Prueba 7 días gratis →</Button>
       </div>
     </div>
   </Section>
@@ -484,52 +481,6 @@ const faqItems = [
 
   <Footer />
 </Base>
-
-<script>
-  // Partículas teal del DS: pocas, pequeñas, deriva lenta y parpadeo sutil.
-  // Sin top-level await: si algo falla o se cuelga, no bloquea el módulo.
-  import { tsParticles } from '@tsparticles/engine';
-  import { loadSlim } from '@tsparticles/slim';
-
-  const initParticles = async () => {
-    await loadSlim(tsParticles);
-    await tsParticles.load({
-      id: 'hero-particles',
-      options: {
-        fullScreen: { enable: false },
-        background: { color: 'transparent' },
-        fpsLimit: 60,
-        detectRetina: true,
-        particles: {
-          number: { value: 18, density: { enable: false } },
-          color: { value: '#00C7B4' },
-          shape: { type: 'circle' },
-          opacity: {
-            value: { min: 0.3, max: 0.8 },
-            animation: { enable: true, speed: 0.5, sync: false },
-          },
-          size: { value: { min: 4, max: 7 } },
-          shadow: { enable: true, color: '#00C7B4', blur: 18, offset: { x: 0, y: 0 } },
-          move: {
-            enable: true,
-            speed: 0.35,
-            direction: 'none',
-            random: true,
-            straight: false,
-            outModes: { default: 'out' },
-          },
-        },
-        interactivity: {
-          events: { onHover: { enable: false }, onClick: { enable: false }, resize: { enable: true } },
-        },
-      },
-    });
-  };
-
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    initParticles().catch((e) => console.error('[particles] error:', e));
-  }
-</script>
 
 <script>
   // Badge del hero: la vertical rota entre los tres segmentos con un
@@ -565,14 +516,6 @@ const faqItems = [
       radial-gradient(circle at 15% 25%, rgba(0, 199, 180, 0.1) 0%, transparent 45%),
       radial-gradient(circle at 85% 75%, rgba(59, 126, 255, 0.08) 0%, transparent 45%),
       linear-gradient(180deg, #070b14 0%, #0a0e1a 100%);
-  }
-
-  /* Partículas teal (patrón del DS: dispersas, energía ambiental) */
-  .hero-scene__particles {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
   }
 
   .hero {
@@ -663,49 +606,38 @@ const faqItems = [
     .hero__content { animation: none; }
   }
 
-  /* ---- El problema: tres tarjetas con chip circular en rojo ---- */
+  /* ---- El problema: fila plana con divisores, sin tarjetas ---- */
   .problem-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-6);
-    align-items: stretch;
+    gap: 0;
+    align-items: start;
   }
   .problem-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
-    padding: var(--space-8) var(--space-6);
-    transition: box-shadow var(--transition), transform var(--transition);
+    padding: 0 var(--space-8);
+    border-left: 1px solid var(--border);
   }
-  .problem-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
+  .problem-card:first-child {
+    padding-left: 0;
+    border-left: none;
   }
-  /* mismo chip circular del sitio, con el acento rojo del problema */
-  .problem-card__icon {
+  .problem-card:last-child {
+    padding-right: 0;
+  }
+  /* icono plano en línea con el título, sin chip ni glow */
+  .problem-card__head {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    margin-bottom: var(--space-5);
-    background:
-      radial-gradient(circle at 50% 130%, rgba(255, 84, 112, 0.22) 0%, transparent 72%),
-      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    border: 1px solid var(--border);
-    box-shadow: 0 6px 16px rgba(13, 20, 36, 0.08);
-    color: var(--red);
-    transition: box-shadow var(--transition), transform var(--transition);
+    gap: 10px;
+    margin-bottom: var(--space-3);
   }
-  .problem-card:hover .problem-card__icon {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(255, 84, 112, 0.2);
+  .problem-card__icon {
+    flex-shrink: 0;
+    color: var(--red);
   }
   .problem-card__title {
     font-size: var(--text-h3);
-    margin: 0 0 var(--space-2);
+    margin: 0;
   }
   .problem-card__desc {
     color: var(--muted);
@@ -738,7 +670,17 @@ const faqItems = [
     color: var(--muted);
   }
   @media (max-width: 900px) {
-    .problem-grid { grid-template-columns: 1fr; }
+    .problem-grid { grid-template-columns: 1fr; gap: var(--space-8); }
+    .problem-card {
+      padding: var(--space-8) 0 0;
+      border-left: none;
+      border-top: 1px solid var(--border);
+    }
+    .problem-card:first-child {
+      padding-top: 0;
+      border-top: none;
+    }
+    .problem-card:last-child { padding-bottom: 0; }
   }
 
   /* ---- Luisa: ficha de identidad + grilla de capacidades ---- */
@@ -794,62 +736,42 @@ const faqItems = [
     }
   }
 
-  .skills-grid {
+  /* lista a dos columnas con divisores, sin tarjetas (mismo lenguaje que .trust-list) */
+  .skills-list {
+    list-style: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-6);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 var(--space-10);
+    padding: 0;
+    margin: 0;
   }
-  .skill-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
-    padding: var(--space-6);
-    transition: box-shadow var(--transition), border-color var(--transition),
-      background-color var(--transition), transform var(--transition);
-  }
-  .skill-card:hover {
-    box-shadow: var(--shadow-hover);
-    background: rgba(108, 99, 255, 0.07);
-    border-color: rgba(108, 99, 255, 0.45);
-    transform: translateY(-2px);
-  }
-  /* mismo chip circular que el bento, en violeta (sección de Luisa) */
-  .skill-card__icon {
+  .skill-item {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    margin-bottom: var(--space-4);
-    background:
-      radial-gradient(circle at 50% 130%, rgba(108, 99, 255, 0.26) 0%, transparent 72%),
-      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    border: 1px solid var(--border);
-    box-shadow: 0 6px 16px rgba(13, 20, 36, 0.08);
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-item:nth-last-child(-n + 2) { border-bottom: none; }
+  .skill-item__icon {
+    flex-shrink: 0;
+    margin-top: 3px;
     color: var(--violet);
-    transition: box-shadow var(--transition), transform var(--transition);
   }
-  .skill-card:hover .skill-card__icon {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(108, 99, 255, 0.24);
-  }
-  .skill-card__title {
+  .skill-item__title {
     font-size: var(--text-h3);
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-1);
   }
-  .skill-card__desc {
+  .skill-item__desc {
     color: var(--muted);
     font-size: var(--text-small);
     line-height: var(--lh-body);
     margin: 0;
   }
-  @media (max-width: 1024px) {
-    .skills-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 640px) {
-    .skills-grid { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    .skills-list { grid-template-columns: 1fr; gap: 0; }
+    .skill-item:nth-last-child(-n + 2) { border-bottom: 1px solid var(--border); }
+    .skill-item:last-child { border-bottom: none; }
   }
 
   /* ---- Livvo Chat: grilla uniforme de 3 columnas ---- */
@@ -865,42 +787,26 @@ const faqItems = [
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-sm);
     padding: var(--space-8) var(--space-6);
-    transition: box-shadow var(--transition), border-color var(--transition),
-      transform var(--transition);
+    transition: border-color var(--transition);
   }
   .bento__cell:hover {
-    box-shadow: var(--shadow-hover);
     border-color: rgba(0, 199, 180, 0.45);
-    transform: translateY(-2px);
   }
 
-  /* Icono circular (estilo Realmate / ilustraciones del DS): chip blanco
-     redondo con degradado teal asomando desde abajo y sombra flotante.
-     Mismo lenguaje que .skill-card__icon (violeta) y .trust-item__icon. */
-  .bento__icon {
+  /* icono plano en línea con el título, sin chip ni glow */
+  .bento__head {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    margin-bottom: var(--space-5);
-    background:
-      radial-gradient(circle at 50% 130%, rgba(0, 199, 180, 0.28) 0%, transparent 72%),
-      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    border: 1px solid var(--border);
-    box-shadow: 0 6px 16px rgba(13, 20, 36, 0.08);
-    color: var(--teal-deep);
-    transition: box-shadow var(--transition), transform var(--transition),
-      color var(--transition);
+    gap: 10px;
+    margin-bottom: var(--space-3);
   }
-  .bento__cell:hover .bento__icon {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(0, 199, 180, 0.22);
+  .bento__icon {
+    flex-shrink: 0;
+    color: var(--teal-deep);
   }
   .bento__title {
     font-size: var(--text-h3);
-    margin: 0 0 var(--space-2);
+    margin: 0;
   }
   .bento__desc {
     color: var(--muted);
@@ -967,8 +873,7 @@ const faqItems = [
     box-shadow: var(--shadow-sm);
     padding: var(--space-8);
     overflow: hidden;
-    transition: box-shadow var(--transition), border-color var(--transition),
-      transform var(--transition);
+    transition: border-color var(--transition);
   }
   /* la ilustración sangra hasta los bordes de la tarjeta */
   .product-card__illus {
@@ -982,10 +887,6 @@ const faqItems = [
     display: block;
     width: 100%;
     height: auto;
-  }
-  .product-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
   }
   .product-card--luisa:hover { border-color: rgba(108, 99, 255, 0.45); }
   .product-card--chat:hover { border-color: rgba(0, 199, 180, 0.45); }
@@ -1047,11 +948,10 @@ const faqItems = [
     border: 1px solid var(--border);
     border-radius: 999px;
     box-shadow: var(--shadow-sm);
-    transition: border-color var(--transition), transform var(--transition);
+    transition: border-color var(--transition);
   }
   .integration-pill:hover {
     border-color: var(--teal);
-    transform: translateY(-2px);
   }
   .integration-pill__logo {
     height: 30px;
@@ -1107,20 +1007,10 @@ const faqItems = [
   }
   /* sin línea bajo la última fila de cada columna */
   .trust-item:nth-last-child(-n + 2) { border-bottom: none; }
-  /* mismo chip circular, en tamaño de lista */
+  /* icono plano, sin chip ni glow */
   .trust-item__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 50% 130%, rgba(0, 199, 180, 0.26) 0%, transparent 72%),
-      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 12px rgba(13, 20, 36, 0.07);
+    margin-top: 2px;
     color: var(--teal-deep);
   }
   .trust-item__title {

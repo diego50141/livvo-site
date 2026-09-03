@@ -103,7 +103,7 @@ const team = [
           </p>
           <div class="product-hero__ctas">
             <Button href={WHATSAPP_URL} target="_blank" size="lg" id="empleados-demo-cta">
-              Prueba 15 días gratis →
+              Prueba 7 días gratis →
             </Button>
           </div>
         </div>
@@ -145,10 +145,10 @@ const team = [
       <div class="pfeatures fade-up">
         {features.map(({ icon, title, desc }) => (
           <article class="pfeature">
-            <span class="pfeature__icon" aria-hidden="true">
-              <Icon name={icon} width={22} height={22} />
-            </span>
-            <h3 class="pfeature__title">{title}</h3>
+            <div class="pfeature__head">
+              <Icon class="pfeature__icon" name={icon} width={20} height={20} aria-hidden="true" />
+              <h3 class="pfeature__title">{title}</h3>
+            </div>
             <p class="pfeature__desc">{desc}</p>
           </article>
         ))}
@@ -212,7 +212,7 @@ const team = [
           WhatsApp y mira cómo atiende, califica y recomienda en una conversación real.
         </p>
         <Button href={WHATSAPP_URL} target="_blank" size="lg" id="empleados-cta-final">
-          Prueba 15 días gratis →
+          Prueba 7 días gratis →
         </Button>
       </div>
     </Section>
@@ -277,6 +277,7 @@ const team = [
     position: relative;
     display: flex;
     justify-content: center;
+    overflow: hidden;
   }
   .demo__frame {
     border: 0;
@@ -355,39 +356,25 @@ const team = [
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-sm);
     padding: var(--space-6);
-    transition: box-shadow var(--transition), border-color var(--transition),
-      background-color var(--transition), transform var(--transition);
+    transition: border-color var(--transition);
   }
   .pfeature:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
-    background: rgba(108, 99, 255, 0.07);
     border-color: rgba(108, 99, 255, 0.45);
   }
-  /* chip circular del DS (mismo que el home), en violeta */
-  .pfeature__icon {
+  /* icono plano en línea con el título, sin chip ni glow */
+  .pfeature__head {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    margin-bottom: var(--space-4);
-    background:
-      radial-gradient(circle at 50% 130%, rgba(108, 99, 255, 0.26) 0%, transparent 72%),
-      linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    border: 1px solid var(--border);
-    box-shadow: 0 6px 16px rgba(13, 20, 36, 0.08);
-    color: var(--violet);
-    transition: box-shadow var(--transition), transform var(--transition);
+    gap: 10px;
+    margin-bottom: var(--space-2);
   }
-  .pfeature:hover .pfeature__icon {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(108, 99, 255, 0.24);
+  .pfeature__icon {
+    flex-shrink: 0;
+    color: var(--violet);
   }
   .pfeature__title {
     font-size: var(--text-h3);
-    margin: 0 0 var(--space-2);
+    margin: 0;
   }
   .pfeature__desc {
     color: var(--muted);
@@ -409,12 +396,9 @@ const team = [
     box-shadow: var(--shadow-sm);
     padding: var(--space-6);
     text-align: center;
-    transition: box-shadow var(--transition), border-color var(--transition),
-      transform var(--transition);
+    transition: border-color var(--transition);
   }
   .tcard:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
     border-color: rgba(0, 199, 180, 0.45);
   }
   .tcard :global(.tcard__foto) {

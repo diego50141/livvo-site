@@ -179,7 +179,7 @@ const techItems = [
 // Inmobiliarias que usan Livvo — logos oficiales en public/clients/.
 const clientLogos = [
   { name: 'DC Colombia', src: '/clients/dccolombia.svg', href: 'https://dccolombia.com.co' },
-  { name: 'Casas y Espacios', src: '/clients/casasyespacios.webp', href: 'https://casasyespacios.co' },
+  { name: 'Casas y Espacios', src: '/clients/casasyespacios.webp', href: 'https://casasyespacios.co', tint: true },
   { name: 'Alborada', src: '/clients/alborada.png', href: 'https://alborada.co' },
   { name: 'Century 21 Colombia', src: '/clients/century21colombia.svg', href: 'https://century21colombia.com' },
   { name: 'LlanoCasa', src: '/clients/llanocasa.jpg', href: 'https://web.facebook.com/LlanoCasa/', round: true },
@@ -295,7 +295,7 @@ const faqItems = [
         <div class="clients-strip__track">
           {[0, 1].map((copy) => (
             <div class="clients-strip__group" aria-hidden={copy === 1 ? 'true' : undefined}>
-              {clientLogos.map(({ name, src, href, round }) => (
+              {clientLogos.map(({ name, src, href, round, tint }) => (
                 <a
                   class:list={['clients-strip__logo', { 'clients-strip__logo--round': round }]}
                   href={href}
@@ -303,7 +303,16 @@ const faqItems = [
                   rel="noopener"
                   title={name}
                 >
-                  <img src={src} alt={name} loading="lazy" />
+                  {tint ? (
+                    <span
+                      class="clients-strip__logo-mask"
+                      style={`--logo-src:url(${src})`}
+                      role="img"
+                      aria-label={name}
+                    />
+                  ) : (
+                    <img src={src} alt={name} loading="lazy" />
+                  )}
                 </a>
               ))}
             </div>
@@ -695,6 +704,15 @@ const faqItems = [
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
+  }
+  /* logo blanco sobre transparente: se rellena de color usando su silueta como máscara */
+  .clients-strip__logo-mask {
+    display: block;
+    height: 100%;
+    aspect-ratio: 1280 / 641;
+    background-color: var(--violet);
+    mask: var(--logo-src) center / contain no-repeat;
+    -webkit-mask: var(--logo-src) center / contain no-repeat;
   }
   @media (max-width: 768px) {
     .clients-strip { padding: var(--space-8) 0; }

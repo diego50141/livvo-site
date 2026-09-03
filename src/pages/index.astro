@@ -287,22 +287,28 @@ const faqItems = [
     </header>
   </div>
 
-  <!-- CLIENTES: fila de logos, prueba social justo debajo del hero -->
+  <!-- CLIENTES: cinta corrediza de logos, prueba social justo debajo del hero -->
   <div class="clients-strip fade-up">
     <div class="container-site">
       <p class="clients-strip__label">Inmobiliarias que ya confían en Livvo</p>
-      <div class="clients-strip__row">
-        {clientLogos.map(({ name, src, href, round }) => (
-          <a
-            class:list={['clients-strip__logo', { 'clients-strip__logo--round': round }]}
-            href={href}
-            target="_blank"
-            rel="noopener"
-            title={name}
-          >
-            <img src={src} alt={name} loading="lazy" />
-          </a>
-        ))}
+      <div class="clients-strip__marquee">
+        <div class="clients-strip__track">
+          {[0, 1].map((copy) => (
+            <div class="clients-strip__group" aria-hidden={copy === 1 ? 'true' : undefined}>
+              {clientLogos.map(({ name, src, href, round }) => (
+                <a
+                  class:list={['clients-strip__logo', { 'clients-strip__logo--round': round }]}
+                  href={href}
+                  target="_blank"
+                  rel="noopener"
+                  title={name}
+                >
+                  <img src={src} alt={name} loading="lazy" />
+                </a>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>
@@ -635,7 +641,7 @@ const faqItems = [
     .hero__content { animation: none; }
   }
 
-  /* ---- Clientes: fila de logos en gris, color al pasar el mouse ---- */
+  /* ---- Clientes: cinta corrediza de logos a color (mismo patrón que .integrations) ---- */
   .clients-strip {
     padding: var(--space-12) 0;
     background: var(--white);
@@ -649,28 +655,40 @@ const faqItems = [
     color: var(--muted);
     margin: 0 0 var(--space-8);
   }
-  .clients-strip__row {
+  .clients-strip__marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+  .clients-strip__track {
+    display: flex;
+    gap: 56px;
+    width: max-content;
+    padding-block: var(--space-2);
+    animation: clients-strip-scroll 32s linear infinite;
+  }
+  .clients-strip__marquee:hover .clients-strip__track {
+    animation-play-state: paused;
+  }
+  @keyframes clients-strip-scroll {
+    to { transform: translateX(calc(-50% - 28px)); }
+  }
+  .clients-strip__group {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--space-8) 56px;
+    gap: 56px;
   }
   .clients-strip__logo {
     display: flex;
     align-items: center;
     height: 32px;
+    flex-shrink: 0;
   }
   .clients-strip__logo img {
     height: 100%;
     width: auto;
     max-width: 140px;
     object-fit: contain;
-    filter: grayscale(1) opacity(0.55);
-    transition: filter var(--transition);
-  }
-  .clients-strip__logo:hover img {
-    filter: grayscale(0) opacity(1);
   }
   .clients-strip__logo--round img {
     height: 100%;
@@ -680,8 +698,19 @@ const faqItems = [
   }
   @media (max-width: 768px) {
     .clients-strip { padding: var(--space-8) 0; }
-    .clients-strip__row { gap: var(--space-6) 32px; }
+    .clients-strip__track,
+    .clients-strip__group { gap: 32px; }
     .clients-strip__logo { height: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .clients-strip__track {
+      animation: none;
+      width: auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .clients-strip__group[aria-hidden='true'] { display: none; }
+    .clients-strip__marquee { mask-image: none; -webkit-mask-image: none; }
   }
 
   /* ---- El problema: fila plana con divisores, sin tarjetas ---- */

@@ -179,7 +179,7 @@ const techItems = [
 // Inmobiliarias que usan Livvo — logos oficiales en public/clients/.
 const clientLogos = [
   { name: 'DC Colombia', src: '/clients/dccolombia.svg', href: 'https://dccolombia.com.co' },
-  { name: 'Casas y Espacios', src: '/clients/casasyespacios.png', href: 'https://casasyespacios.co' },
+  { name: 'Casas y Espacios', src: '/clients/casasyespacios.webp', href: 'https://casasyespacios.co' },
   { name: 'Alborada', src: '/clients/alborada.png', href: 'https://alborada.co' },
   { name: 'Century 21 Colombia', src: '/clients/century21colombia.svg', href: 'https://century21colombia.com' },
   { name: 'LlanoCasa', src: '/clients/llanocasa.jpg', href: 'https://web.facebook.com/LlanoCasa/', round: true },
@@ -681,13 +681,13 @@ const faqItems = [
   .clients-strip__logo {
     display: flex;
     align-items: center;
-    height: 32px;
+    height: 52px;
     flex-shrink: 0;
   }
   .clients-strip__logo img {
     height: 100%;
     width: auto;
-    max-width: 140px;
+    max-width: 200px;
     object-fit: contain;
   }
   .clients-strip__logo--round img {
@@ -700,7 +700,7 @@ const faqItems = [
     .clients-strip { padding: var(--space-8) 0; }
     .clients-strip__track,
     .clients-strip__group { gap: 32px; }
-    .clients-strip__logo { height: 24px; }
+    .clients-strip__logo { height: 36px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .clients-strip__track {

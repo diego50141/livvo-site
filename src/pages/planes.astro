@@ -7,13 +7,14 @@ import PricingCard from '../components/PricingCard.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
-// Planes por volumen de contactos atendidos con IA/mes (adaptación del modelo de Roma,
-// ver pricing_livvo.md sección 5.3): Trial → Inicia → Crece → Corporativo.
+// Planes basados en https://www.teamroma.ai/precios (dólares → pesos colombianos,
+// tasa ~$3.150 COP/USD) con un premium de ~60% sobre Roma: Livvo suma CRM inmobiliario
+// y plataforma completa, no solo el agente IA. Trial → Inicia → Crece → Avanza → Corporativo.
 const plans = [
   {
     name: 'Trial',
     price: '$0',
-    period: 'USD / mes',
+    period: '',
     tagline: 'Prueba gratis por 7 días',
     features: [
       '100 conversaciones incluidas',
@@ -25,32 +26,44 @@ const plans = [
   },
   {
     name: 'Inicia',
-    price: '$399.000',
-    priceAnnual: '$319.200',
+    price: '$499.000',
+    priceAnnual: '$399.000',
     period: 'COP / mes',
     tagline: 'Para equipos pequeños en crecimiento',
     features: [
-      '500 contactos atendidos con IA al mes',
+      '500 conversaciones al mes',
       'CRM inmobiliario',
       'Soporte por ticket',
-      'Contacto adicional: $1.300 COP',
     ],
     featured: false,
     ctaLabel: 'Comenzar ahora',
   },
   {
     name: 'Crece',
-    price: '$799.000',
-    priceAnnual: '$639.200',
+    price: '$899.000',
+    priceAnnual: '$719.000',
     period: 'COP / mes',
-    tagline: 'Para equipos que ya superan los 500 contactos atendidos con IA',
+    tagline: 'Para equipos que ya superan las 500 conversaciones',
     features: [
-      '1.000 contactos atendidos con IA al mes',
+      '1.000 conversaciones al mes',
       'CRM inmobiliario',
       'Soporte por ticket, con prioridad',
-      'Contacto adicional: $1.050 COP',
     ],
     featured: true,
+    ctaLabel: 'Comenzar ahora',
+  },
+  {
+    name: 'Avanza',
+    price: '$1.770.000',
+    priceAnnual: '$1.416.000',
+    period: 'COP / mes',
+    tagline: 'Para operaciones de alto volumen',
+    features: [
+      '2.000 conversaciones al mes',
+      'CRM inmobiliario',
+      'Soporte directo',
+    ],
+    featured: false,
     ctaLabel: 'Comenzar ahora',
   },
   {
@@ -59,7 +72,7 @@ const plans = [
     period: '',
     tagline: 'Para operaciones de gran escala',
     features: [
-      'Contactos atendidos con IA ilimitados',
+      'Conversaciones ilimitadas',
       'Integraciones a medida (CRM, ERP, API abierta)',
       'Operación 24/7 de tus agentes IA',
       'Soporte dedicado 24/7 con SLA garantizado',
@@ -73,7 +86,7 @@ const plans = [
 
 <Base
   title="Planes y precios — Livvo"
-  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: escala por volumen de contactos atendidos con IA al mes, con CRM inmobiliario y agentes IA incluidos."
+  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: Trial, Inicia, Crece, Avanza y Corporativo, por volumen de conversaciones al mes, con CRM inmobiliario y agentes IA incluidos."
 >
   <Navbar />
 
@@ -117,6 +130,7 @@ const plans = [
             <li><span class="setup-card__check">✓</span>Sesión de descubrimiento para entender tu negocio</li>
             <li><span class="setup-card__check">✓</span>Configuración y entrenamiento de tus agentes IA</li>
             <li><span class="setup-card__check">✓</span>Integración con tu WhatsApp</li>
+            <li><span class="setup-card__check">✓</span>Incluye 500 conversaciones el primer mes</li>
           </ul>
         </div>
         <div class="setup-card__price-box">
@@ -128,9 +142,12 @@ const plans = [
       <div class="pricing-terms fade-up">
         <span>Prueba gratuita de 7 días</span>
         <span>Sin tarjeta de crédito</span>
-        <span>Te avisamos antes de cobrar contactos adicionales</span>
+        <span>Te avisamos antes de cobrar conversaciones adicionales</span>
         <span>Facturación en pesos colombianos</span>
       </div>
+      <p class="pricing-fineprint fade-up">
+        Una conversación es el intercambio de mensajes con un mismo contacto dentro de una ventana de 24 horas; pasado ese tiempo, el siguiente mensaje abre una conversación nueva.
+      </p>
       <div class="pricing-cta fade-up">
         <p>¿No sabes cuál te conviene? Te ayudamos a elegir.</p>
         <Button href={WHATSAPP_URL} target="_blank" size="lg">Prueba 7 días gratis →</Button>
@@ -284,6 +301,14 @@ const plans = [
     margin-top: var(--space-12);
     font-size: 13px;
     color: var(--muted);
+  }
+  .pricing-fineprint {
+    text-align: center;
+    max-width: 620px;
+    margin: var(--space-4) auto 0;
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.8;
   }
   .pricing-cta {
     text-align: center;

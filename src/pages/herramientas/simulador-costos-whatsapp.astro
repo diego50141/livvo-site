@@ -1,0 +1,1454 @@
+---
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import Button from '../../components/Button.astro';
+import Section from '../../components/Section.astro';
+import FAQ from '../../components/FAQ.astro';
+import Footer from '../../components/Footer.astro';
+import { WHATSAPP_URL } from '../../config';
+
+const glossary = [
+  {
+    q: '¿Qué es un lead?',
+    a: 'El contacto interesado que te escribe por algún canal de comunicación, en este caso vía WhatsApp: alguien que pregunta por un inmueble, agenda una visita o pide más información. Es lo que tu equipo comercial mide todos los días — y casi nunca se resuelve en un solo contacto: en el sector inmobiliario, el 80% de las ventas se cierran entre el quinto y el décimo contacto con el cliente.',
+  },
+  {
+    q: '¿Qué es una conversación?',
+    a: 'Una "conversación" es una ventana de 24 horas que comienza en el momento en que se entrega un mensaje. Meta cobra una tarifa fija por cada ventana de 24 horas según la categoría del mensaje. Esto solo aplica si tu empresa utiliza la API de WhatsApp Business (la versión avanzada para automatizaciones y chatbots, no la app móvil gratuita); hasta el 30 de septiembre, Meta cobra mediante este modelo basado en conversaciones. Si pasan más de 24 horas sin mensajes, la siguiente respuesta abre una conversación nueva — por eso un mismo lead suele generar varias conversaciones a lo largo de semanas o meses, no solo una.',
+  },
+  {
+    q: '¿Qué es un mensaje?',
+    a: 'Cada texto, imagen, documento o plantilla que envías dentro de una conversación. Una sola conversación con un lead puede tener 3 mensajes o 30, según cuánto dure la negociación — y desde 2025 Meta empezó a cobrar por permitir a las empresas enviar plantillas de mensajes de utilidad y de marketing a sus leads. Ahora, a partir del 1 de octubre de 2026, cambia radicalmente su modelo de cobro: de conversación a mensaje.',
+  },
+];
+
+// Meta aún no publica una tarifa de servicio oficial por país, así que se usa
+// como referencia la tarifa de mensaje de utilidad que sí publica (tabla
+// oficial de Meta, vigente desde el 1-jul-2026). Mismos países y tarifas
+// oficiales en USD que muestra https://www.teamroma.ai/simulador-costos-whatsapp.
+const META_RATE_CARDS_URL =
+  'https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rate-cards';
+
+const COUNTRIES = [
+  { code: 'CO', name: '🇨🇴 Colombia', usd: '0.0008' },
+  { code: 'MX', name: '🇲🇽 México', usd: '0.0085' },
+  { code: 'AR', name: '🇦🇷 Argentina', usd: '0.0260' },
+  { code: 'PE', name: '🇵🇪 Perú', usd: '0.0200' },
+  { code: 'CL', name: '🇨🇱 Chile', usd: '0.0200' },
+  { code: 'BR', name: '🇧🇷 Brasil', usd: '0.0068' },
+  { code: 'ES', name: '🇪🇸 España', usd: '0.0200' },
+  { code: 'LATAM', name: '🌎 Resto de Latinoamérica', usd: '0.0113' },
+  { code: 'OTHER', name: '🌐 Otro país (referencia)', usd: '0.0077' },
+];
+const FREE_SERVICE_PER_LINE = 1000;
+const LINEAS = 1; // se asume 1 número de WhatsApp; el tier gratis es por número
+
+const sliders = [
+  {
+    id: 'leads',
+    label: 'Leads nuevos de WhatsApp al mes',
+    min: 100,
+    max: 1500,
+    step: 50,
+    value: 250,
+  },
+  {
+    id: 'convxlead',
+    label: 'Conversaciones por lead (el promedio son 10)',
+    min: 2,
+    max: 12,
+    step: 1,
+    value: 10,
+  },
+  {
+    id: 'ctwa',
+    label: '% de conversaciones que llegan por Meta Ads (CTWA)',
+    min: 0,
+    max: 100,
+    step: 5,
+    value: 20,
+  },
+  {
+    id: 'msjsal',
+    label: 'Mensajes salientes por conversación (el promedio son 6)',
+    min: 1,
+    max: 25,
+    step: 1,
+    value: 6,
+  },
+];
+
+const recommendations = [
+  {
+    n: '01',
+    title: 'Usa respuestas rápidas y WhatsApp Flows',
+    desc: 'Las respuestas rápidas resuelven preguntas frecuentes en un toque y los WhatsApp Flows abren un formulario dentro del chat —agendar una visita, calificar un lead— sin ida y vuelta de mensajes sueltos.',
+    illustration: {
+      type: 'flow',
+      contact: 'Livvo Inmobiliaria',
+      prompt: 'Agenda tu visita 👇',
+      title: 'Agendar visita',
+      fields: [
+        { label: 'Tipo de inmueble', value: 'Apartamento', icon: '▾' },
+        { label: 'Zona', value: 'Zona Rosa', icon: '▾' },
+        { label: 'Fecha', value: 'Jue 23 oct', icon: '📅' },
+      ],
+      slots: ['10:00', '11:30', '16:00'],
+      selectedSlot: '11:30',
+      cta: 'Confirmar visita',
+      managedBy: 'Administrado por Livvo',
+      caption: 'Un Flow agenda la visita en un solo mensaje, no en cinco',
+    },
+  },
+  {
+    n: '02',
+    title: 'Agrupa en vez de fragmentar mensajes',
+    desc: 'Desde 2025-2026 Meta cobra por mensaje, no por conversación. Enviar la ficha técnica, el precio y la disponibilidad en un solo mensaje bien armado cuenta menos que mandarlo en tres o cuatro.',
+    illustration: {
+      type: 'chatCompare',
+      before: {
+        label: 'Antes · 3 mensajes',
+        messages: ['¡Hola! 👋', 'El apto tiene 65 m² y cuesta $320M.', '¿Agendamos la visita?'],
+      },
+      after: {
+        label: 'Después · 1 mensaje',
+        messages: ['¡Hola! 👋 El apto tiene 65 m² y cuesta $320M. ¿Agendamos la visita?'],
+      },
+    },
+  },
+  {
+    n: '03',
+    title: 'Mejorar el prompt de tu asistente IA para responder más directo',
+    desc: 'Un asistente que responde con precio, disponibilidad y fecha en un solo mensaje —en vez de frases vagas— evita rondas de mensajes extra, y cada mensaje de más es un mensaje cobrable menos.',
+    illustration: {
+      type: 'chatCompare',
+      before: {
+        label: 'Antes · respuestas vagas',
+        messages: ['Déjame revisar...', 'Un momento...', 'Ya casi...'],
+      },
+      after: {
+        label: 'Después · directo',
+        messages: ['El apto sigue disponible: $320M, 65 m². ¿Agendamos la visita?'],
+      },
+    },
+  },
+];
+
+const MONTHS = [
+  { label: 'Jul 26', billable: false },
+  { label: 'Ago 26', billable: false },
+  { label: 'Sep 26', billable: false },
+  { label: 'Oct 26', billable: true },
+  { label: 'Nov 26', billable: true },
+  { label: 'Dic 26', billable: true },
+];
+---
+
+<Base
+  title="Simulador de Costos de WhatsApp 2026 — Livvo"
+  description="Simula cuánto pagarías a Meta por mensajería de WhatsApp desde octubre de 2026 en tu inmobiliaria, constructora o desarrolladora, y descarga el informe."
+>
+  <div class="no-print"><Navbar /></div>
+
+  <main>
+    <h1 class="sr-only">Simulador de Costos de WhatsApp 2026</h1>
+
+    <!-- GLOSARIO -->
+    <Section id="glosario" alt title="Tu lead, en el idioma de Meta">
+      <p class="wa-glossary__intro fade-up">
+        En tu inmobiliaria, constructora o desarrolladora hablas de <strong>leads</strong>. Meta
+        factura hasta el 30 de septiembre por <strong>conversaciones</strong> y a partir de ese
+        día por <strong>mensajes</strong>. Descubre a continuación qué es una conversación, qué es
+        un mensaje y cómo se relaciona con un lead que escribe a tu inmobiliaria o constructora.
+      </p>
+      <div class="fade-up">
+        <FAQ items={glossary} />
+      </div>
+    </Section>
+
+    <!-- SIMULADOR -->
+    <Section id="simulador" alt eyebrow="Simulador de costos de WhatsApp">
+      <p class="wa-simulador__disclaimer fade-up">
+        Esta proyección estima el impacto de los nuevos precios de WhatsApp de Meta a partir del
+        1 de octubre de 2026, cuando los mensajes de servicio salientes fuera de la ventana
+        gratuita de 72 horas pasan a cobrarse por mensaje. Todos los valores son una estimación.
+      </p>
+
+      <div class="wa-card fade-up">
+        <div class="wa-card__head">
+          <div>
+            <div class="wa-card__title">Datos de tu operación</div>
+            <p class="wa-card__subtitle">
+              Ajusta los valores para estimar tu costo mensual proyectado. El informe descargable
+              incluye también las estrategias para bajarlo.
+            </p>
+          </div>
+          <div class="no-print">
+            <Button variant="outline" size="sm" id="wa-download-btn">
+              ⬇ Descargar informe (PDF)
+            </Button>
+          </div>
+        </div>
+
+        <div class="wa-grid">
+          <!-- INPUTS -->
+          <div class="inputs">
+            <div>
+              <div class="field-label">
+                <label for="pais">País (define tarifas)</label>
+              </div>
+              <select id="pais" class="country-select">
+                {COUNTRIES.map((c) => (
+                  <option value={c.code}>{c.name}</option>
+                ))}
+              </select>
+              <p class="rate-note">
+                <span id="rate-note-text">—</span> Verificar con la{' '}
+                <a href={META_RATE_CARDS_URL} target="_blank" rel="noopener">tabla oficial de Meta</a>.
+              </p>
+            </div>
+
+            {sliders.map((s) => (
+              <div>
+                <div class="field-label">
+                  <label for={`sl-${s.id}`}>{s.label}</label>
+                  <output id={`lbl-${s.id}`} for={`sl-${s.id}`}></output>
+                </div>
+                <input
+                  type="range"
+                  id={`sl-${s.id}`}
+                  min={s.min}
+                  max={s.max}
+                  step={s.step}
+                  value={s.value}
+                />
+              </div>
+            ))}
+
+            <div class="note-box">
+              <strong>Nota sobre plantillas:</strong> las plantillas (marketing, utilidad,
+              autenticación) que envías se cobran aparte y su precio no cambia con esta
+              actualización, por eso no se incluyen en esta proyección. Este simulador estima solo
+              los mensajes de servicio que hoy son gratis y pasarán a cobrarse.
+            </div>
+          </div>
+
+          <!-- RESULTS -->
+          <div class="results" aria-live="polite">
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-label">💬 Conversaciones</div>
+                <div class="metric-value teal" id="res-conv">—</div>
+                <div class="metric-sub">por mes</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">⚡ % desde Meta Ads</div>
+                <div class="metric-value" id="res-ctwapct">—</div>
+                <div class="metric-sub">gratis (ventana 72 h)</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">📤 Mensajes enviados</div>
+                <div class="metric-value" id="res-servmsg">—</div>
+                <div class="metric-sub">por mes</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">⚠️ Mensajes cobrables</div>
+                <div class="metric-value amber" id="res-facturables">—</div>
+                <div class="metric-sub">fuera de ventana</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">💰 Costo proyectado (Oct+)</div>
+                <div class="metric-value amber" id="res-metacost">—</div>
+                <div class="metric-sub">mensual estimado</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">👤 Costo por lead</div>
+                <div class="metric-value" id="res-costlead">—</div>
+                <div class="metric-sub">mensual estimado</div>
+              </div>
+            </div>
+
+            <!-- Proyección mensual -->
+            <div class="chart-card">
+              <div class="chart-card__title">Proyección mensual (Jul → Dic 2026)</div>
+              <div class="chart">
+                {MONTHS.map((m, i) => (
+                  <div class="chart__col">
+                    <div class="chart__value" id={`chart-val-${i}`}>$0</div>
+                    <div class="chart__bar-track">
+                      <div class="chart__bar" id={`chart-bar-${i}`} data-billable={m.billable ? '1' : '0'}></div>
+                    </div>
+                    <div class="chart__month">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+              <p class="chart-card__note">
+                A partir del 1 de octubre de 2026, los mensajes de servicio fuera de la ventana
+                gratuita de 72 h tendrán costo. Antes de octubre, el costo es $0.
+              </p>
+            </div>
+
+            <div class="breakdown">
+              <div class="breakdown-title">Desglose de mensajes</div>
+              <div class="donut-row">
+                <div class="pie" id="msg-pie"></div>
+                <div class="legend">
+                  <div class="legend__item">
+                    <span class="legend__dot teal"></span>
+                    <span class="legend__label">Dentro de la ventana gratuita 72 h (Meta Ads)</span>
+                  </div>
+                  <div class="legend__item">
+                    <span class="legend__dot amber"></span>
+                    <span class="legend__label">Fuera de ventana (serán cobrados)</span>
+                    <b id="b-total">—</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="breakdown">
+              <div class="breakdown-title">Origen de conversaciones</div>
+              <div class="donut-row">
+                <div class="donut" id="origin-donut">
+                  <div class="donut__center" id="origin-donut-center">—</div>
+                </div>
+                <div class="legend">
+                  <div class="legend__item">
+                    <span class="legend__dot teal"></span>
+                    <span class="legend__label">Click to WhatsApp Ads</span>
+                    <span class="legend__count" id="origin-ctwa-count">—</span>
+                    <span class="legend__pct" id="origin-ctwa-pct">—</span>
+                  </div>
+                  <div class="legend__item">
+                    <span class="legend__dot amber"></span>
+                    <span class="legend__label">Orgánico / otros</span>
+                    <span class="legend__count" id="origin-organic-count">—</span>
+                    <span class="legend__pct" id="origin-organic-pct">—</span>
+                  </div>
+                </div>
+              </div>
+              <p class="origin-note">
+                Las conversaciones que ingresan por Click to WhatsApp Ads abren una ventana
+                gratuita de 72 horas.{' '}
+                <a href={META_RATE_CARDS_URL} target="_blank" rel="noopener">Documentación oficial</a>.
+              </p>
+            </div>
+
+            <div class="impact-table-wrap">
+              <div class="breakdown-title">Impacto por tipo de conversación</div>
+              <table class="impact-table">
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Cant.</th>
+                    <th>% total</th>
+                    <th>Costo proy.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Desde Meta Ads (ventana 72 h)</td>
+                    <td id="tbl-ctwa-count">—</td>
+                    <td id="tbl-ctwa-pct">—</td>
+                    <td>$0</td>
+                  </tr>
+                  <tr>
+                    <td>Orgánicas / fuera de ventana</td>
+                    <td id="tbl-org-count">—</td>
+                    <td id="tbl-org-pct">—</td>
+                    <td id="tbl-org-cost">—</td>
+                  </tr>
+                  <tr class="impact-table__total">
+                    <td>Total</td>
+                    <td id="tbl-total-count">—</td>
+                    <td>100%</td>
+                    <td id="tbl-total-cost">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ESTRATEGIAS (dentro del simulador, mismo documento descargable) -->
+        <div class="wa-card__strategies">
+          <div class="wa-card__strategies-head">
+            <span class="eyebrow">Cómo disminuir costos</span>
+          </div>
+          <div class="wa-changes">
+            {recommendations.map(({ n, title, desc, chart, illustration }) => (
+              <div class="wa-change">
+                <span class="wa-change__num">{n}</span>
+                <h3 class="wa-change__title">{title}</h3>
+                <p class="wa-change__desc">{desc}</p>
+                {chart && (
+                  <div class="mini-chart">
+                    <div class="mini-chart__caption">{chart.caption}</div>
+                    <div class="mini-chart__row">
+                      <span class="mini-chart__label">{chart.before.label}</span>
+                      <div class="mini-chart__track">
+                        <div class="mini-chart__bar mini-chart__bar--before" style={`width:${chart.before.pct}%`}></div>
+                      </div>
+                      <span class="mini-chart__value">{chart.before.value}{chart.unit}</span>
+                    </div>
+                    <div class="mini-chart__row">
+                      <span class="mini-chart__label">{chart.after.label}</span>
+                      <div class="mini-chart__track">
+                        <div class="mini-chart__bar mini-chart__bar--after" style={`width:${chart.after.pct}%`}></div>
+                      </div>
+                      <span class="mini-chart__value">{chart.after.value}{chart.unit}</span>
+                    </div>
+                    <div class="mini-chart__result">{chart.result}</div>
+                  </div>
+                )}
+                {illustration?.type === 'flow' && (
+                  <div class="flow-illus">
+                    <div class="flow-illus__phone">
+                      <div class="flow-illus__chatbar">
+                        <span class="flow-illus__avatar">🏠</span>
+                        <div class="flow-illus__chatbar-text">
+                          <span class="flow-illus__chatbar-name">{illustration.contact}</span>
+                          <span class="flow-illus__chatbar-status">en línea</span>
+                        </div>
+                      </div>
+                      <div class="flow-illus__chatbg">
+                        <div class="flow-illus__msg">{illustration.prompt}</div>
+                        <div class="flow-illus__sheet">
+                          <div class="flow-illus__handle"></div>
+                          <div class="flow-illus__sheet-head">
+                            <span class="flow-illus__sheet-title">{illustration.title}</span>
+                            <div class="flow-illus__dots">
+                              <span class="flow-illus__dot flow-illus__dot--active"></span>
+                              <span class="flow-illus__dot"></span>
+                            </div>
+                          </div>
+                          {illustration.fields.map((f) => (
+                            <div class="flow-illus__field">
+                              <span class="flow-illus__field-label">{f.label}</span>
+                              <span class="flow-illus__field-value">
+                                {f.value}
+                                <span class="flow-illus__field-icon">{f.icon}</span>
+                              </span>
+                            </div>
+                          ))}
+                          <div class="flow-illus__field">
+                            <span class="flow-illus__field-label">Horario</span>
+                            <div class="flow-illus__slots">
+                              {illustration.slots.map((s) => (
+                                <span class={`flow-illus__slot ${s === illustration.selectedSlot ? 'flow-illus__slot--active' : ''}`}>
+                                  {s}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <button type="button" class="flow-illus__cta" tabindex="-1">{illustration.cta}</button>
+                          <div class="flow-illus__trust">🔒 {illustration.managedBy}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="flow-illus__caption">{illustration.caption}</p>
+                  </div>
+                )}
+                {illustration?.type === 'chatCompare' && (
+                  <div class="chat-compare">
+                    <div class="chat-compare__group">
+                      <div class="chat-compare__label">
+                        <span class="chat-compare__dot chat-compare__dot--before"></span>
+                        {illustration.before.label}
+                      </div>
+                      <div class="chat-compare__bubbles">
+                        {illustration.before.messages.map((m) => (
+                          <div class="chat-compare__bubble">{m}</div>
+                        ))}
+                      </div>
+                    </div>
+                    <div class="chat-compare__arrow">↓</div>
+                    <div class="chat-compare__group">
+                      <div class="chat-compare__label">
+                        <span class="chat-compare__dot chat-compare__dot--after"></span>
+                        {illustration.after.label}
+                      </div>
+                      <div class="chat-compare__bubbles">
+                        {illustration.after.messages.map((m) => (
+                          <div class="chat-compare__bubble">{m}</div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <p class="wa-changes__note">
+            Comparaciones ilustrativas para ejemplificar el efecto de cada estrategia; el ahorro
+            real depende de tu volumen de leads y de cómo opera hoy tu equipo.
+          </p>
+        </div>
+
+        <div class="livvo-banner no-print">
+          <div class="livvo-banner__text">
+            <div class="livvo-banner__brand">Livvo</div>
+            <p class="livvo-banner__desc">
+              Te ayudamos a mejorar la experiencia conversacional y aumentar las ventas de tu
+              inmobiliaria o constructora. Escríbenos y lo vemos con tus números.
+            </p>
+          </div>
+          <Button href={WHATSAPP_URL} target="_blank" size="lg">Hablar por WhatsApp →</Button>
+        </div>
+
+        <div class="wa-card__footnote">
+          <p>
+            Esta proyección estima el impacto de los nuevos precios de WhatsApp de Meta a partir
+            del 1 de octubre de 2026, cuando los mensajes de servicio salientes fuera de la
+            ventana gratuita de 72 horas pasan a cobrarse por mensaje. Todos los valores son una
+            estimación.
+          </p>
+          <a class="wa-card__footnote-link" href={META_RATE_CARDS_URL} target="_blank" rel="noopener">
+            Ver tabla oficial de tarifas de Meta →
+          </a>
+        </div>
+
+        <div class="wa-card__download no-print">
+          <Button variant="outline" size="lg" id="wa-download-btn-2">
+            ⬇ Descargar informe (PDF)
+          </Button>
+        </div>
+      </div>
+    </Section>
+  </main>
+
+  <div class="no-print"><Footer /></div>
+</Base>
+
+<script define:vars={{ COUNTRIES, FREE_SERVICE_PER_LINE, LINEAS }}>
+  const $ = (id) => document.getElementById(id);
+  const fmtInt = (n) => Math.round(n).toLocaleString('es-CO');
+  const fmtUSD = (n) => '$' + Math.round(n).toLocaleString('en-US');
+
+  function rateFor(code) {
+    return COUNTRIES.find((c) => c.code === code) || COUNTRIES[0];
+  }
+
+  function paint(input) {
+    const pct = ((input.value - input.min) / (input.max - input.min)) * 100;
+    input.style.setProperty('--fill', `${pct}%`);
+  }
+
+  function updateChart(totalMeta) {
+    const maxScale = Math.max(totalMeta, 1) * 1.15;
+    for (let i = 0; i < 6; i++) {
+      const bar = $(`chart-bar-${i}`);
+      if (!bar) continue;
+      const billable = bar.dataset.billable === '1';
+      const val = billable ? totalMeta : 0;
+      const pctH = Math.min(100, (val / maxScale) * 100);
+      bar.style.height = pctH + '%';
+      $(`chart-val-${i}`).textContent = fmtUSD(val);
+    }
+  }
+
+  function update() {
+    const leads     = +$('sl-leads').value;
+    const convxlead = +$('sl-convxlead').value;
+    const ctwaPct   = +$('sl-ctwa').value;
+    const msjsal    = +$('sl-msjsal').value;
+    const country   = rateFor($('pais').value);
+    const rateUsd   = parseFloat(country.usd);
+
+    $('lbl-leads').textContent     = leads.toLocaleString('es-CO');
+    $('lbl-convxlead').textContent = convxlead + ' conversaciones/lead';
+    $('lbl-ctwa').textContent      = ctwaPct + '%';
+    $('lbl-msjsal').textContent    = msjsal + ' msj';
+    $('rate-note-text').textContent =
+      `Tarifa oficial de Meta del mensaje de servicio: US$${country.usd}·msg ` +
+      `(precio Utility, escalona por volumen) (vigente 1-jul-2026).`;
+
+    const conv          = leads * convxlead;
+    const ctwaConv       = Math.round(conv * (ctwaPct / 100));
+    const organicConv    = conv - ctwaConv;
+    const servTotal      = conv * msjsal;
+    const servExentoCTWA = servTotal * (ctwaPct / 100);
+    const servFacturable = servTotal - servExentoCTWA;
+    const freeService    = LINEAS * FREE_SERVICE_PER_LINE;
+    const facturables    = Math.max(0, servFacturable - freeService);
+
+    const totalMeta   = facturables * rateUsd;
+    const costPorLead = leads > 0 ? totalMeta / leads : 0;
+
+    $('res-conv').textContent        = fmtInt(conv);
+    $('res-ctwapct').textContent     = ctwaPct + '%';
+    $('res-servmsg').textContent     = fmtInt(servTotal);
+    $('res-facturables').textContent = fmtInt(facturables);
+    $('res-metacost').textContent    = fmtUSD(totalMeta);
+    $('res-costlead').textContent    = fmtUSD(costPorLead);
+
+    $('b-total').textContent = fmtUSD(totalMeta);
+
+    const freeMsgs = servTotal - facturables;
+    const freeMsgsPct = servTotal > 0 ? Math.round((freeMsgs / servTotal) * 100) : 100;
+    $('msg-pie').style.background =
+      `conic-gradient(var(--teal) 0% ${freeMsgsPct}%, var(--gold) ${freeMsgsPct}% 100%)`;
+
+    const organicPct = 100 - ctwaPct;
+
+    $('origin-ctwa-count').textContent    = fmtInt(ctwaConv);
+    $('origin-ctwa-pct').textContent      = ctwaPct + '%';
+    $('origin-organic-count').textContent = fmtInt(organicConv);
+    $('origin-organic-pct').textContent   = organicPct + '%';
+    $('origin-donut').style.background =
+      `conic-gradient(var(--teal) 0% ${ctwaPct}%, var(--gold) ${ctwaPct}% 100%)`;
+    $('origin-donut-center').textContent = ctwaPct + '%';
+
+    $('tbl-ctwa-count').textContent = fmtInt(ctwaConv);
+    $('tbl-ctwa-pct').textContent   = ctwaPct + '%';
+    $('tbl-org-count').textContent  = fmtInt(organicConv);
+    $('tbl-org-pct').textContent    = organicPct + '%';
+    $('tbl-org-cost').textContent   = fmtUSD(totalMeta);
+    $('tbl-total-count').textContent = fmtInt(conv);
+    $('tbl-total-cost').textContent  = fmtUSD(totalMeta);
+
+    updateChart(totalMeta);
+
+    return {
+      leads,
+      conversaciones_por_lead: convxlead,
+      ctwa_pct: ctwaPct,
+      conversaciones: conv,
+      msj_salientes_conv: msjsal,
+      pais: country.code,
+      total_meta_estimado_usd: Math.round(totalMeta),
+      costo_por_lead_usd: Math.round(costPorLead),
+    };
+  }
+
+  let phTimer;
+  function trackDebounced(values) {
+    clearTimeout(phTimer);
+    phTimer = setTimeout(() => {
+      window.posthog?.capture?.('whatsapp_cost_simulated', values);
+    }, 2000);
+  }
+
+  ['sl-leads', 'sl-convxlead', 'sl-ctwa', 'sl-msjsal'].forEach((id) => {
+    const input = $(id);
+    paint(input);
+    input.addEventListener('input', () => {
+      paint(input);
+      trackDebounced(update());
+    });
+  });
+
+  $('pais').addEventListener('change', () => {
+    trackDebounced(update());
+  });
+
+  ['wa-download-btn', 'wa-download-btn-2'].forEach((id) => {
+    $(id)?.addEventListener('click', () => {
+      window.posthog?.capture?.('whatsapp_cost_pdf_export');
+      window.print();
+    });
+  });
+
+  update();
+</script>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---- Qué cambia ---- */
+  .wa-changes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+  .wa-change {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+  }
+  .wa-change__num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: var(--ls-label);
+    color: var(--teal-deep);
+    margin-bottom: var(--space-3);
+  }
+  .wa-change__title {
+    font-size: 16px;
+    margin: 0 0 var(--space-2);
+  }
+  .wa-change__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  .wa-glossary__intro {
+    max-width: 640px;
+    margin: 0 auto var(--space-8);
+    text-align: center;
+    color: var(--muted);
+    font-size: var(--text-body);
+    line-height: var(--lh-body);
+  }
+  .wa-glossary__intro strong { color: var(--navy); }
+  .wa-changes__note {
+    max-width: 760px;
+    margin: var(--space-8) auto 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+  }
+
+  /* ---- Estrategias (dentro de la tarjeta del simulador) ---- */
+  .wa-card__strategies {
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+  .wa-card__strategies-head { margin-bottom: 20px; }
+  .wa-card__strategies .wa-changes {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  /* ---- Mini-chart (recomendaciones) ---- */
+  .mini-chart {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+  .mini-chart__caption {
+    font-size: 10.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .mini-chart__row {
+    display: grid;
+    grid-template-columns: 76px 1fr 32px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+  .mini-chart__label {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mini-chart__track {
+    height: 7px;
+    border-radius: 4px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .mini-chart__bar {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .mini-chart__bar--before { background: var(--gold); }
+  .mini-chart__bar--after { background: var(--teal); }
+  .mini-chart__value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: right;
+  }
+  .mini-chart__result {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal-deep);
+    margin-top: 6px;
+  }
+
+  /* ---- Ilustración: WhatsApp Flow (mockup de teléfono) ---- */
+  .flow-illus {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .flow-illus__phone {
+    width: 100%;
+    max-width: 180px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(10, 20, 40, 0.08);
+    overflow: hidden;
+  }
+  .flow-illus__chatbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #075e54;
+    color: #fff;
+    padding: 6px 8px;
+  }
+  .flow-illus__avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  .flow-illus__chatbar-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+  }
+  .flow-illus__chatbar-name {
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .flow-illus__chatbar-status { font-size: 7.5px; opacity: 0.8; }
+  .flow-illus__chatbg {
+    background: #e7f5ef;
+    padding: 8px 8px 0;
+  }
+  .flow-illus__msg {
+    background: var(--white);
+    border-radius: 8px 8px 8px 2px;
+    padding: 6px 8px;
+    font-size: 9px;
+    line-height: 1.3;
+    color: var(--navy);
+    max-width: 92%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 8px;
+  }
+  .flow-illus__sheet {
+    background: var(--white);
+    border-radius: 14px 14px 0 0;
+    padding: 8px 10px 10px;
+    box-shadow: 0 -1px 0 var(--border);
+  }
+  .flow-illus__handle {
+    width: 28px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--border);
+    margin: 0 auto 8px;
+  }
+  .flow-illus__sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .flow-illus__sheet-title {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .flow-illus__dots { display: flex; gap: 3px; }
+  .flow-illus__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .flow-illus__dot--active { background: #25d366; }
+  .flow-illus__field { margin-bottom: 7px; }
+  .flow-illus__field-label {
+    display: block;
+    font-size: 7.5px;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .flow-illus__field-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    padding: 5px 7px;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .flow-illus__field-icon { color: var(--muted); font-size: 8px; flex-shrink: 0; }
+  .flow-illus__slots { display: flex; gap: 4px; }
+  .flow-illus__slot {
+    flex: 1;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 0;
+    font-size: 8.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .flow-illus__slot--active {
+    border-color: #25d366;
+    background: #25d366;
+    color: #fff;
+  }
+  .flow-illus__cta {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+    background: #25d366;
+    color: #fff;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: default;
+  }
+  .flow-illus__trust {
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 7.5px;
+    color: var(--muted);
+  }
+  .flow-illus__caption {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal-deep);
+    text-align: center;
+    margin: 10px 0 0;
+  }
+
+  /* ---- Ilustración: Antes/Después (agrupar mensajes) ---- */
+  .chat-compare {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+  .chat-compare__label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .chat-compare__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .chat-compare__dot--before { background: var(--gold); }
+  .chat-compare__dot--after { background: #25d366; }
+  .chat-compare__bubbles {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .chat-compare__bubble {
+    background: #dcf8c6;
+    color: #0b1a12;
+    border-radius: 9px;
+    padding: 6px 9px;
+    font-size: 9.5px;
+    line-height: 1.35;
+  }
+  .chat-compare__arrow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin: 8px 0;
+  }
+
+  .wa-simulador__disclaimer {
+    max-width: 640px;
+    margin: 0 auto 32px;
+    text-align: center;
+    font-size: 12.5px;
+    line-height: var(--lh-body);
+    color: var(--muted);
+  }
+  .wa-simulador__disclaimer a { color: var(--teal-deep); font-weight: 600; }
+
+  /* ---- Calculadora ---- */
+  .wa-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+    padding: 40px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .wa-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: 28px;
+  }
+  .wa-card__title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .wa-card__subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .wa-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .inputs { display: flex; flex-direction: column; gap: 24px; }
+
+  .field-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .field-label output {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+
+  input[type='range'] {
+    --fill: 50%;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background: linear-gradient(to right, var(--teal) var(--fill), var(--surface) var(--fill));
+    outline: none;
+    cursor: pointer;
+  }
+  input[type='range']::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--teal);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 199, 180, 0.4);
+    transition: transform var(--transition);
+  }
+  input[type='range']::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  input[type='range']::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--teal);
+    cursor: pointer;
+    border: none;
+  }
+
+  .country-select {
+    width: 100%;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    cursor: pointer;
+  }
+
+  .rate-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: var(--lh-body);
+    margin: 8px 0 0;
+  }
+  .rate-note a { color: var(--teal-deep); font-weight: 600; }
+
+  .note-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: var(--lh-body);
+  }
+  .note-box strong { color: var(--navy); }
+
+  .results { display: flex; flex-direction: column; gap: 16px; }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+  }
+  .metric {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .metric-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .metric-value {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .metric-value.teal  { color: var(--teal-deep); }
+  .metric-value.amber { color: var(--gold); }
+  .metric-sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+  /* ---- Chart ---- */
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .chart-card__title {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .chart {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    align-items: end;
+    height: 110px;
+  }
+  .chart__col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+  .chart__value {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .chart__bar-track {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .chart__bar {
+    width: 60%;
+    min-height: 2px;
+    height: 0%;
+    border-radius: 3px 3px 0 0;
+    background: var(--grad-cta);
+    transition: height var(--transition);
+  }
+  .chart__month {
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-top: 6px;
+    white-space: nowrap;
+  }
+  .chart-card__note {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 10px 0 0;
+    line-height: var(--lh-body);
+  }
+
+  .breakdown {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .breakdown-title {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    padding: 6px 0;
+    font-size: 13px;
+  }
+  .breakdown-row .lbl { color: var(--muted); }
+  .breakdown-row .val {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+  .breakdown-row .val.amber { color: var(--gold); }
+  .breakdown-row .val.teal { color: var(--teal-deep); }
+  .origin-note {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: var(--lh-body);
+    margin: 6px 0 0;
+  }
+  .origin-note a { color: var(--teal-deep); font-weight: 600; }
+
+  /* ---- Donut (Origen de conversaciones) ---- */
+  .donut-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 4px 0 10px;
+  }
+  .donut {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: conic-gradient(var(--teal) 0% 0%, var(--gold) 0% 100%);
+    transition: background var(--transition);
+  }
+  .donut::after {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border-radius: 50%;
+    background: var(--white);
+  }
+
+  .pie {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: conic-gradient(var(--teal) 0% 0%, var(--gold) 0% 100%);
+    transition: background var(--transition);
+  }
+  .donut__center {
+    position: absolute;
+    inset: 16px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .legend { display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; color: var(--muted); }
+  .legend__item { display: flex; align-items: center; gap: 6px; }
+  .legend__item b { color: var(--navy); font-family: var(--font-mono); }
+  .legend__label { flex: 1; }
+  .legend__count, .legend__pct {
+    min-width: 44px;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .legend__dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .legend__dot.teal { background: var(--teal); }
+  .legend__dot.amber { background: var(--gold); }
+
+  .impact-table-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    overflow-x: auto;
+  }
+  .impact-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .impact-table th {
+    text-align: left;
+    color: var(--muted);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-weight: 600;
+    padding: 4px 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .impact-table td {
+    padding: 7px 6px;
+    color: var(--navy);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+  .impact-table td:first-child { font-family: var(--font-ui); white-space: normal; }
+  .impact-table__total td {
+    font-weight: 700;
+    border-top: 1px solid var(--border);
+  }
+
+  .results :global(.btn) {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .wa-card__footnote {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+  .wa-card__footnote p { margin: 0 0 8px; }
+  .wa-card__footnote a { color: var(--teal-deep); font-weight: 600; }
+  .wa-card__footnote-link { display: inline-block; font-size: 11px; }
+
+  .wa-card__download {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .livvo-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    background: var(--grad-cta);
+    border-radius: 14px;
+    padding: 22px 28px;
+    margin-top: 28px;
+    color: #fff;
+  }
+  .livvo-banner__brand {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .livvo-banner__desc {
+    font-size: 14px;
+    line-height: var(--lh-body);
+    opacity: 0.92;
+    margin: 4px 0 0;
+    max-width: 480px;
+  }
+  .livvo-banner :global(.btn) {
+    flex-shrink: 0;
+    background: #fff;
+    color: var(--teal-deep);
+    box-shadow: none;
+  }
+  .livvo-banner :global(.btn:hover) {
+    background: #fff;
+    filter: brightness(0.95);
+    color: var(--teal-deep);
+  }
+
+  /* ---- Impresión / descarga en PDF ----
+     El informe descargable es solo la tarjeta del simulador (que ahora
+     incluye las estrategias): se oculta el glosario, que es contenido
+     de la landing y no del reporte. */
+  @media print {
+    .no-print { display: none !important; }
+    :global(#glosario) { display: none !important; }
+    :global(#simulador) { padding: 16px 0; }
+    .wa-card { box-shadow: none; border: none; padding: 0; }
+    input[type='range'] { display: none; }
+    .wa-change, .impact-table-wrap, .breakdown, .chart-card, .note-box {
+      break-inside: avoid;
+    }
+    .wa-card__strategies { break-before: page; }
+    /* Los navegadores omiten colores/fondos al imprimir por defecto
+       ("ahorro de tinta"), lo que deja los gráficos (donut, torta,
+       barras, chips) en blanco. Forzar que se impriman tal cual se ven
+       en pantalla, en todos los elementos de esta página. */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .chart__bar,
+    .mini-chart__bar,
+    .donut,
+    .pie,
+    .flow-illus__chatbar,
+    .flow-illus__cta,
+    .flow-illus__slot--active,
+    .flow-illus__dot--active,
+    .flow-illus__radio--checked,
+    .chat-compare__bubble,
+    .chat-compare__dot {
+      break-inside: avoid;
+    }
+    /* Las secciones fade-up solo se revelan al hacer scroll; forzarlas
+       visibles asegura que el PDF incluya todo aunque no se haya
+       llegado a esa sección antes de descargar. */
+    :global(.fade-up) {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .wa-changes { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .wa-grid { grid-template-columns: 1fr; }
+    .wa-card__head { flex-direction: column; }
+    .livvo-banner { flex-direction: column; text-align: center; }
+    .livvo-banner__desc { max-width: none; }
+  }
+  @media (max-width: 768px) {
+    .wa-card { padding: 24px; }
+  }
+  @media (max-width: 640px) {
+    .wa-changes { grid-template-columns: 1fr; }
+    .chart__month { font-size: 8px; }
+  }
+</style>

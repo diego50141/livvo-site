@@ -374,6 +374,7 @@ const MONTHS = [
         <!-- ESTRATEGIAS (dentro del simulador, mismo documento descargable) -->
         <div class="wa-card__strategies">
           <div class="wa-card__strategies-head">
+            <span class="eyebrow wa-print-only">Simulador de costos de WhatsApp</span>
             <span class="eyebrow">Cómo disminuir costos</span>
           </div>
           <div class="wa-changes">
@@ -665,6 +666,11 @@ const MONTHS = [
     white-space: nowrap;
     border: 0;
   }
+
+  /* Se muestra solo al imprimir: repite el rótulo del simulador al
+     inicio de cada página del PDF (el salto de página cae antes de
+     "Cómo disminuir costos", que en pantalla no necesita el rótulo). */
+  .wa-print-only { display: none; }
 
   /* ---- Qué cambia ---- */
   .wa-changes {
@@ -1404,6 +1410,7 @@ const MONTHS = [
       break-inside: avoid;
     }
     .wa-card__strategies { break-before: page; }
+    .wa-print-only { display: block !important; margin: 0 0 10px; }
     /* Los navegadores omiten colores/fondos al imprimir por defecto
        ("ahorro de tinta"), lo que deja los gráficos (donut, torta,
        barras, chips) en blanco. Forzar que se impriman tal cual se ven

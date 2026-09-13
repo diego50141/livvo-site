@@ -9,7 +9,7 @@ import { WHATSAPP_URL } from '../config';
 
 // Planes basados en https://www.teamroma.ai/precios (dólares → pesos colombianos,
 // tasa ~$3.150 COP/USD) con un premium de ~60% sobre Roma: Livvo suma CRM inmobiliario
-// y plataforma completa, no solo el agente IA. Trial → Inicia → Crece → Avanza → Corporativo.
+// y plataforma completa, no solo el agente IA. Trial → Inicia → Crece → Corporativo.
 const plans = [
   {
     name: 'Trial',
@@ -53,20 +53,6 @@ const plans = [
     ctaLabel: 'Comenzar ahora',
   },
   {
-    name: 'Avanza',
-    price: '$1.770.000',
-    priceAnnual: '$1.416.000',
-    period: 'COP / mes',
-    tagline: 'Para operaciones de alto volumen',
-    features: [
-      '2.000 conversaciones al mes',
-      'CRM inmobiliario',
-      'Soporte directo',
-    ],
-    featured: false,
-    ctaLabel: 'Comenzar ahora',
-  },
-  {
     name: 'Corporativo',
     price: 'A medida',
     period: '',
@@ -86,7 +72,7 @@ const plans = [
 
 <Base
   title="Planes y precios — Livvo"
-  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: Trial, Inicia, Crece, Avanza y Corporativo, por volumen de conversaciones al mes, con CRM inmobiliario y agentes IA incluidos."
+  description="Planes de la plataforma Livvo para inmobiliarias, constructoras y desarrolladoras: Trial, Inicia, Crece y Corporativo, por volumen de conversaciones al mes, con CRM inmobiliario y agentes IA incluidos."
 >
   <Navbar />
 
@@ -226,7 +212,7 @@ const plans = [
 
   .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-6);
     align-items: stretch;
   }

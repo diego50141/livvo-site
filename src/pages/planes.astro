@@ -3,44 +3,30 @@ import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
-import PricingCard from '../components/PricingCard.astro';
 import Footer from '../components/Footer.astro';
 import { WHATSAPP_URL } from '../config';
 
-// Iteración 4 (13 sep 2026) — colapsa Inicia/Crece/Solo en un solo plan de autoservicio
-// con precio por asesor (mecánica calcada de facilia.app/pricing, verificada en vivo).
-// Fórmula: $45.000 + $154.000 × asesores — el piso en 1 asesor queda en $199.000.
-// La fórmula NO se muestra al cliente (igual que Facilia tampoco expone la suya), solo
-// el resultado. Detalle completo y trade-offs aceptados: pricing_livvo.md sección 8.
-const CRECE_BASE = 45000;
-const CRECE_PER_SEAT = 154000;
-const CRECE_ANNUAL_DISCOUNT = 0.8; // mismo 20% que ya aplicaba a Inicia/Crece
-
-const corporativo = {
-  name: 'Corporativo',
-  price: 'A medida',
-  period: '',
-  tagline: 'Seguridad, integraciones y soporte a la medida de tu operación',
-  features: [
-    'Todo lo de Crece, además:',
-    'Asesores y conversaciones sin límite',
-    'Integraciones a la medida con tu CRM o ERP (WASI, SIMI)',
-    'Single sign-on (SSO) y controles de seguridad corporativos',
-    'Soporte dedicado 24/7 con SLA garantizado',
-    'Un gerente de cuenta para tu operación',
-  ],
-  ctaLabel: 'Hablar con ventas →',
-};
+// Iteración 5 (22 sep 2026) — un solo plan "Estándar" (antes "Crece"), sin Corporativo
+// ni tarjeta de implementación aparte. Precio en COP (moneda real de cobro — Wompi solo
+// factura en COP, ver autopago del CRM) con un "≈ US$" de referencia debajo, mismo
+// lenguaje visual que facilia.app/pricing (precio grande + conversión pequeña al lado,
+// CTA junto al precio). Tasa de referencia: TRM ~$3.193 COP/USD (sep-2026), redondeada.
+// Fórmula: $45.000 + $154.000 × asesores — el piso en 1 asesor queda en $199.000. La
+// fórmula NO se muestra al cliente, solo el resultado. Detalle: pricing_livvo.md §8.
+const ESTANDAR_BASE = 45000;
+const ESTANDAR_PER_SEAT = 154000;
+const ESTANDAR_ANNUAL_DISCOUNT = 0.8;
+const USD_COP_RATE = 3200;
 ---
 
 <Base
   title="Planes y precios — Livvo"
-  description="Un plan de autoservicio que crece con tu equipo, y un plan Corporativo a la medida. Luisa IA y CRM inmobiliario incluidos, sin límite de conversaciones."
+  description="Un solo plan de autoservicio que crece con tu equipo. Luisa IA y CRM inmobiliario incluidos, sin límite de conversaciones."
 >
   <Navbar />
 
   <main>
-    <Section id="precios" eyebrow="Planes" title="Un plan para tu equipo. Uno a la medida.">
+    <Section id="precios" eyebrow="Planes" title="Paga por lo que tu equipo realmente usa.">
       <div class="billing-toggle fade-up" role="group" aria-label="Periodicidad de facturación">
         <button type="button" class="billing-toggle__btn is-active" data-billing="monthly">
           Mensual
@@ -50,12 +36,24 @@ const corporativo = {
         </button>
       </div>
 
-      <div class="pricing-grid fade-up">
-        <!-- CRECE — plan de autoservicio, calculadora en vivo por asesor -->
+      <div class="pricing-single fade-up">
+        <!-- ESTÁNDAR — único plan, calculadora en vivo por asesor -->
         <div class="seat-card">
-          <div class="seat-card__badge">Recomendado</div>
-          <div class="seat-card__name">Crece</div>
-          <p class="seat-card__tagline">Un plan para todo tu equipo. Sin límite de conversaciones.</p>
+          <div class="seat-card__top">
+            <div>
+              <div class="seat-card__name">Estándar</div>
+              <p class="seat-card__tagline">Un plan para todo tu equipo. Sin límite de conversaciones.</p>
+            </div>
+            <div class="seat-card__cta">
+              <Button variant="primary" href={WHATSAPP_URL} target="_blank">Comenzar ahora →</Button>
+            </div>
+          </div>
+
+          <div class="seat-card__price">
+            <span class="seat-card__amount" id="seat-price">$353.000</span>
+            <span class="seat-card__period" id="seat-period">COP / mes</span>
+          </div>
+          <p class="seat-card__usd" id="seat-price-usd">≈ US$110/mes</p>
 
           <div class="seat-stepper">
             <span class="seat-stepper__label">Asesores</span>
@@ -66,59 +64,20 @@ const corporativo = {
             </div>
           </div>
 
-          <div class="seat-card__price">
-            <span class="seat-card__amount" id="seat-price">$353.000</span>
-            <span class="seat-card__period" id="seat-period"> COP / mes</span>
-          </div>
-          <p class="seat-card__note">$154.000 COP por cada asesor adicional</p>
-
           <hr class="seat-card__divider" />
+          <p class="seat-card__includes">Todo lo que incluye</p>
           <ul class="seat-card__features">
-            <li><span class="seat-card__check">✓</span>Luisa IA responde, califica y agenda citas — 24/7, recomienda propiedades y hace seguimiento</li>
-            <li><span class="seat-card__check">✓</span>Gestión de conversaciones, negocios y propiedades en un solo lugar</li>
+            <li><span class="seat-card__check">✓</span>Luisa IA responde, califica y agenda citas — 24/7</li>
+            <li><span class="seat-card__check">✓</span>Recomienda propiedades y hace seguimiento</li>
+            <li><span class="seat-card__check">✓</span>Conversaciones, negocios y propiedades en un solo lugar</li>
             <li><span class="seat-card__check">✓</span>Campañas de marketing por WhatsApp</li>
             <li><span class="seat-card__check">✓</span>Agenda inteligente de visitas y citas</li>
             <li><span class="seat-card__check">✓</span>Panel de métricas personalizadas</li>
             <li><span class="seat-card__check">✓</span>Fichas de propiedad y portafolio web</li>
           </ul>
-          <div class="seat-card__cta">
-            <Button variant="primary" href={WHATSAPP_URL} target="_blank">Comenzar ahora</Button>
-          </div>
-        </div>
-
-        <!-- CORPORATIVO -->
-        <PricingCard
-          name={corporativo.name}
-          price={corporativo.price}
-          period={corporativo.period}
-          tagline={corporativo.tagline}
-          features={corporativo.features}
-          ctaLabel={corporativo.ctaLabel}
-          ctaHref={WHATSAPP_URL}
-          ctaTarget="_blank"
-        />
-      </div>
-
-      <div class="setup-card fade-up">
-        <div class="setup-card__info">
-          <div class="setup-card__badge">Pago único · Mes 1</div>
-          <div class="setup-card__name">Implementación inicial</div>
-          <p class="setup-card__desc">
-            Configuramos y entrenamos tus agentes IA y plataforma para que estén listos para trabajar.
-          </p>
-          <ul class="setup-card__features">
-            <li><span class="setup-card__check">✓</span>Sesión de descubrimiento para entender tu negocio</li>
-            <li><span class="setup-card__check">✓</span>Configuración y entrenamiento de tus agentes IA</li>
-            <li><span class="setup-card__check">✓</span>Integración con tu WhatsApp</li>
-            <li><span class="setup-card__check">✓</span>Aplica al plan Crece — Corporativo se cotiza junto con tu plan a medida</li>
-          </ul>
-        </div>
-        <div class="setup-card__price-box">
-          <span class="setup-card__from">desde</span>
-          <div class="setup-card__price">$1.199.000</div>
-          <span class="setup-card__period">COP · pago único</span>
         </div>
       </div>
+
       <div class="pricing-terms fade-up">
         <span>Prueba gratuita de 15 días</span>
         <span>Sin tarjeta de crédito</span>
@@ -126,7 +85,7 @@ const corporativo = {
         <span>Facturación en pesos colombianos</span>
       </div>
       <p class="pricing-fineprint fade-up">
-        El precio de Crece escala con la cantidad de asesores de tu equipo — no con el número de conversaciones. Luisa IA no tiene límite de conversaciones en ningún plan.
+        El precio de Estándar escala con la cantidad de asesores de tu equipo — no con el número de conversaciones. Luisa IA no tiene límite de conversaciones. El cobro es en pesos colombianos; el valor en dólares es solo de referencia.
       </p>
       <div class="pricing-cta fade-up">
         <p>¿No sabes cuántos asesores necesitas? Te ayudamos a elegir.</p>
@@ -138,26 +97,29 @@ const corporativo = {
   <Footer />
 </Base>
 
-<script define:vars={{ CRECE_BASE, CRECE_PER_SEAT, CRECE_ANNUAL_DISCOUNT }}>
+<script define:vars={{ ESTANDAR_BASE, ESTANDAR_PER_SEAT, ESTANDAR_ANNUAL_DISCOUNT, USD_COP_RATE }}>
   // Toggle mensual/anual — mismo interruptor visual que antes, ahora también recalcula
-  // el precio por asesor de Crece en vez de solo swapear un dato estático.
+  // el precio por asesor de Estándar en vez de solo swapear un dato estático.
   const billingBtns = Array.from(document.querySelectorAll('[data-billing]'));
   let isAnnual = false;
 
-  const fmt = (n) => '$' + Math.round(n).toLocaleString('es-CO');
+  const fmtCop = (n) => '$' + Math.round(n).toLocaleString('es-CO');
+  const fmtUsd = (n) => '$' + Math.round(n).toLocaleString('en-US');
   const seatCountEl = document.getElementById('seat-count');
   const seatPriceEl = document.getElementById('seat-price');
   const seatPeriodEl = document.getElementById('seat-period');
+  const seatPriceUsdEl = document.getElementById('seat-price-usd');
   const seatDecBtn = document.getElementById('seat-dec');
   const seatIncBtn = document.getElementById('seat-inc');
   let seats = 2;
 
   function renderSeatPrice() {
     seatCountEl.textContent = String(seats);
-    const monthly = CRECE_BASE + CRECE_PER_SEAT * seats;
-    const total = isAnnual ? monthly * CRECE_ANNUAL_DISCOUNT : monthly;
-    seatPriceEl.textContent = fmt(total);
-    seatPeriodEl.textContent = isAnnual ? ' COP / mes · pago anual' : ' COP / mes';
+    const monthly = ESTANDAR_BASE + ESTANDAR_PER_SEAT * seats;
+    const total = isAnnual ? monthly * ESTANDAR_ANNUAL_DISCOUNT : monthly;
+    seatPriceEl.textContent = fmtCop(total);
+    seatPeriodEl.textContent = isAnnual ? 'COP / mes · pago anual' : 'COP / mes';
+    seatPriceUsdEl.textContent = '≈ US' + fmtUsd(total / USD_COP_RATE) + '/mes';
   }
 
   seatDecBtn.addEventListener('click', () => {
@@ -225,32 +187,30 @@ const corporativo = {
     padding: 2px 8px;
   }
 
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: var(--space-6);
-    align-items: stretch;
+  .pricing-single {
+    display: flex;
+    justify-content: center;
   }
-  @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; } }
 
-  /* --- tarjeta Crece: mismo lenguaje visual de PricingCard, con calculadora por asesor --- */
+  /* --- tarjeta Estándar: precio + CTA en la misma fila, estilo facilia.app/pricing --- */
   .seat-card {
     position: relative;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 720px;
     background: var(--white);
     border: 2px solid var(--teal);
     box-shadow: var(--shadow-glow);
     border-radius: var(--radius-card);
     padding: var(--space-8);
   }
-  .seat-card__badge {
-    position: absolute;
-    top: -11px; left: 50%; transform: translateX(-50%);
-    background: var(--grad-cta);
-    color: #fff;
-    font-size: 11px; font-weight: 600; letter-spacing: var(--ls-label); text-transform: uppercase;
-    padding: 4px 14px; border-radius: 20px; white-space: nowrap;
+  .seat-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-6);
+    flex-wrap: wrap;
   }
   .seat-card__name {
     font-family: var(--font-display);
@@ -259,6 +219,24 @@ const corporativo = {
     color: var(--navy);
   }
   .seat-card__tagline { font-size: var(--text-small); color: var(--muted); margin-top: var(--space-1); }
+  .seat-card__cta :global(.btn) { white-space: nowrap; }
+
+  .seat-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+  }
+  .seat-card__amount {
+    font-family: var(--font-mono);
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .seat-card__period { font-size: 15px; font-weight: 400; color: var(--muted); }
+  .seat-card__usd { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
   .seat-stepper {
     display: flex; align-items: center; justify-content: space-between;
@@ -267,6 +245,7 @@ const corporativo = {
     background: var(--gray-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-btn);
+    max-width: 280px;
   }
   .seat-stepper__label { font-size: 13px; font-weight: 700; color: var(--navy); }
   .seat-stepper__control { display: flex; align-items: center; gap: var(--space-3); }
@@ -281,91 +260,27 @@ const corporativo = {
     min-width: 18px; text-align: center; font-variant-numeric: tabular-nums;
   }
 
-  .seat-card__price {
-    font-family: var(--font-mono);
-    font-size: 34px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-top: var(--space-4);
-    letter-spacing: -1px;
-    font-variant-numeric: tabular-nums;
-  }
-  .seat-card__period { font-size: 14px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
-  .seat-card__note { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-
   .seat-card__divider { border: none; border-top: 1px solid var(--border); margin: var(--space-6) 0; }
+  .seat-card__includes {
+    font-size: 11px; font-weight: 700; letter-spacing: var(--ls-label); text-transform: uppercase;
+    color: var(--muted); margin: 0 0 var(--space-4);
+  }
   .seat-card__features {
-    list-style: none; padding: 0; margin: 0 0 var(--space-8);
-    display: flex; flex-direction: column; gap: var(--space-3);
-    font-size: 14.5px; flex: 1;
-  }
-  .seat-card__features li { display: flex; gap: var(--space-2); }
-  .seat-card__check { color: var(--teal); font-weight: 700; flex: none; }
-  .seat-card__cta :global(.btn) { width: 100%; }
-
-  .setup-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-8);
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
-    padding: var(--space-8);
-    margin-top: var(--space-6);
-  }
-  .setup-card__badge {
-    display: inline-block;
-    background: var(--grad-cta);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: var(--ls-label);
-    text-transform: uppercase;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: var(--space-3);
-  }
-  .setup-card__name {
-    font-family: var(--font-display);
-    font-size: var(--text-h3);
-    font-weight: 700;
-    color: var(--navy);
-  }
-  .setup-card__desc {
-    font-size: var(--text-small);
-    color: var(--muted);
-    margin-top: var(--space-1);
-    max-width: 560px;
-  }
-  .setup-card__features {
-    list-style: none;
-    padding: 0;
-    margin: var(--space-4) 0 0;
+    list-style: none; padding: 0; margin: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-3) var(--space-6);
     font-size: 14.5px;
   }
-  .setup-card__features li { display: flex; gap: var(--space-2); }
-  .setup-card__check { color: var(--teal); font-weight: 700; }
-  .setup-card__price-box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    white-space: nowrap;
+  .seat-card__features li { display: flex; gap: var(--space-2); }
+  .seat-card__check { color: var(--teal); font-weight: 700; flex: none; }
+
+  @media (max-width: 640px) {
+    .seat-card__features { grid-template-columns: 1fr; }
+    .seat-card__top { flex-direction: column; }
+    .seat-card__cta :global(.btn) { width: 100%; }
   }
-  .setup-card__from { font-size: 13px; color: var(--muted); }
-  .setup-card__price {
-    font-family: var(--font-mono);
-    font-size: 34px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: -1px;
-  }
-  .setup-card__period { font-size: 14px; color: var(--muted); }
+
   .pricing-terms {
     display: flex;
     justify-content: center;
@@ -394,16 +309,5 @@ const corporativo = {
     font-size: var(--text-body);
     color: var(--muted);
     margin: 0 0 var(--space-6);
-  }
-
-  @media (max-width: 1024px) {
-    .setup-card {
-      flex-direction: column;
-      align-items: flex-start;
-      max-width: 480px;
-      margin-inline: auto;
-    }
-    .setup-card__features { grid-template-columns: 1fr; }
-    .setup-card__price-box { align-items: flex-start; text-align: left; }
   }
 </style>

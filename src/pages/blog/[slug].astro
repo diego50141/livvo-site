@@ -1,0 +1,232 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/Section.astro';
+import Button from '../../components/Button.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { WHATSAPP_URL } from '../../config';
+import { getReadingTime, formatPostDate } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id && p.data.category === post.data.category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const formattedDate = formatPostDate(post.data.pubDate);
+const readingTime = getReadingTime(post.body ?? '');
+const faq = post.data.faq ?? [];
+
+const faqJsonLd =
+  faq.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.a,
+          },
+        })),
+      }
+    : null;
+---
+
+<Base
+  title={`${post.data.title} — Blog Livvo`}
+  description={post.data.description}
+  structuredData={faqJsonLd ?? undefined}
+>
+  <Navbar />
+
+  <main>
+    <article>
+      <header class="post-hero">
+        <div class="container-site post-hero__inner">
+          <span class="eyebrow">{post.data.category}</span>
+          <h1>{post.data.title}</h1>
+          <p class="post-hero__meta">
+            {post.data.author} · {formattedDate} · {readingTime} min de lectura
+          </p>
+        </div>
+      </header>
+
+      <div class="container-site">
+        <div class="prose fade-up">
+          <Content />
+        </div>
+
+        {
+          faq.length > 0 && (
+            <div class="post-faq fade-up">
+              <h2>Preguntas frecuentes</h2>
+              {faq.map((item) => (
+                <details class="post-faq__item">
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))}
+            </div>
+          )
+        }
+
+        <div class="post-cta fade-up">
+          <p>¿Quieres ver esto funcionando en tu inmobiliaria?</p>
+          <Button href={WHATSAPP_URL} target="_blank" size="lg" id="post-cta">
+            Prueba 15 días gratis →
+          </Button>
+        </div>
+      </div>
+
+      {
+        relatedPosts.length > 0 && (
+          <Section alt eyebrow="Sigue leyendo" title="Más sobre este tema">
+            <div class="related-grid fade-up">
+              {relatedPosts.map((related) => (
+                <BlogCard
+                  slug={related.id}
+                  title={related.data.title}
+                  description={related.data.description}
+                  category={related.data.category}
+                  pubDate={related.data.pubDate}
+                  author={related.data.author}
+                  readingTime={getReadingTime(related.body ?? '')}
+                />
+              ))}
+            </div>
+          </Section>
+        )
+      }
+    </article>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .post-hero {
+    padding: 96px 0 48px;
+    text-align: center;
+  }
+  .post-hero__inner {
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  .post-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 44px);
+    letter-spacing: -1px;
+    color: var(--navy);
+    margin: 20px 0 12px;
+  }
+  .post-hero__meta {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .prose {
+    max-width: 720px;
+    margin: 0 auto 64px;
+    font-size: var(--text-body);
+    line-height: var(--lh-relaxed);
+    color: var(--text);
+  }
+  .prose :global(h2) {
+    font-size: var(--text-h2);
+    margin: var(--space-12) 0 var(--space-4);
+  }
+  .prose :global(h3) {
+    font-size: var(--text-h3);
+    margin: var(--space-8) 0 var(--space-3);
+  }
+  .prose :global(p) {
+    margin: 0 0 var(--space-6);
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 var(--space-6);
+    padding-left: 1.4em;
+  }
+  .prose :global(li) {
+    margin-bottom: var(--space-2);
+  }
+  .prose :global(a) {
+    text-decoration: underline;
+  }
+  .prose :global(strong) {
+    color: var(--navy);
+  }
+
+  .post-faq {
+    max-width: 720px;
+    margin: 0 auto 64px;
+  }
+  .post-faq h2 {
+    font-size: var(--text-h2);
+    margin: 0 0 var(--space-6);
+  }
+  .post-faq__item {
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-4) 0;
+  }
+  .post-faq__item summary {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    color: var(--navy);
+    cursor: pointer;
+  }
+  .post-faq__item p {
+    color: var(--muted);
+    margin: var(--space-3) 0 0;
+    line-height: var(--lh-body);
+  }
+
+  .post-cta {
+    max-width: 720px;
+    margin: 0 auto 80px;
+    padding: var(--space-8);
+    text-align: center;
+    background: var(--gray-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+  .post-cta p {
+    font-size: var(--text-h3);
+    color: var(--navy);
+    margin: 0 0 var(--space-6);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  @media (max-width: 900px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 768px) {
+    .post-hero {
+      padding: 88px 0 32px;
+    }
+  }
+</style>

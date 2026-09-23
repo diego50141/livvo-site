@@ -1,0 +1,83 @@
+---
+import Card from './Card.astro';
+import { formatPostDate } from '../lib/blog';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  pubDate: Date;
+  author: string;
+  readingTime: number;
+  featured?: boolean;
+}
+
+const { slug, title, description, category, pubDate, author, readingTime, featured = false } = Astro.props;
+
+const formattedDate = formatPostDate(pubDate);
+---
+
+<a href={`/blog/${slug}`} class:list={['blog-card-link', { 'blog-card-link--featured': featured }]}>
+  <Card class:list={['blog-card', { 'blog-card--featured': featured }]}>
+    {featured && <span class="blog-card__badge">★ Destacado</span>}
+    <span class="eyebrow blog-card__category">{category}</span>
+    <h3 class="blog-card__title">{title}</h3>
+    <p class="blog-card__desc">{description}</p>
+    <p class="blog-card__meta">
+      {author} · {formattedDate} · {readingTime} min de lectura
+    </p>
+  </Card>
+</a>
+
+<style>
+  .blog-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .blog-card__badge {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--teal-deep);
+  }
+  .blog-card__category {
+    align-self: flex-start;
+  }
+  .blog-card__title {
+    font-size: var(--text-h3);
+    margin: 0;
+  }
+  .blog-card__desc {
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  .blog-card__meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin: var(--space-1) 0 0;
+  }
+
+  .blog-card--featured {
+    background: rgba(0, 199, 180, 0.06);
+    border-color: rgba(0, 199, 180, 0.3);
+    padding: var(--space-8);
+  }
+  .blog-card--featured .blog-card__title {
+    font-size: var(--text-h2);
+  }
+  .blog-card--featured .blog-card__desc {
+    font-size: var(--text-body);
+  }
+</style>

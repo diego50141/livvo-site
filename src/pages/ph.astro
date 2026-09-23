@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar.astro';
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
 import Footer from '../components/Footer.astro';
+import FAQ from '../components/FAQ.astro';
 import { WHATSAPP_URL } from '../config';
 
 const features = [
@@ -35,6 +36,32 @@ const features = [
   },
 ];
 
+const faqItems = [
+  {
+    q: '¿Cómo sabe el agente lo que dice el reglamento de mi copropiedad?',
+    a: 'Se entrena con tecnología RAG directamente sobre el reglamento de propiedad horizontal de tu conjunto, así que responde con base en las normas reales de tu copropiedad, no con respuestas genéricas.',
+  },
+  {
+    q: '¿Qué pasa si un residente reporta un daño o radica una PQRS?',
+    a: 'El agente radica la solicitud, la clasifica por nivel de urgencia y la asigna al técnico correspondiente, con seguimiento hasta que se cierra el caso.',
+  },
+  {
+    q: '¿Cómo funciona la cobranza preventiva?',
+    a: 'El agente analiza los patrones de pago de cada residente para identificar quién podría entrar en mora y envía recordatorios automáticos adaptados a cada caso, antes de que la cartera se vuelva un problema.',
+  },
+  {
+    q: '¿Puedo procesar facturas de proveedores sin digitarlas manualmente?',
+    a: 'Sí. El agente lee facturas y cuentas de cobro con solo tomarles una foto (OCR) y cruza los datos directamente con tu sistema contable.',
+  },
+  {
+    q: '¿Se integra con la portería o la citofonía del conjunto?',
+    a: 'Sí, agiliza el ingreso de visitantes con validación de datos, controla la mensajería y se conecta con citofonía inteligente.',
+  },
+  {
+    q: '¿Dónde queda el historial de las conversaciones con los residentes?',
+    a: 'Cada conversación queda registrada en Livvo Chat, la misma plataforma donde trabaja tu equipo de administración.',
+  },
+];
 ---
 
 <Base
@@ -108,6 +135,13 @@ const features = [
         <Button href={WHATSAPP_URL} target="_blank" size="lg" id="ph-cta-final">
           Prueba 15 días gratis →
         </Button>
+      </div>
+    </Section>
+
+    <!-- FAQ: acordeón -->
+    <Section alt eyebrow="Preguntas frecuentes" title="Lo que preguntan los administradores de PH.">
+      <div class="fade-up">
+        <FAQ items={faqItems} />
       </div>
     </Section>
   </main>

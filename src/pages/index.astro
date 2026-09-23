@@ -246,6 +246,20 @@ const faqItems = [
 <Base
   title="Livvo: agenda más visitas sin contratar más asesores"
   description="Livvo son dos productos: Luisa, la agente de IA que atiende, califica y agenda citas por WhatsApp 24/7, y Livvo Chat, la plataforma donde tu equipo gestiona conversaciones, propiedades y negocios."
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Livvo',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    description:
+      'Plataforma de WhatsApp con IA para inmobiliarias: Luisa (agente de IA que prospecta, agenda citas y atiende 24/7) y Livvo Chat (bandeja compartida, CRM inmobiliario, campañas y reportes).',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'COP',
+      url: 'https://livvo.tech/planes',
+    },
+  }}
 >
   <Navbar />
 

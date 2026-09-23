@@ -7,6 +7,7 @@ interface Props {
   description?: string;
   noindex?: boolean;
   ogImage?: string; // ruta en /public; por defecto el OG genérico del sitio
+  structuredData?: Record<string, unknown> | Record<string, unknown>[]; // JSON-LD extra de la página (Service, SoftwareApplication, FAQPage...)
 }
 
 const {
@@ -15,9 +16,32 @@ const {
     'Agentes de IA para inmobiliarias, constructoras y desarrolladoras que prospectan, agendan citas, envían propiedades, hacen cobranza y atienden arrendatarios en WhatsApp 24/7.',
   noindex = false,
   ogImage = '/og.png',
+  structuredData,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Organization en todas las páginas indexables; el resto del schema (producto,
+// FAQ, etc.) lo agrega cada página vía structuredData.
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Livvo',
+  legalName: 'Livvo Tecnologia SAS',
+  url: 'https://livvo.tech',
+  logo: new URL('/Livvo_logo.svg', Astro.site).toString(),
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Bogotá',
+    addressCountry: 'CO',
+  },
+};
+
+const extraSchemas = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
 ---
 
 <!doctype html>
@@ -25,6 +49,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="UukG6dFczPWGGKR6FOdoaMhaadYgY-G6_0s-eWPCh6U" />
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
@@ -38,6 +63,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:locale" content="es_CO" />
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
     <meta name="twitter:card" content="summary_large_image" />
+
+    {
+      !noindex && (
+        <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+      )
+    }
+    {
+      extraSchemas.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))
+    }
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

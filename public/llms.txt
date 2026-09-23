@@ -1,0 +1,30 @@
+# Livvo
+
+> Livvo es una plataforma de WhatsApp con inteligencia artificial para inmobiliarias, constructoras, desarrolladoras y administradores de propiedad horizontal en Colombia y Latinoamérica. Son dos productos: Luisa, la agente de IA que prospecta, califica leads, agenda citas y atiende 24/7; y Livvo Chat, la plataforma donde el equipo comercial gestiona conversaciones, propiedades y negocios.
+
+Livvo Tecnologia SAS (NIT 1121923287-1) tiene sede en Bogotá, Colombia, y opera 100% sobre WhatsApp Business API (Meta).
+
+## Productos
+
+- Luisa (agente de IA): atiende el WhatsApp de la inmobiliaria 24/7 — ventas, mantenimiento, administración, cobranza, escrituración y jurídico — con el tono y las reglas de cada cliente.
+- Livvo Chat (plataforma): bandeja de entrada compartida, CRM inmobiliario con embudo de negocios, gestor de propiedades, campañas por plantillas de WhatsApp y reportes.
+
+## Para quién
+
+Inmobiliarias, constructoras, desarrolladoras y administradores de propiedad horizontal (PH) en Colombia y Latinoamérica.
+
+## Páginas clave
+
+- [Inicio](https://livvo.tech/): qué es Livvo y sus dos productos.
+- [Agentes IA](https://livvo.tech/agentes-ia): Luisa y el equipo de agentes IA para inmobiliarias.
+- [Livvo Chat](https://livvo.tech/plataforma-de-atencion-al-cliente): la plataforma de atención al cliente.
+- [Propiedad Horizontal](https://livvo.tech/ph): agentes IA para administración de copropiedades.
+- [Planes y precios](https://livvo.tech/planes): plan único que crece por asesor, con precio en COP y referencia en USD.
+- [Catálogo Inmobiliario](https://livvo.tech/herramientas/catalogo-inmobiliario): crea un catálogo de propiedades gratis por WhatsApp.
+- [Gestor de Propiedades](https://livvo.tech/herramientas/gestor-propiedades): organiza el inventario y genera fichas de propiedades.
+- [Agente de Requerimientos](https://livvo.tech/herramientas/agente-de-requerimientos): busca el requerimiento de un cliente en los portales inmobiliarios de Colombia.
+- [Simulador de Costos de WhatsApp](https://livvo.tech/herramientas/simulador-costos-whatsapp): calcula el impacto del cambio de precios de Meta (oct-2026).
+
+## Contacto
+
+WhatsApp: https://wa.me/573144267806

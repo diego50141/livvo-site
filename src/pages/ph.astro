@@ -40,6 +40,17 @@ const features = [
 <Base
   title="Agentes IA para Propiedad Horizontal: Livvo"
   description="Agentes de IA que leen el reglamento de tu copropiedad y responden con base en él: atención al residente 24/7, PQRS, cobranza, facturas y portería, en el WhatsApp de tu administración."
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Agentes IA para Propiedad Horizontal',
+    serviceType: 'Agente de inteligencia artificial para administración de copropiedades',
+    provider: { '@type': 'Organization', name: 'Livvo' },
+    areaServed: 'CO',
+    audience: { '@type': 'Audience', audienceType: 'Administradores de propiedad horizontal' },
+    description:
+      'Agentes de IA que leen el reglamento de una copropiedad y responden con base en él: atención al residente 24/7, PQRS, cobranza, facturas y portería, por WhatsApp.',
+  }}
 >
   <Navbar />
 

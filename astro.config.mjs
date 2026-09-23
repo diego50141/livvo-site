@@ -23,10 +23,7 @@ export default defineConfig({
     // Una sola familia de iconos en el proyecto: no dibujar paths SVG a mano.
     icon(),
     sitemap({
-      filter: (page) =>
-        !page.includes('/design-system') &&
-        !page.includes('/presentacion') &&
-        !page.includes('/herramientas/calculadora-roi'),
+      filter: (page) => !page.includes('/design-system') && !page.includes('/presentacion'),
     }),
   ],
 });

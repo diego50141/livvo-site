@@ -1,0 +1,132 @@
+---
+import type { GetStaticPathsOptions } from 'astro';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/Section.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getReadingTime, BLOG_PAGE_SIZE } from '../../lib/blog';
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+  return paginate(allPosts, { pageSize: BLOG_PAGE_SIZE });
+}
+
+const { page } = Astro.props;
+const isFirstPage = page.currentPage === 1;
+
+const featuredPost = isFirstPage ? page.data.find((p) => p.data.featured) ?? page.data[0] : undefined;
+const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.id) : page.data;
+---
+
+<Base
+  title={isFirstPage ? 'Blog — Livvo' : `Blog — Livvo (página ${page.currentPage})`}
+  description="Ideas y guías para que tu inmobiliaria venda más rápido con WhatsApp e inteligencia artificial: gestión de leads, atención al cliente y actualidad del sector."
+>
+  <Navbar />
+
+  <main>
+    <Section id="blog" eyebrow="Blog" title="Ideas para vender más rápido con WhatsApp e IA.">
+      {
+        featuredPost && (
+          <div class="blog-featured fade-up">
+            <BlogCard
+              slug={featuredPost.id}
+              title={featuredPost.data.title}
+              description={featuredPost.data.description}
+              category={featuredPost.data.category}
+              pubDate={featuredPost.data.pubDate}
+              author={featuredPost.data.author}
+              readingTime={getReadingTime(featuredPost.body ?? '')}
+              featured
+            />
+          </div>
+        )
+      }
+
+      <div class="blog-list fade-up">
+        {
+          listPosts.map((post) => (
+            <BlogCard
+              slug={post.id}
+              title={post.data.title}
+              description={post.data.description}
+              category={post.data.category}
+              pubDate={post.data.pubDate}
+              author={post.data.author}
+              readingTime={getReadingTime(post.body ?? '')}
+            />
+          ))
+        }
+      </div>
+
+      {
+        page.lastPage > 1 && (
+          <nav class="blog-pagination fade-up" aria-label="Paginación del blog">
+            <a
+              href={page.url.prev ?? '#'}
+              class:list={['blog-pagination__link', { 'is-disabled': !page.url.prev }]}
+              aria-disabled={!page.url.prev}
+            >
+              ← Anterior
+            </a>
+            <span class="blog-pagination__status">
+              Página {page.currentPage} de {page.lastPage}
+            </span>
+            <a
+              href={page.url.next ?? '#'}
+              class:list={['blog-pagination__link', { 'is-disabled': !page.url.next }]}
+              aria-disabled={!page.url.next}
+            >
+              Siguiente →
+            </a>
+          </nav>
+        )
+      }
+    </Section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .blog-featured {
+    margin-bottom: var(--space-10);
+  }
+
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .blog-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6);
+    margin-top: var(--space-12);
+  }
+  .blog-pagination__link {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal-deep);
+    text-decoration: none;
+  }
+  .blog-pagination__link:hover {
+    text-decoration: underline;
+  }
+  .blog-pagination__link.is-disabled {
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .blog-pagination__status {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>

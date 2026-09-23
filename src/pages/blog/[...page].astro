@@ -41,6 +41,7 @@ const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.i
               pubDate={featuredPost.data.pubDate}
               author={featuredPost.data.author}
               readingTime={getReadingTime(featuredPost.body ?? '')}
+              image={featuredPost.data.image}
               featured
             />
           </div>
@@ -58,6 +59,7 @@ const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.i
               pubDate={post.data.pubDate}
               author={post.data.author}
               readingTime={getReadingTime(post.body ?? '')}
+              image={post.data.image}
             />
           ))
         }

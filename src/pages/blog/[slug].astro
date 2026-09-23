@@ -50,6 +50,7 @@ const faqJsonLd =
 <Base
   title={`${post.data.title} — Blog Livvo`}
   description={post.data.description}
+  ogImage={post.data.image}
   structuredData={faqJsonLd ?? undefined}
 >
   <Navbar />
@@ -67,6 +68,18 @@ const faqJsonLd =
       </header>
 
       <div class="container-site">
+        <div class="post-cover fade-up">
+          {
+            post.data.image ? (
+              <img src={post.data.image} alt="" />
+            ) : (
+              <div class="post-cover__placeholder" aria-hidden="true">
+                <img src="/Livvo_symbol.svg" alt="" />
+              </div>
+            )
+          }
+        </div>
+
         <div class="prose fade-up">
           <Content />
         </div>
@@ -106,6 +119,7 @@ const faqJsonLd =
                   pubDate={related.data.pubDate}
                   author={related.data.author}
                   readingTime={getReadingTime(related.body ?? '')}
+                  image={related.data.image}
                 />
               ))}
             </div>
@@ -139,6 +153,37 @@ const faqJsonLd =
     font-size: 13px;
     color: var(--muted);
     margin: 0;
+  }
+
+  .post-cover {
+    max-width: 880px;
+    aspect-ratio: 21 / 9;
+    margin: 0 auto 48px;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--gray-bg);
+  }
+  .post-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .post-cover__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(0, 199, 180, 0.16) 0%, transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(59, 126, 255, 0.14) 0%, transparent 55%),
+      var(--gray-bg);
+  }
+  .post-cover__placeholder img {
+    width: 10%;
+    height: auto;
+    opacity: 0.35;
   }
 
   .prose {

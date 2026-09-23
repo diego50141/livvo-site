@@ -1,0 +1,49 @@
+---
+import Legal from '../layouts/Legal.astro';
+
+const LAST_UPDATED = 'Septiembre de 2026';
+
+const sections = [
+  {
+    title: '1. Qué cubre esta página',
+    body: [
+      'Livvo tecnologia SAS ("Livvo") integra la API de WhatsApp Business de Meta para ofrecer su Servicio. Esta página explica cómo solicitar la eliminación de los datos personales que Livvo trata en ese contexto, tanto si eres cliente de Livvo como si eres el contacto de un cliente de Livvo (por ejemplo, un lead o cliente de una inmobiliaria que usa la plataforma).',
+    ],
+  },
+  {
+    title: '2. Si eres cliente de Livvo',
+    body: [
+      'Puedes solicitar la eliminación de tu cuenta y de los datos asociados (información de tu empresa, configuración de tu agente de IA, conversaciones e historial almacenado en la plataforma) en cualquier momento, escribiéndonos por WhatsApp desde el enlace de contacto de este sitio o desde el correo asociado a tu cuenta.',
+      'Procesamos estas solicitudes dentro de los treinta (30) días calendario siguientes a su recepción, salvo la información que debamos conservar por obligación legal, contable o fiscal, la cual eliminaremos una vez venza el plazo de conservación exigido.',
+    ],
+  },
+  {
+    title: '3. Si eres contacto de un cliente de Livvo',
+    body: [
+      'Si escribiste por WhatsApp a una inmobiliaria u otro negocio que usa Livvo, tus datos (número de teléfono, mensajes, información que hayas compartido en la conversación) son gestionados por ese negocio, quien actúa como responsable del tratamiento; Livvo actúa únicamente como encargado, procesando esos datos por instrucción del negocio.',
+      'Para solicitar la eliminación de tus datos, contacta directamente al negocio con el que conversaste. Si no logras contactarlo o prefieres escribirnos a nosotros, envíanos tu solicitud por WhatsApp desde el enlace de contacto de este sitio, indicando el número desde el que escribiste y el negocio involucrado, y la trasladaremos al responsable correspondiente dentro de un plazo razonable.',
+    ],
+  },
+  {
+    title: '4. Qué sucede al eliminar los datos',
+    body: [
+      'La eliminación es permanente: una vez completada, no podemos recuperar la información eliminada. Los respaldos técnicos que puedan conservar copias residuales se sobrescriben conforme a nuestros ciclos normales de retención, dentro de un plazo no mayor a noventa (90) días.',
+      'La eliminación de datos de una cuenta de cliente implica también la eliminación del acceso a la plataforma; si tienes una suscripción activa, la cancelación de datos no reemplaza la cancelación de tu plan comercial, que debes gestionar por separado.',
+    ],
+  },
+  {
+    title: '5. Más información',
+    body: [
+      'Para conocer en detalle qué datos tratamos y con qué finalidad, consulta nuestra Política de privacidad. Para preguntas sobre esta página, escríbenos por WhatsApp desde el enlace de contacto de este sitio.',
+    ],
+  },
+];
+---
+
+<Legal
+  title="Eliminación de datos — Livvo"
+  description="Cómo solicitar la eliminación de tus datos personales tratados por Livvo, incluidos los datos gestionados a través de la API de WhatsApp Business."
+  pageTitle="Eliminación de datos"
+  lastUpdated={LAST_UPDATED}
+  sections={sections}
+/>

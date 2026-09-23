@@ -1,8 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import { WHATSAPP_URL } from '../config';
+import Legal from '../layouts/Legal.astro';
 
 const LAST_UPDATED = 'Agosto de 2026';
 
@@ -60,7 +57,7 @@ const sections = [
     title: '8. Datos personales',
     body: [
       'Livvo trata datos personales conforme a la Ley 1581 de 2012 y demás normas colombianas sobre protección de datos personales. Respecto de los datos de los contactos y clientes finales que el cliente gestiona en la plataforma, el cliente actúa como responsable del tratamiento y Livvo como encargado, tratándolos únicamente para prestar el Servicio.',
-      'Los datos del cliente le pertenecen: puede exportarlos y solicitar su eliminación al terminar la relación contractual, salvo aquellos que Livvo deba conservar por obligación legal.',
+      'Los datos del cliente le pertenecen: puede exportarlos y solicitar su eliminación al terminar la relación contractual, salvo aquellos que Livvo deba conservar por obligación legal. Para más detalle sobre el tratamiento de datos personales, consulta nuestra Política de privacidad.',
     ],
   },
   {
@@ -104,88 +101,10 @@ const sections = [
 ];
 ---
 
-<Base
+<Legal
   title="Términos de uso — Livvo"
   description="Términos y condiciones de uso del sitio y la plataforma Livvo."
->
-  <Navbar />
-
-  <main class="terms">
-    <div class="container-site terms__inner">
-      <header class="terms__header">
-        <span class="eyebrow">Legal</span>
-        <h1>Términos de uso</h1>
-        <p class="terms__meta">Última actualización: {LAST_UPDATED}</p>
-      </header>
-
-      {sections.map(({ title, body }) => (
-        <section class="terms__section">
-          <h2>{title}</h2>
-          {body.map((p) => <p>{p}</p>)}
-        </section>
-      ))}
-
-      <p class="terms__contact">
-        ¿Tienes dudas? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Escríbenos por WhatsApp</a>.
-      </p>
-    </div>
-  </main>
-
-  <Footer />
-</Base>
-
-<style>
-  .terms {
-    padding: 100px 0 80px;
-  }
-  .terms__inner {
-    max-width: 760px;
-    margin-inline: auto;
-  }
-  .terms__header {
-    margin-bottom: 40px;
-  }
-  .terms h1 {
-    font-family: var(--font-display);
-    font-size: 40px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    color: var(--navy);
-    margin: 16px 0 8px;
-  }
-  .terms__meta {
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .terms__section {
-    margin-bottom: 32px;
-  }
-  .terms__section h2 {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 12px;
-  }
-  .terms__section p {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-  .terms__contact {
-    margin-top: 48px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .terms__contact a {
-    color: var(--teal-deep);
-    font-weight: 600;
-  }
-  @media (max-width: 640px) {
-    .terms { padding: 80px 0 60px; }
-    .terms h1 { font-size: 30px; }
-  }
-</style>
+  pageTitle="Términos de uso"
+  lastUpdated={LAST_UPDATED}
+  sections={sections}
+/>

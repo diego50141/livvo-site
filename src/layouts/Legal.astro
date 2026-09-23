@@ -1,0 +1,113 @@
+---
+import Base from './Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_URL } from '../config';
+
+interface Section {
+  title: string;
+  body: string[];
+}
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+  pageTitle: string;
+  lastUpdated: string;
+  sections: Section[];
+}
+
+const { title, description, eyebrow = 'Legal', pageTitle, lastUpdated, sections } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <Navbar />
+
+  <main class="terms">
+    <div class="container-site terms__inner">
+      <header class="terms__header">
+        <span class="eyebrow">{eyebrow}</span>
+        <h1>{pageTitle}</h1>
+        <p class="terms__meta">Última actualización: {lastUpdated}</p>
+      </header>
+
+      {
+        sections.map(({ title: sectionTitle, body }) => (
+          <section class="terms__section">
+            <h2>{sectionTitle}</h2>
+            {body.map((p) => (
+              <p>{p}</p>
+            ))}
+          </section>
+        ))
+      }
+
+      <p class="terms__contact">
+        ¿Tienes dudas? <a href={WHATSAPP_URL} target="_blank" rel="noopener">Escríbenos por WhatsApp</a>.
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .terms {
+    padding: 100px 0 80px;
+  }
+  .terms__inner {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .terms__header {
+    margin-bottom: 40px;
+  }
+  .terms h1 {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--navy);
+    margin: 16px 0 8px;
+  }
+  .terms__meta {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .terms__section {
+    margin-bottom: 32px;
+  }
+  .terms__section h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .terms__section p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .terms__contact {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .terms__contact a {
+    color: var(--teal-deep);
+    font-weight: 600;
+  }
+  @media (max-width: 640px) {
+    .terms {
+      padding: 80px 0 60px;
+    }
+    .terms h1 {
+      font-size: 30px;
+    }
+  }
+</style>

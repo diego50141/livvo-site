@@ -1,0 +1,86 @@
+---
+import Legal from '../layouts/Legal.astro';
+
+const LAST_UPDATED = 'Septiembre de 2026';
+
+const sections = [
+  {
+    title: '1. Responsable del tratamiento',
+    body: [
+      'Livvo tecnologia SAS, sociedad constituida en Colombia, identificada con NIT 1121923287-1 y domiciliada en Bogotá, Colombia (en adelante, "Livvo"), es responsable del tratamiento de los datos personales que se describen en esta política, conforme a la Ley 1581 de 2012, el Decreto 1377 de 2013 y demás normas colombianas de protección de datos personales.',
+      'Esta política aplica al sitio web livvo.tech, a la plataforma de Livvo (app.livvo.tech) y a los canales de contacto asociados (WhatsApp, correo electrónico).',
+    ],
+  },
+  {
+    title: '2. Qué datos recopilamos',
+    body: [
+      'Datos que nos das directamente: nombre, empresa, correo electrónico, número de teléfono y cualquier información que compartas al escribirnos por WhatsApp, agendar una demo o crear una cuenta.',
+      'Datos de uso del sitio y la plataforma: páginas visitadas, eventos de interacción, dispositivo y navegador, y origen del tráfico (UTMs). Los recopilamos mediante Vercel Analytics, PostHog y Microsoft Clarity, herramientas de analítica que usamos para entender cómo se usa el sitio y mejorar el producto.',
+      'Datos que gestionas como cliente: si contratas Livvo, la información de tus propios contactos y clientes (conversaciones de WhatsApp, datos de negocios en el embudo, propiedades) queda bajo tu responsabilidad como responsable del tratamiento; Livvo actúa como encargado del tratamiento de esos datos, tratándolos únicamente para prestar el Servicio, conforme a lo indicado en nuestros Términos de uso.',
+    ],
+  },
+  {
+    title: '3. Para qué usamos tus datos',
+    body: [
+      'Para responder tus mensajes y solicitudes de información o demo.',
+      'Para operar, mantener y mejorar el sitio web y la plataforma.',
+      'Para enviarte comunicaciones comerciales relacionadas con Livvo, cuando hayas dado tu consentimiento o exista una relación comercial vigente. Puedes dejar de recibirlas en cualquier momento.',
+      'Para cumplir obligaciones legales, contractuales o requerimientos de autoridades competentes.',
+    ],
+  },
+  {
+    title: '4. Cookies y tecnologías similares',
+    body: [
+      'El sitio usa cookies y almacenamiento local propios y de terceros (Vercel Analytics, PostHog, Microsoft Clarity) para recordar tus preferencias (como el tema claro/oscuro) y para analizar el uso del sitio de forma agregada. Ninguna de estas herramientas se usa para vender tus datos a terceros.',
+      'Puedes bloquear o eliminar las cookies desde la configuración de tu navegador; ten en cuenta que esto puede afectar algunas funcionalidades del sitio.',
+    ],
+  },
+  {
+    title: '5. Con quién compartimos tus datos',
+    body: [
+      'Con proveedores que nos ayudan a operar el Servicio (hosting en Vercel, analítica en PostHog y Microsoft Clarity, mensajería a través de la API de WhatsApp Business de Meta), únicamente en la medida necesaria para prestar el Servicio.',
+      'No vendemos ni alquilamos tus datos personales a terceros. Solo los compartimos con autoridades cuando exista una obligación legal de hacerlo.',
+      'Algunos de estos proveedores procesan datos en servidores fuera de Colombia; en esos casos, exigimos que ofrezcan niveles de protección adecuados conforme a la normativa aplicable.',
+    ],
+  },
+  {
+    title: '6. Cuánto tiempo conservamos tus datos',
+    body: [
+      'Conservamos tus datos mientras exista una relación comercial o de contacto activa, y por el tiempo adicional que exijan las obligaciones legales, contables o fiscales aplicables. Los datos de uso analítico se conservan de forma agregada por períodos más largos, sin identificarte individualmente cuando no es necesario.',
+    ],
+  },
+  {
+    title: '7. Tus derechos como titular',
+    body: [
+      'Como titular de datos personales tienes derecho a conocer, actualizar y rectificar tus datos; solicitar prueba de la autorización otorgada; ser informado sobre el uso que se les ha dado; presentar quejas ante la Superintendencia de Industria y Comercio; revocar la autorización y/o solicitar la supresión de tus datos cuando no exista un deber legal o contractual que impida eliminarlos; y acceder de forma gratuita a tus datos personales que hayan sido objeto de tratamiento.',
+      'Para ejercer cualquiera de estos derechos, escríbenos por WhatsApp desde el enlace de contacto de este sitio, indicando tu solicitud. Si necesitas eliminar los datos que Livvo trata como encargado a nombre de un contacto tuyo, consulta nuestra página de Eliminación de datos.',
+    ],
+  },
+  {
+    title: '8. Menores de edad',
+    body: [
+      'El Servicio está dirigido a empresas y profesionales, no a menores de edad. No recopilamos intencionalmente datos personales de menores de edad.',
+    ],
+  },
+  {
+    title: '9. Cambios a esta política',
+    body: [
+      'Livvo puede actualizar esta Política de privacidad. La versión vigente estará siempre publicada en esta página con su fecha de actualización. Los cambios sustanciales se notificarán a los clientes activos por los canales de contacto registrados.',
+    ],
+  },
+  {
+    title: '10. Contacto',
+    body: [
+      'Si tienes preguntas sobre esta política o sobre el tratamiento de tus datos personales, escríbenos por WhatsApp desde el enlace de contacto de este sitio.',
+    ],
+  },
+];
+---
+
+<Legal
+  title="Política de privacidad — Livvo"
+  description="Cómo Livvo recopila, usa y protege los datos personales de quienes visitan el sitio y usan la plataforma."
+  pageTitle="Política de privacidad"
+  lastUpdated={LAST_UPDATED}
+  sections={sections}
+/>

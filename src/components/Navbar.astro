@@ -38,6 +38,17 @@ const megas = [
     ],
   },
 ];
+
+// Recursos: dropdown simple (sin mega-panel) con el blog y las herramientas
+// gratuitas — antes solo vivían en el footer y no recibían tráfico interno.
+const resources = [
+  { label: 'Blog', href: '/blog', icon: 'ph:notepad' },
+  { label: 'Catálogo Inmobiliario', href: '/herramientas/catalogo-inmobiliario', icon: 'ph:buildings' },
+  { label: 'Agente de Requerimientos', href: '/herramientas/agente-de-requerimientos', icon: 'ph:magic-wand' },
+  { label: 'Gestor de Propiedades', href: '/herramientas/gestor-propiedades', icon: 'ph:house-line' },
+  { label: 'Calculadora de ROI', href: '/herramientas/calculadora-roi', icon: 'ph:calculator' },
+  { label: 'Simulador de Costos de WhatsApp', href: '/herramientas/simulador-costos-whatsapp', icon: 'ph:chat-circle-dots' },
+];
 ---
 
 <nav class="navbar theme-dark-scope">
@@ -91,11 +102,37 @@ const megas = [
           </div>
         ))
       }
+
+      <div class="navbar__item navbar__item--dropdown">
+        <button type="button" class="navbar__link" aria-haspopup="true">
+          Recursos
+          <Icon name="ph:caret-down" width={14} height={14} aria-hidden="true" />
+        </button>
+        <div class="navbar__dropdown">
+          <ul class="navbar__dropdown-list">
+            {
+              resources.map(({ label, href, icon }) => (
+                <li>
+                  <a href={href}>
+                    <Icon name={icon} width={16} height={16} aria-hidden="true" />
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <a class="navbar__link" href="/planes">Planes</a>
     </div>
 
     <div class="navbar__actions">
       <Button href={APP_URL} target="_blank" variant="outline" size="sm" id="nav-login">
         Ingresar
+      </Button>
+      <Button href={WHATSAPP_URL} target="_blank" size="sm" id="nav-demo-cta">
+        Prueba 15 días gratis
       </Button>
     </div>
   </div>
@@ -251,6 +288,58 @@ const megas = [
   }
   .mega--luisa .mega__ficon { color: var(--violet); }
   .mega--chat .mega__ficon { color: var(--teal-deep); }
+
+  /* ---- Dropdown simple de "Recursos": lista de links, sin mega-panel ---- */
+  .navbar__item--dropdown { position: relative; }
+  .navbar__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding-top: 10px;
+    list-style: none;
+    margin: 0;
+    width: 260px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: opacity var(--transition), transform var(--transition),
+      visibility var(--transition);
+  }
+  .navbar__item--dropdown:hover .navbar__dropdown,
+  .navbar__item--dropdown:focus-within .navbar__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .navbar__dropdown-list {
+    list-style: none;
+    margin: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-hover);
+    padding: var(--space-2);
+  }
+  .navbar__dropdown-list > li > a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    transition: background-color var(--transition);
+  }
+  .navbar__dropdown-list > li > a:hover {
+    background: var(--gray-bg);
+  }
+  .navbar__dropdown-list :global(svg) {
+    flex-shrink: 0;
+    color: var(--teal-deep);
+  }
 
   .navbar__actions {
     display: flex;

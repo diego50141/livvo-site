@@ -1,8 +1,15 @@
 ---
+import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
 import Button from './Button.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import { WHATSAPP_URL } from '../config';
+import { WHATSAPP_URL, WHATSAPP_SALES_URL } from '../config';
+
+const socials = [
+  { label: 'Instagram', href: 'https://www.instagram.com/livvoai/', icon: 'ph:instagram-logo' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/livvoai/', icon: 'ph:linkedin-logo' },
+  { label: 'Facebook', href: 'https://www.facebook.com/livvoai', icon: 'ph:facebook-logo' },
+];
 ---
 
 <footer class="footer theme-dark-scope">
@@ -16,6 +23,15 @@ import { WHATSAPP_URL } from '../config';
         </p>
         <div class="footer__actions">
           <Button href={WHATSAPP_URL} target="_blank" size="sm">Prueba 15 días gratis →</Button>
+        </div>
+        <div class="footer__socials" aria-label="Redes sociales de Livvo">
+          {
+            socials.map(({ label, href, icon }) => (
+              <a href={href} target="_blank" rel="noopener" aria-label={label}>
+                <Icon name={icon} width={20} height={20} aria-hidden="true" />
+              </a>
+            ))
+          }
         </div>
       </div>
 
@@ -45,6 +61,7 @@ import { WHATSAPP_URL } from '../config';
           <li><a href="/plataforma-de-atencion-al-cliente">Livvo Chat</a></li>
           <li><a href="/agentes-ia">Luisa IA</a></li>
           <li><a href="/planes">Planes</a></li>
+          <li><a href={WHATSAPP_SALES_URL} target="_blank">Hablar con ventas</a></li>
           <li><a href={WHATSAPP_URL} target="_blank">Contacto</a></li>
         </ul>
       </nav>
@@ -66,6 +83,8 @@ import { WHATSAPP_URL } from '../config';
         ©Livvo tecnologia S.A.S-Todos los derechos reservados
       </p>
       <a class="footer__legal-link" href="/terminos-de-uso">Términos de uso</a>
+      <a class="footer__legal-link" href="/privacidad">Política de privacidad</a>
+      <a class="footer__legal-link" href="/eliminacion-de-datos">Eliminación de datos</a>
       <ThemeToggle />
     </div>
   </div>
@@ -144,11 +163,25 @@ import { WHATSAPP_URL } from '../config';
     flex-wrap: wrap;
   }
 
+  .footer__socials {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .footer__socials a {
+    color: var(--muted);
+    transition: color var(--transition);
+  }
+  .footer__socials a:hover {
+    color: var(--teal-deep);
+  }
+
   .footer__bottom {
     border-top: 1px solid var(--border);
     padding-top: var(--space-8);
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: var(--space-6);
   }
   .footer__bottom p {

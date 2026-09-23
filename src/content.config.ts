@@ -16,6 +16,7 @@ const blog = defineCollection({
       'Actualidad del sector',
     ]),
     tags: z.array(z.string()).default([]),
+    image: z.string().optional(),
     author: z.string().default('Equipo Livvo'),
     featured: z.boolean().default(false),
     faq: z

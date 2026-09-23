@@ -10,23 +10,47 @@ interface Props {
   pubDate: Date;
   author: string;
   readingTime: number;
+  image?: string;
   featured?: boolean;
 }
 
-const { slug, title, description, category, pubDate, author, readingTime, featured = false } = Astro.props;
+const {
+  slug,
+  title,
+  description,
+  category,
+  pubDate,
+  author,
+  readingTime,
+  image,
+  featured = false,
+} = Astro.props;
 
 const formattedDate = formatPostDate(pubDate);
 ---
 
 <a href={`/blog/${slug}`} class:list={['blog-card-link', { 'blog-card-link--featured': featured }]}>
   <Card class:list={['blog-card', { 'blog-card--featured': featured }]}>
-    {featured && <span class="blog-card__badge">★ Destacado</span>}
-    <span class="eyebrow blog-card__category">{category}</span>
-    <h3 class="blog-card__title">{title}</h3>
-    <p class="blog-card__desc">{description}</p>
-    <p class="blog-card__meta">
-      {author} · {formattedDate} · {readingTime} min de lectura
-    </p>
+    <div class="blog-card__cover">
+      {
+        image ? (
+          <img src={image} alt="" loading="lazy" />
+        ) : (
+          <div class="blog-card__cover-placeholder" aria-hidden="true">
+            <img src="/Livvo_symbol.svg" alt="" />
+          </div>
+        )
+      }
+    </div>
+    <div class="blog-card__body">
+      {featured && <span class="blog-card__badge">★ Destacado</span>}
+      <span class="eyebrow blog-card__category">{category}</span>
+      <h3 class="blog-card__title">{title}</h3>
+      <p class="blog-card__desc">{description}</p>
+      <p class="blog-card__meta">
+        {author} · {formattedDate} · {readingTime} min de lectura
+      </p>
+    </div>
   </Card>
 </a>
 
@@ -39,7 +63,43 @@ const formattedDate = formatPostDate(pubDate);
   .blog-card {
     display: flex;
     flex-direction: column;
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .blog-card__cover {
+    aspect-ratio: 16 / 9;
+    background: var(--gray-bg);
+  }
+  .blog-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .blog-card__cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(0, 199, 180, 0.16) 0%, transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(59, 126, 255, 0.14) 0%, transparent 55%),
+      var(--gray-bg);
+  }
+  .blog-card__cover-placeholder img {
+    width: 15%;
+    height: auto;
+    opacity: 0.35;
+  }
+
+  .blog-card__body {
+    display: flex;
+    flex-direction: column;
     gap: var(--space-3);
+    padding: var(--space-6);
   }
   .blog-card__badge {
     align-self: flex-start;
@@ -69,9 +129,10 @@ const formattedDate = formatPostDate(pubDate);
     margin: var(--space-1) 0 0;
   }
 
-  .blog-card--featured {
-    background: rgba(0, 199, 180, 0.06);
-    border-color: rgba(0, 199, 180, 0.3);
+  .blog-card--featured .blog-card__cover {
+    aspect-ratio: 21 / 9;
+  }
+  .blog-card--featured .blog-card__body {
     padding: var(--space-8);
   }
   .blog-card--featured .blog-card__title {

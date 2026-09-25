@@ -5,7 +5,6 @@ pubDate: 2026-09-25
 category: "Actualidad del sector"
 tags: ["whatsapp", "cuenta bloqueada", "whatsapp business"]
 author: "Diego Alfonso"
-image: "/blog/whatsapp-bloqueo-cuenta-personal-inmobiliaria-cover.webp"
 faq:
   - q: "¿Por qué WhatsApp bloqueó mi cuenta si no envío spam?"
     a: "Porque la detección es automática y se basa en patrones, no en tu intención. Escribir a muchas personas nuevas en poco tiempo, mandar mensajes repetidos, recibir reportes o usar herramientas no oficiales aumenta el riesgo. También hay falsos positivos, como la ola del 3 de agosto de 2026."
@@ -57,8 +56,6 @@ Un vocero de WhatsApp dijo que a veces se equivocan al banear cuentas y que ya e
 
 Al parecer cuando tu cuenta cae en una de estas olas, no significa que hiciste algo mal. Pero tampoco puedes contar con que se arregle sola.
 
-![Línea de tiempo de las dos olas de bloqueos masivos de WhatsApp en 2026: 3 de agosto, finales de agosto en Indonesia y 21 de septiembre en India](/blog/whatsapp-bloqueo-cuenta-personal-inmobiliaria-inline-1.webp)
-
 ## ¿Por qué WhatsApp bloquea cuentas "sin razón"?
 
 WhatsApp no evalúa solo tu intención, tambien analiza patrones de comportamiento. Un sistema automático lee señales y decide en segundos, sin que una persona revise tu caso antes.
@@ -99,8 +96,6 @@ El texto exacto que ves en pantalla te dice qué tan grave es. Léelo con calma 
 Un detalle importante: mientras la cuenta esté bloqueada no podrás acceder al historial de chats ni a las copias de seguridad. Los chats siguen guardados en el teléfono, así que no borres nada.
 
 ## Cómo recuperar tu cuenta en 5 pasos
-
-![Los 5 pasos para pedir la revisión de una cuenta de WhatsApp bloqueada: no desinstalar, solicitar revisión, explicar el caso, enviar una sola solicitud y esperar la respuesta](/blog/whatsapp-bloqueo-cuenta-personal-inmobiliaria-inline-2.webp)
 
 1. **Respira y no desinstales la app.** El botón para apelar está en la misma pantalla del bloqueo. Si borras WhatsApp, lo pierdes de vista.
 2. **Toca "Solicitar revisión".** Si no aparece, entra a los tres puntos y busca "Contactar con soporte". WhatsApp puede pedirte un código SMS para confirmar que el número es tuyo.

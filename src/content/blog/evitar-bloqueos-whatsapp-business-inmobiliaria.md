@@ -5,7 +5,6 @@ pubDate: 2026-09-25
 category: "Gestión de leads y WhatsApp"
 tags: ["whatsapp business", "cuenta bloqueada", "leads inmobiliarios"]
 author: "Diego Alfonso"
-image: "/blog/evitar-bloqueos-whatsapp-business-inmobiliaria-cover.webp"
 faq:
   - q: "¿Cuántos reportes hacen falta para que bloqueen mi WhatsApp Business?"
     a: "Meta no publica un número exacto. El sistema es acumulativo: cada reporte o bloqueo baja tu calidad. Por eso la meta es evitar reportes, no reaccionar cuando ya llegaron."
@@ -55,8 +54,6 @@ Si usas la API oficial de WhatsApp Business, Meta califica tu número según có
 
 Revísala cada semana y siempre antes y después de una campaña grande, por ejemplo el lanzamiento de un proyecto nuevo.
 
-![El semáforo de calidad de WhatsApp Business: verde alta, amarilla media y roja baja, con qué significa cada estado](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria-inline-1.webp)
-
 ### La calidad también define cuánto puedes enviar
 
 Meta limita cuántos clientes distintos puedes contactar primero en 24 horas con plantillas:
@@ -80,8 +77,6 @@ Casi ningún bloqueo viene de la tecnología. Viene del mensaje, de a quién se 
 6. **Herramientas no oficiales.** Extensiones que automatizan WhatsApp Web o apps modificadas. Que una herramienta pueda enviar mensajes automáticos no significa que WhatsApp lo permita.
 
 ## 7 reglas para que no te bloqueen el número
-
-![Las 7 reglas para que un equipo comercial de inmobiliaria no bloquee su número de WhatsApp Business](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria-inline-2.webp)
 
 ### 1. Escríbele solo a quien pidió información
 

@@ -4,6 +4,7 @@ description: "'Chatbot' y 'agente de IA' no son sinónimos, y la diferencia impo
 pubDate: 2026-09-17
 category: "IA para inmobiliarias"
 tags: ["agente ia", "chatbot", "inteligencia artificial inmobiliaria"]
+image: "/blog/agente-ia-inmobiliario-vs-chatbot.webp"
 ---
 
 Cuando una inmobiliaria escucha "vamos a poner un bot en WhatsApp", casi siempre imagina lo mismo: un menú de opciones — "escribe 1 para arriendo, 2 para venta" — que responde lo mismo sin importar lo que el cliente realmente pregunte. Esa es la experiencia que la mayoría tiene con los chatbots, y por buenas razones: durante años, fue lo único que existía.
@@ -27,6 +28,8 @@ Un agente de inteligencia artificial entiende lenguaje natural, mantiene context
 
 La diferencia no es de grado, es de capacidad: un chatbot sigue un guion, un agente de IA resuelve una tarea.
 
+![Comparación entre un chatbot tradicional y un agente de IA: el chatbot sigue un árbol de menús fijo, el agente de IA entiende la intención real, consulta el catálogo y agenda la visita](/blog/agente-ia-inmobiliario-vs-chatbot-inline-1.webp)
+
 ## Por qué esto importa para una inmobiliaria específicamente
 
 El negocio inmobiliario tiene una particularidad: la decisión de compra o arriendo depende de variables muy específicas — zona, presupuesto, número de alcobas, si acepta mascotas, si tiene parqueadero — y el cliente casi nunca las menciona todas en el primer mensaje. Un sistema de reglas fijas no puede sostener esa conversación de ida y vuelta sin volverse frustrante. Un agente de IA sí, porque está diseñado para conversar, no para hacer coincidir palabras clave.
@@ -36,6 +39,8 @@ Esa es la razón por la que en Livvo llamamos a esto **Agentes IA** y no "chatbo
 ## Cómo se ve en la práctica
 
 [Luisa](/agentes-ia), la agente de IA de Livvo, responde en segundos, califica cada lead, recomienda propiedades del catálogo real de la inmobiliaria, agenda visitas automáticamente y sabe cuándo escalar la conversación a un asesor humano — todo dentro de la misma bandeja de [Livvo Chat](/plataforma-de-atencion-al-cliente) donde el equipo ve el resto de la operación.
+
+![Luisa, la agente de IA de Livvo, resuelve cuatro tareas en una sola conversación: entiende la intención, recomienda del catálogo real, agenda la visita y recuerda el contexto](/blog/agente-ia-inmobiliario-vs-chatbot-inline-2.webp)
 
 Si tu inmobiliaria ya probó un chatbot y no funcionó, vale la pena revisar si el problema fue la idea o la herramienta — probablemente era la segunda.
 

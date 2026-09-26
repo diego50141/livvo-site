@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import Section from '../../components/Section.astro';
 import Button from '../../components/Button.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import BlogCoverArt from '../../components/BlogCoverArt.astro';
 import { WHATSAPP_URL } from '../../config';
 import { getReadingTime, formatPostDate } from '../../lib/blog';
 
@@ -73,9 +74,7 @@ const faqJsonLd =
             post.data.image ? (
               <img src={post.data.image} alt="" />
             ) : (
-              <div class="post-cover__placeholder" aria-hidden="true">
-                <img src="/Livvo_symbol.svg" alt="" />
-              </div>
+              <BlogCoverArt category={post.data.category} />
             )
           }
         </div>
@@ -168,22 +167,6 @@ const faqJsonLd =
     height: 100%;
     object-fit: cover;
     display: block;
-  }
-  .post-cover__placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(0, 199, 180, 0.16) 0%, transparent 55%),
-      radial-gradient(circle at 80% 80%, rgba(59, 126, 255, 0.14) 0%, transparent 55%),
-      var(--gray-bg);
-  }
-  .post-cover__placeholder img {
-    width: 10%;
-    height: auto;
-    opacity: 0.35;
   }
 
   .prose {

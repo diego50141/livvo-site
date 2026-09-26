@@ -1,5 +1,6 @@
 ---
 import Card from './Card.astro';
+import BlogCoverArt from './BlogCoverArt.astro';
 import { formatPostDate } from '../lib/blog';
 
 interface Props {
@@ -36,9 +37,7 @@ const formattedDate = formatPostDate(pubDate);
         image ? (
           <img src={image} alt="" loading="lazy" />
         ) : (
-          <div class="blog-card__cover-placeholder" aria-hidden="true">
-            <img src="/Livvo_symbol.svg" alt="" />
-          </div>
+          <BlogCoverArt category={category} />
         )
       }
     </div>
@@ -70,6 +69,7 @@ const formattedDate = formatPostDate(pubDate);
 
   .blog-card__cover {
     aspect-ratio: 16 / 9;
+    max-height: 260px;
     background: var(--gray-bg);
   }
   .blog-card__cover img {
@@ -78,23 +78,6 @@ const formattedDate = formatPostDate(pubDate);
     object-fit: cover;
     display: block;
   }
-  .blog-card__cover-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(0, 199, 180, 0.16) 0%, transparent 55%),
-      radial-gradient(circle at 80% 80%, rgba(59, 126, 255, 0.14) 0%, transparent 55%),
-      var(--gray-bg);
-  }
-  .blog-card__cover-placeholder img {
-    width: 15%;
-    height: auto;
-    opacity: 0.35;
-  }
-
   .blog-card__body {
     display: flex;
     flex-direction: column;
@@ -131,6 +114,7 @@ const formattedDate = formatPostDate(pubDate);
 
   .blog-card--featured .blog-card__cover {
     aspect-ratio: 21 / 9;
+    max-height: 320px;
   }
   .blog-card--featured .blog-card__body {
     padding: var(--space-8);

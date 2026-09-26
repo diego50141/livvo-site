@@ -9,9 +9,9 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     category: z.enum([
-      'IA para inmobiliarias',
-      'Gestión de leads y WhatsApp',
-      'Plataforma de atención al cliente',
+      'Agentes de IA',
+      'WhatsApp para inmobiliarias',
+      'Plataforma Livvo',
       'Guías y casos de uso',
       'Actualidad del sector',
     ]),

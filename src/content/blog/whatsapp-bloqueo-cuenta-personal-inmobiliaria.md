@@ -26,7 +26,9 @@ faq:
 
 Si WhatsApp bloqueó tu cuenta sin que enviaras spam, no necesariamente hiciste algo mal. WhatsApp usa sistemas automáticos que leen patrones de comportamiento y, como cualquier sistema automático, a veces se equivoca.
 
-La respuesta corta: no borres la app, toca "Solicitar revisión", explica en tres o cuatro líneas que tu uso es legítimo y envía una sola solicitud. Normalmente la respuesta llega en unas 24 horas.
+No borres la app, toca "Solicitar revisión", explica en tres o cuatro líneas que tu uso es legítimo y envía una sola solicitud. Normalmente la respuesta llega en unas 24 horas.
+
+En esta guía vas a encontrar los datos detrás de las dos olas de bloqueos masivos de 2026 y por qué WhatsApp bloquea cuentas que no hicieron nada malo. También el paso a paso completo para recuperar la tuya, los errores que alargan un bloqueo y cómo blindarte para que no vuelva a pasar, sobre todo si tu negocio depende de WhatsApp para vender.
 
 Para una persona, un bloqueo es frustrante. Para un negocio es un problema operativo: conversaciones, contactos y clientes de meses quedan fuera de alcance de un día para otro.
 
@@ -38,11 +40,11 @@ La semana pasada le pasó a mi cuenta personal, una cuenta con más de 15 años 
 
 Soy Diego Alfonso y estoy construyendo Livvo. Por eso este post es distinto a los demás, después de revisar otros casos y la documentación oficial de Meta, la empresa dueña de WhatsApp, aquí va lo que aprendí.
 
-Lo que viví no fue mala suerte. Solo en India, el único país donde WhatsApp publica reportes mensuales por ley, se banean millones de cuentas cada mes. Y este año ya hubo dos olas de bloqueos masivos. Abajo te muestro los datos, por qué pasa, el paso a paso para recuperar la cuenta y cómo blindarte, sobre todo si tu negocio depende de WhatsApp.
+Lo que viví no fue mala suerte. Solo en India, el único país donde WhatsApp publica reportes mensuales por ley, se banean millones de cuentas cada mes. Y este año ya hubo dos olas de bloqueos masivos. Esto es lo que encontré revisando los datos y la documentación oficial de Meta.
 
 ## Qué pasó: dos olas de bloqueos en dos meses
 
-En 2026 WhatsApp bloqueó cuentas legítimas de forma masiva al menos dos veces, y Meta admitió que su sistema se equivocó.
+En 2026 WhatsApp bloqueó cuentas legítimas de forma masiva al menos dos veces, y Meta admitió que su sistema se equivocó. Esto es lo que pasó cada vez:
 
 | Fecha | Qué pasó |
 | --- | --- |
@@ -78,9 +80,7 @@ Imagina a un asesor comercial de una inmobiliaria por ejemplo que recibe 30 lead
 
 Para el asesor es una conversación comercial legítima. Para un sistema automático se parece a un envío masivo: muchos contactos nuevos, muchos chats iniciados por el mismo número, mensajes similares y personas que nunca habían hablado con ese número.
 
-Eso no quiere decir que WhatsApp bloquee a cualquiera que escriba a contactos nuevos. Quiere decir que el contexto y el comportamiento general de la cuenta importan.
-
-Y a veces no hiciste nada de esto: como pasó el 3 de agosto, el sistema simplemente se equivoca.
+Eso no quiere decir que WhatsApp bloquee a cualquiera que escriba a contactos nuevos. Quiere decir que el contexto y el comportamiento general de la cuenta importan. Y a veces no hiciste nada de esto: como pasó el 3 de agosto, el sistema simplemente se equivoca.
 
 ## Paso 0: identifica qué tipo de bloqueo tienes
 
@@ -136,7 +136,7 @@ Los mensajes de las listas de difusión de WhatsApp Business solo llegan a quien
 
 > "Guárdanos como Inmobiliaria XYZ para recibir nuestras novedades y nuevas propiedades por WhatsApp."
 
-Comparte también tu enlace wa.me o un código QR en Instagram, Facebook y tus estados, para que el primer mensaje lo envíe el cliente.
+Comparte también tu enlace wa.me o un código QR en Instagram, Facebook y tus estados, para que el primer mensaje lo envíe el cliente. Así entras a su lista de contactos antes de escribirle tú.
 
 ### 4. Respeta a quien no quiere más mensajes
 
@@ -175,9 +175,7 @@ Imagina una inmobiliaria que recibe 600 leads al mes. Todos llegan a WhatsApp, c
 - Seguimientos y citas pendientes.
 - Oportunidades de venta.
 
-Y hay un riesgo más silencioso: si un asesor deja la empresa, buena parte de la relación con sus clientes se va con él.
-
-Si el número que te bloquearon (o te preocupa perder) es el de tu inmobiliaria, escribimos una guía específica para eso: [Cómo evitar bloqueos en WhatsApp Business: guía para inmobiliarias](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria).
+Y hay un riesgo más silencioso: si un asesor deja la empresa, buena parte de la relación con sus clientes se va con él. Si el número que te bloquearon (o te preocupa perder) es el de tu inmobiliaria, escribimos una guía específica para eso: [Cómo evitar bloqueos en WhatsApp Business: guía para inmobiliarias](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria).
 
 ## WhatsApp debería ser un canal, no tu base de datos
 
@@ -190,7 +188,7 @@ Este es probablemente el aprendizaje más importante. WhatsApp es excelente para
 | Automatización | Acelerar tareas repetitivas. |
 | Equipo comercial | Resolver lo que requiere criterio humano. |
 
-Así, si mañana pasa algo con un número, la información de tu negocio no desaparece con él.
+Así, si mañana pasa algo con un número, la información de tu negocio no desaparece con él. Es una separación simple, pero es la que evita que un bloqueo se convierta en una crisis comercial.
 
 ## ¿Deberías pasar a la API oficial?
 
@@ -202,20 +200,16 @@ Pero no migres solo como reacción a un bloqueo. Primero revisa cómo usas Whats
 
 ## La pregunta que deberías hacerte hoy
 
-¿Qué pasaría con mi operación comercial si mañana pierdo acceso a mi número durante 48 horas?
-
-Si la respuesta es "perderíamos todas las conversaciones y no sabríamos a quién hacerle seguimiento", el problema no es solo WhatsApp. Es cómo está construida tu operación comercial. WhatsApp puede seguir siendo tu canal principal, pero la información y el proceso deberían pertenecer a tu empresa, no a un teléfono.
+¿Qué pasaría con mi operación comercial si mañana pierdo acceso a mi número durante 48 horas? Si la respuesta es "perderíamos todas las conversaciones y no sabríamos a quién hacerle seguimiento", el problema no es solo WhatsApp. Es cómo está construida tu operación comercial. WhatsApp puede seguir siendo tu canal principal, pero la información y el proceso deberían pertenecer a tu empresa, no a un teléfono.
 
 ## Cómo ayuda Livvo
 
-En Livvo ayudamos a inmobiliarias, desarrolladoras y constructoras a organizar su operación comercial alrededor de WhatsApp, Facebook e Instagram.
-
-Conectamos la atención de leads con procesos comerciales, CRM y automatizaciones. Así tu equipo gestiona conversaciones, contactos, negocios y propiedades sin que toda la información quede guardada en el celular de cada asesor.
+En Livvo ayudamos a inmobiliarias, desarrolladoras y constructoras a organizar su operación comercial alrededor de WhatsApp, Facebook e Instagram. Conectamos la atención de leads con procesos comerciales, CRM y automatizaciones. Así tu equipo gestiona conversaciones, contactos, negocios y propiedades sin que toda la información quede guardada en el celular de cada asesor.
 
 La idea no es enviar más mensajes. Es que cada conversación tenga un lugar dentro de tu proceso comercial.
 WhatsApp puede ser donde empieza la conversación. Pero la operación comercial debería vivir en tu empresa.
 
-Si el WhatsApp que te preocupa es el de tu inmobiliaria o negocio, la siguiente lectura es [Cómo evitar bloqueos en WhatsApp Business: guía para inmobiliarias](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria), con el paso a paso para cuidar la calidad de tu número.
+Si el WhatsApp que te preocupa es el de tu inmobiliaria o negocio, la siguiente lectura es [Cómo evitar bloqueos en WhatsApp Business: guía para inmobiliarias](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria). Ahí está el paso a paso para cuidar la calidad de tu número comercial.
 
 **¿Quieres que tu WhatsApp comercial viva protegido en la API oficial?** [Escríbenos y te mostramos cómo migrar](https://wa.me/573144267806?text=Hola%20equipo%20livvo%2C%20quiero%20saber%20c%C3%B3mo%20migrar%20mi%20WhatsApp%20comercial%20a%20la%20API%20oficial).
 

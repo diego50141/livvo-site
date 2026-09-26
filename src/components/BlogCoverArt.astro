@@ -1,0 +1,122 @@
+---
+// Cover abstracto y procedural para posts de blog sin imagen propia: una
+// cuadrícula de tarjetas planas con una resaltada, un callout de mensaje y
+// un trazo conector, en el color de acento de la categoría. Se genera solo
+// a partir de `category` — cero trabajo de diseño manual por post.
+interface Props {
+  category: string;
+}
+
+const { category } = Astro.props;
+
+type Accent = { fill: string; tint: string; highlightIndex: number };
+
+const ACCENTS: Record<string, Accent> = {
+  'Agentes de IA': { fill: 'var(--violet)', tint: 'color-mix(in srgb, var(--violet) 10%, var(--white))', highlightIndex: 1 },
+  'WhatsApp para inmobiliarias': { fill: 'var(--teal)', tint: 'color-mix(in srgb, var(--teal) 10%, var(--white))', highlightIndex: 2 },
+  'Plataforma Livvo': { fill: 'var(--blue)', tint: 'color-mix(in srgb, var(--blue) 10%, var(--white))', highlightIndex: 0 },
+  'Guías y casos de uso': { fill: 'var(--teal-deep)', tint: 'color-mix(in srgb, var(--teal-deep) 10%, var(--white))', highlightIndex: 3 },
+  'Actualidad del sector': { fill: 'var(--navy)', tint: 'color-mix(in srgb, var(--navy) 8%, var(--white))', highlightIndex: 0 },
+};
+
+const accent = ACCENTS[category] ?? ACCENTS['Guías y casos de uso'];
+const uid = category.replace(/[^a-z0-9]/gi, '').toLowerCase();
+
+// Cuadrícula acotada a y:[58,312] para que sobreviva el recorte 21:9 del
+// cover destacado (crop visible ≈ y:[43,317] cuando se corta desde 360 alto).
+const cards = [
+  { x: 64, y: 58 },
+  { x: 268, y: 58 },
+  { x: 64, y: 196 },
+  { x: 268, y: 196 },
+];
+const cardW = 180;
+const cardH = 116;
+---
+
+<svg
+  class="cover-art"
+  viewBox="0 0 640 360"
+  preserveAspectRatio="xMidYMid slice"
+  role="img"
+  aria-hidden="true"
+>
+  <defs>
+    <filter id={`blur-${uid}`} x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="34" />
+    </filter>
+  </defs>
+
+  <rect width="640" height="360" fill="var(--gray-bg)" />
+  <circle cx="90" cy="70" r="150" fill={accent.fill} opacity="0.12" filter={`url(#blur-${uid})`} />
+  <circle cx="560" cy="300" r="170" fill={accent.fill} opacity="0.08" filter={`url(#blur-${uid})`} />
+
+  <path
+    d="M132 316c40-10 66-34 82-58s26-58 62-70 96 6 128 40"
+    fill="none"
+    stroke={accent.fill}
+    stroke-width="2.5"
+    stroke-linecap="round"
+    opacity="0.35"
+  />
+  <circle cx="132" cy="316" r="5" fill={accent.fill} opacity="0.5" />
+  <circle cx="452" cy="228" r="5" fill={accent.fill} opacity="0.5" />
+
+  {
+    cards.map(({ x, y }, i) => {
+      const isHighlight = i === accent.highlightIndex;
+      return (
+        <g>
+          <rect x={x} y={y + 4} width={cardW} height={cardH} rx="14" fill="var(--border)" opacity="0.5" />
+          <rect
+            x={x}
+            y={y}
+            width={cardW}
+            height={cardH}
+            rx="14"
+            fill={isHighlight ? accent.tint : 'var(--white)'}
+            stroke="var(--border)"
+          />
+          <rect
+            x={x + 14}
+            y={y + 14}
+            width={cardW - 28}
+            height={cardH - 50}
+            rx="8"
+            fill={isHighlight ? accent.fill : 'var(--surface)'}
+          />
+          <rect x={x + 14} y={y + cardH - 30} width={cardW - 60} height="8" rx="4" fill="var(--border)" />
+          <rect
+            x={x + 14}
+            y={y + cardH - 14}
+            width={isHighlight ? cardW - 90 : cardW - 120}
+            height="8"
+            rx="4"
+            fill={isHighlight ? accent.fill : 'var(--blue-mid)'}
+          />
+        </g>
+      );
+    })
+  }
+
+  <path
+    d="M470 176h132a18 18 0 0 1 18 18v56a18 18 0 0 1-18 18h-94l-26 24v-24h-12a18 18 0 0 1-18-18v-56a18 18 0 0 1 18-18Z"
+    fill="var(--border)"
+    opacity="0.4"
+    transform="translate(0 4)"
+  />
+  <path
+    d="M470 176h132a18 18 0 0 1 18 18v56a18 18 0 0 1-18 18h-94l-26 24v-24h-12a18 18 0 0 1-18-18v-56a18 18 0 0 1 18-18Z"
+    fill={accent.fill}
+  />
+  <rect x="490" y="204" width="100" height="8" rx="4" fill="var(--white)" opacity="0.85" />
+  <rect x="490" y="224" width="66" height="8" rx="4" fill="var(--white)" opacity="0.6" />
+</svg>
+
+<style>
+  .cover-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

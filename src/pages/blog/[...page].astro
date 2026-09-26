@@ -100,9 +100,15 @@ const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.i
   }
 
   .blog-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-6);
+  }
+
+  @media (max-width: 768px) {
+    .blog-list {
+      grid-template-columns: 1fr;
+    }
   }
 
   .blog-pagination {

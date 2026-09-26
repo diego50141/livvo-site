@@ -2,7 +2,7 @@
 title: "Cómo evitar bloqueos en WhatsApp Business: guía para inmobiliarias"
 description: "Por qué Meta restringe números de WhatsApp Business, cómo cuidar la calidad de tu línea y las 7 reglas para escribir, enviar campañas y responder sin generar reportes en tu inmobiliaria."
 pubDate: 2026-09-25
-category: "Gestión de leads y WhatsApp"
+category: "WhatsApp para inmobiliarias"
 tags: ["whatsapp business", "cuenta bloqueada", "leads inmobiliarios"]
 author: "Diego Alfonso"
 faq:
@@ -20,7 +20,7 @@ faq:
     a: "Sí. El número se puede migrar a la API oficial de WhatsApp Business para que tus clientes sigan escribiendo al mismo número."
 ---
 
-La respuesta corta: para que no te bloqueen el WhatsApp de tu inmobiliaria, escríbele solo a quien pidió información, mantén la calidad de tu número en verde, haz los envíos masivos únicamente por la API oficial de Meta y responde rápido. La mayoría de bloqueos no son mala suerte: son la suma de reportes de clientes que no querían recibir ese mensaje.
+Para que no te bloqueen el WhatsApp de tu inmobiliaria, escríbele solo a quien pidió información, mantén la calidad de tu número en verde, haz los envíos masivos únicamente por la API oficial de Meta y responde rápido. La mayoría de bloqueos no son mala suerte: son la suma de reportes de clientes que no querían recibir ese mensaje.
 
 En una inmobiliaria, el número de WhatsApp es por donde entran los leads de Fincaraíz, Metrocuadrado, Facebook e Instagram. Si Meta lo restringe, dejas de atender, dejas de agendar visitas y los leads de la pauta que ya pagaste se enfrían sin respuesta.
 
@@ -52,7 +52,7 @@ Si usas la API oficial de WhatsApp Business, Meta califica tu número según có
 2. Ve a Herramientas de la cuenta > Números de teléfono.
 3. Revisa la columna Calidad. Debe estar en verde.
 
-Revísala cada semana y siempre antes y después de una campaña grande, por ejemplo el lanzamiento de un proyecto nuevo.
+Revísala cada semana y siempre antes y después de una campaña grande, por ejemplo el lanzamiento de un proyecto nuevo. Es el hábito más simple para no llegar tarde a una caída de calidad.
 
 ### La calidad también define cuánto puedes enviar
 
@@ -63,7 +63,7 @@ Meta limita cuántos clientes distintos puedes contactar primero en 24 horas con
 - Desde ahí sube de nivel automáticamente, en unas 6 horas, si tus mensajes son de buena calidad y usaste al menos la mitad de tu límite en los últimos 7 días.
 - Desde octubre de 2025, el límite se comparte entre todos los números de tu portafolio. Abrir más líneas ya no multiplica tu capacidad.
 
-La buena noticia para una inmobiliaria: cuando es el cliente el que te escribe primero (porque vio un anuncio o una publicación en un portal), tus respuestas dentro de las 24 horas no cuentan contra ese límite.
+La buena noticia para una inmobiliaria: cuando es el cliente el que te escribe primero (porque vio un anuncio o una publicación en un portal), tus respuestas dentro de las 24 horas no cuentan contra ese límite. Ese es el flujo que más volumen mueve en una inmobiliaria: leads entrantes, no campañas salientes.
 
 ## Las 6 causas más comunes de bloqueo en una inmobiliaria
 
@@ -140,7 +140,7 @@ Actúa en este orden, sin improvisar:
 3. **Encuentra la causa antes de volver a enviar.** ¿Una campaña a una base vieja? ¿Un asesor que mandó el mismo mensaje a 100 contactos? ¿Pauta mal segmentada? Si no identificas la causa, el bloqueo se repite.
 4. **Activa tu línea de respaldo** para que los leads nuevos no queden sin respuesta mientras tanto.
 
-Si el bloqueo cayó sobre tu número personal en lugar del comercial, el paso a paso detallado para pedir la revisión está en [¿WhatsApp bloqueó tu cuenta sin razón?](/blog/whatsapp-bloqueo-cuenta-personal-inmobiliaria).
+Estos pasos son para el número comercial de tu inmobiliaria. Si el bloqueo cayó sobre tu cuenta personal, el paso a paso detallado está en [¿WhatsApp bloqueó tu cuenta sin razón?](/blog/whatsapp-bloqueo-cuenta-personal-inmobiliaria).
 
 ### Cuidado con el número recién recuperado
 

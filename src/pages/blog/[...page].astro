@@ -18,8 +18,9 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 const { page } = Astro.props;
 const isFirstPage = page.currentPage === 1;
 
-const featuredPost = isFirstPage ? page.data.find((p) => p.data.featured) ?? page.data[0] : undefined;
-const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.id) : page.data;
+const featuredId = isFirstPage
+  ? (page.data.find((p) => p.data.featured) ?? page.data[0])?.id
+  : undefined;
 ---
 
 <Base
@@ -30,27 +31,9 @@ const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.i
 
   <main>
     <Section id="blog" eyebrow="Blog" title="Ideas para vender más rápido con WhatsApp e IA.">
-      {
-        featuredPost && (
-          <div class="blog-featured fade-up">
-            <BlogCard
-              slug={featuredPost.id}
-              title={featuredPost.data.title}
-              description={featuredPost.data.description}
-              category={featuredPost.data.category}
-              pubDate={featuredPost.data.pubDate}
-              author={featuredPost.data.author}
-              readingTime={getReadingTime(featuredPost.body ?? '')}
-              image={featuredPost.data.image}
-              featured
-            />
-          </div>
-        )
-      }
-
       <div class="blog-list fade-up">
         {
-          listPosts.map((post) => (
+          page.data.map((post) => (
             <BlogCard
               slug={post.id}
               title={post.data.title}
@@ -60,6 +43,7 @@ const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.i
               author={post.data.author}
               readingTime={getReadingTime(post.body ?? '')}
               image={post.data.image}
+              featured={post.id === featuredId}
             />
           ))
         }
@@ -95,10 +79,6 @@ const listPosts = featuredPost ? page.data.filter((p) => p.id !== featuredPost.i
 </Base>
 
 <style>
-  .blog-featured {
-    margin-bottom: var(--space-10);
-  }
-
   .blog-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

@@ -1,5 +1,6 @@
 ---
 title: "WhatsApp Business vs. API: cuál necesita tu negocio inmobiliario y cómo usar los dos con el mismo número"
+seoTitle: "WhatsApp Business vs. API: cuál necesita tu inmobiliaria"
 description: "Con la Coexistencia de Meta puedes usar la app de WhatsApp Business y la API oficial con el mismo número. Qué se sincroniza, qué se pierde y cuál necesita tu negocio inmobiliario."
 pubDate: 2026-09-26
 category: "WhatsApp para inmobiliarias"

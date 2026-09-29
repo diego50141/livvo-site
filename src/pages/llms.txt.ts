@@ -1,4 +1,16 @@
-# Livvo
+import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
+
+// llms.txt se genera desde el contenido: cada post nuevo aparece solo.
+export const GET: APIRoute = async ({ site }) => {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+  const blog = posts
+    .map((p) => `- [${p.data.seoTitle ?? p.data.title}](${new URL(`/blog/${p.id}/`, site)}): ${p.data.description}`)
+    .join('\n');
+
+  const body = `# Livvo
 
 > Livvo es una plataforma de WhatsApp con inteligencia artificial para inmobiliarias, constructoras, desarrolladoras y administradores de propiedad horizontal en Colombia y Latinoamérica. Son dos productos: Luisa, la agente de IA que prospecta, califica leads, agenda citas y atiende 24/7; y Livvo Chat, la plataforma donde el equipo comercial gestiona conversaciones, propiedades y negocios.
 
@@ -25,6 +37,13 @@ Inmobiliarias, constructoras, desarrolladoras y administradores de propiedad hor
 - [Agente de Requerimientos](https://livvo.tech/herramientas/agente-de-requerimientos): busca el requerimiento de un cliente en los portales inmobiliarios de Colombia.
 - [Simulador de Costos de WhatsApp](https://livvo.tech/herramientas/simulador-costos-whatsapp): calcula el impacto del cambio de precios de Meta (oct-2026).
 
-## Contacto
+` + `## Blog
+
+${blog}
+
+` + `## Contacto
 
 WhatsApp: https://wa.me/573144267806
+`;
+  return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+};

@@ -1,5 +1,6 @@
 ---
 title: "¿WhatsApp bloqueó tu cuenta sin razón? Qué hacer y cómo evitar que vuelva a pasar"
+seoTitle: "WhatsApp bloqueó tu cuenta: qué hacer"
 description: "WhatsApp bloqueó mi cuenta sin que enviara spam, y le está pasando a miles de personas más. Los datos detrás de las dos olas de bloqueos de 2026, el paso a paso para pedir revisión y cómo evitar que vuelva a pasar."
 pubDate: 2026-09-25
 category: "Actualidad del sector"

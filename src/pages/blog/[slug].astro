@@ -49,7 +49,7 @@ const faqJsonLd =
 ---
 
 <Base
-  title={`${post.data.title} — Blog Livvo`}
+  title={`${post.data.seoTitle ?? post.data.title} — Blog Livvo`}
   description={post.data.description}
   ogImage={post.data.image}
   structuredData={faqJsonLd ?? undefined}

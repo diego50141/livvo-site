@@ -101,7 +101,7 @@ Meta no cobra licencia: cobra por mensaje entregado, según la categoría y el p
 | Utilidad (recordatorio de visita, confirmación) | US$0,0008 | $3 |
 | Respuestas dentro de las 24 horas | Gratis hasta el 30 de sep; desde el 1 de oct, 1.000 gratis al mes por número | — |
 
-Pesos con la TRM del 26 de septiembre de 2026 ($3.306,86). Si el cliente te escribe desde un anuncio de clic a WhatsApp y respondes a tiempo, los mensajes son gratis por 72 horas. A estas tarifas se suma el costo de la plataforma que uses.
+Pesos con la TRM del 26 de septiembre de 2026 ($3.306,86). Si el cliente te escribe desde un anuncio de clic a WhatsApp y respondes a tiempo, los mensajes son gratis por 72 horas. A estas tarifas se suma el costo de la plataforma que uses. Para ver qué cambia con el cobro de las respuestas desde el 1 de octubre y cómo pagar menos, lee [WhatsApp cobra por responder a tus clientes](/blog/whatsapp-cobra-responder-clientes-octubre-inmobiliaria).
 
 ## Conecta tu número sin soltar el celular
 

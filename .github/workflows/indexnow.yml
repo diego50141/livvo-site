@@ -1,0 +1,16 @@
+name: IndexNow
+
+# Vercel reporta el deploy a GitHub como deployment_status; solo actuamos en producción exitosa.
+on:
+  deployment_status:
+
+jobs:
+  ping:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/indexnow.mjs

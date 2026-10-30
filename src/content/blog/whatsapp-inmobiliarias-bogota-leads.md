@@ -58,7 +58,9 @@ Con volumen alto, la disciplina en la conversación ahorra más que cualquier he
 
 ## Un ejemplo de conversación con volumen
 
-Un lead llega desde un portal preguntando por un apartamento en Chapinero un sábado en la tarde, y el asesor está en otra visita. Luisa responde en segundos con canon, administración y requisitos, pregunta la fecha de mudanza y propone dos horarios de visita el lunes. El asesor entra al chat ya con el lead calificado y la cita casi cerrada. Sin ese primer filtro, el mensaje habría esperado a que el asesor saliera de su visita, y el lead ya estaría en otra conversación.
+Un lead llega desde un portal preguntando por un apartamento en Chapinero un sábado en la tarde, y el asesor está en otra visita. Luisa responde en segundos con canon, administración y requisitos, pregunta la fecha de mudanza y propone dos horarios de visita el lunes.
+
+El asesor entra al chat ya con el lead calificado y la cita casi cerrada. Sin ese primer filtro, el mensaje habría esperado a que el asesor saliera de su visita, y el lead ya estaría en otra conversación.
 
 ## Cuánto cuesta atender por la API en Colombia
 

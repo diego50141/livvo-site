@@ -13,8 +13,8 @@ faq:
     a: "No. El cambio aplica solo a la API. La app de WhatsApp y la app gratis de WhatsApp Business siguen sin costo."
   - q: "¿Cuánto cuesta cada mensaje de servicio en Colombia?"
     a: "US$0,0008 por mensaje, unos $3 pesos, con tarifa plana y sin descuento por volumen. Cada número tiene 1.000 mensajes de servicio gratis al mes, que se reinician cada mes y no se acumulan."
-  - q: "¿Qué pasa si no registro un método de pago antes del 30 de septiembre?"
-    a: "Meta deja de entregar tus mensajes de servicio desde el 1 de octubre. Tus clientes podrán seguir escribiéndote, pero tus respuestas no les llegarán hasta que registres un método de pago."
+  - q: "¿Qué pasa si mi cuenta no tiene un método de pago registrado?"
+    a: "Meta no entrega tus mensajes de servicio desde el 1 de octubre. Tus clientes pueden seguir escribiéndote, pero tus respuestas no les llegan hasta que registres un método de pago."
   - q: "¿Las conversaciones que vienen de anuncios también se cobran?"
     a: "No durante sus primeras 72 horas, siempre que el lead haya llegado por un anuncio de clic a WhatsApp y hayas respondido a tiempo. En esa ventana todos tus mensajes son gratis, plantillas incluidas."
   - q: "¿Me conviene volver a atender desde los celulares para ahorrar?"
@@ -25,7 +25,7 @@ Hasta el 30 de septiembre, responderle a un lead que te escribió por la API de 
 
 Los mensajes que te mandan los clientes siguen sin costo, y las conversaciones que llegan desde anuncios de clic a WhatsApp mantienen 72 horas gratis. Todo esto está en la documentación oficial de precios de Meta; aquí lo traducimos a lo que significa para una inmobiliaria.
 
-**Urgente:** si tu cuenta de WhatsApp Business no tiene un método de pago registrado a más tardar el 30 de septiembre de 2026, Meta deja de entregar tus respuestas desde el 1 de octubre. Tus clientes podrán escribirte, pero tus mensajes no les llegarán. Si trabajas con un proveedor, confírmale hoy mismo que ya lo tiene.
+**Revisa hoy:** si tu cuenta de WhatsApp Business no tiene un método de pago registrado, Meta no entrega tus respuestas desde el 1 de octubre de 2026. Tus clientes pueden escribirte, pero tus mensajes no les llegan. Si trabajas con un proveedor, confírmale que ya lo tiene.
 
 ## Qué cambia exactamente el 1 de octubre
 
@@ -35,7 +35,7 @@ Los mensajes que te mandan los clientes siguen sin costo, y las conversaciones q
 - **Sin descuento por volumen:** el mensaje de servicio tiene tarifa plana, mandes 2.000 o 200.000.
 - **Mismo precio que utilidad:** en cada país, el mensaje de servicio cuesta lo mismo que una plantilla de utilidad. En Colombia, US$0,0008.
 - **El agente de IA de Meta se cobra aparte:** si las respuestas las da el Meta Business Agent, Meta las cobra por tokens desde el 1 de agosto, no como mensaje de servicio. Lo comparamos con Luisa en [Meta One en Colombia](/blog/meta-one-colombia-precio-agente-ia).
-- **Método de pago obligatorio:** debe estar registrado antes del 30 de septiembre.
+- **Método de pago obligatorio:** sin uno registrado, tus respuestas de servicio no se entregan.
 
 ## Qué no cambia
 
@@ -68,7 +68,7 @@ Donde sí se va la plata es en reabrir conversaciones con plantillas de marketin
 
 ## 5 movidas para pagar menos desde octubre
 
-1. **Registra el método de pago hoy.** Sin él, desde el 1 de octubre tus respuestas no llegan.
+1. **Verifica que tengas un método de pago registrado.** Sin él, tus respuestas no llegan.
 2. **Responde dentro de la ventana, no después.** Un lead atendido en minutos se conversa con mensajes de $3. Un lead que se enfría obliga a reabrir con una plantilla de marketing de $41, así que la velocidad de respuesta ahora también es ahorro.
 3. **Aprovecha las 72 horas de los anuncios.** Si pautas con clic a WhatsApp, intenta calificar al lead y agendar la visita dentro de esa ventana gratis.
 4. **Resuelve en menos mensajes.** Responder en uno solo el precio, la administración, la ubicación y la disponibilidad gasta menos que mandar cada dato por separado.
@@ -85,7 +85,7 @@ Con el cobro de octubre, la regla para una inmobiliaria es simple: el lead que s
 
 Antes de decidir, calcula tu caso con nuestro [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp), que usa las tarifas vigentes de Meta para Colombia.
 
-**¿Quieres saber cuánto te costaría tu operación desde octubre?** [Escríbenos y lo calculamos contigo](https://wa.me/573144267806?text=Hola%20equipo%20livvo%2C%20quiero%20saber%20cu%C3%A1nto%20me%20costar%C3%A1%20WhatsApp%20desde%20octubre%20en%20mi%20inmobiliaria).
+**¿Quieres saber cuánto te cuesta tu operación desde octubre?** [Escríbenos y lo calculamos contigo](https://wa.me/573144267806?text=Hola%20equipo%20livvo%2C%20quiero%20saber%20cu%C3%A1nto%20me%20costar%C3%A1%20WhatsApp%20desde%20octubre%20en%20mi%20inmobiliaria).
 
 ## Fuentes
 

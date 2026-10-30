@@ -92,7 +92,9 @@ Tarifas de Meta para Colombia vigentes desde el 1 de octubre de 2026, con la TRM
 
 ## Cómo usarlas sin arriesgar tu número
 
-Las plantillas resuelven el formato, pero no reemplazan el permiso. Escribe solo a quien pidió información o aceptó recibir mensajes, y mide cuántos responden, porque una plantilla que nadie contesta baja la calidad de tu número. En [Cómo evitar bloqueos en WhatsApp Business](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria) explicamos qué hace Meta con la calidad del número y cómo evitar los bloqueos. Si aún atiendes desde la app y no sabes si necesitas la API, empieza por [WhatsApp Business vs. API](/blog/whatsapp-business-vs-api-inmobiliaria).
+Las plantillas resuelven el formato, pero no reemplazan el permiso. Escribe solo a quien pidió información o aceptó recibir mensajes, y mide cuántos responden, porque una plantilla que nadie contesta baja la calidad de tu número.
+
+En [Cómo evitar bloqueos en WhatsApp Business](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria) explicamos qué hace Meta con la calidad del número y cómo evitar los bloqueos. Si aún atiendes desde la app y no sabes si necesitas la API, empieza por [WhatsApp Business vs. API](/blog/whatsapp-business-vs-api-inmobiliaria).
 
 ## Envía plantillas sin escribirlas una por una
 

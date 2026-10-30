@@ -10,19 +10,15 @@ faq:
   - q: "¿Por qué WhatsApp bloqueó mi cuenta si no envío spam?"
     a: "Porque la detección es automática y se basa en patrones, no en tu intención. Escribir a muchas personas nuevas en poco tiempo, mandar mensajes repetidos, recibir reportes o usar herramientas no oficiales aumenta el riesgo. También hay falsos positivos, como la ola del 3 de agosto de 2026."
   - q: "¿Cuánto tarda la revisión?"
-    a: "WhatsApp indica que normalmente responde en unas 24 horas. Hay casos que se resuelven en pocas horas y otros que tardan varios días."
+    a: "WhatsApp indica que normalmente responde en unas 24 horas. Hay casos que se resuelven en pocas horas y otros que tardan varios días. Envía una sola solicitud por número y espera, porque insistir no acelera la revisión."
   - q: "¿Pierdo mis chats si me bloquean?"
     a: "No mientras no borres la app. Los chats siguen en el teléfono, aunque no puedes abrirlos ni acceder a las copias de seguridad hasta que se levante el bloqueo."
-  - q: "¿Puedo apelar más de una vez?"
-    a: "Envía una sola solicitud por número y espera. Insistir no acelera la revisión."
   - q: "¿Alguien puede desbloquear mi cuenta por dinero?"
     a: "No. Solo WhatsApp puede bloquear o desbloquear una cuenta. Quien te ofrezca ese servicio te está estafando."
   - q: "¿Qué hago si rechazan mi revisión?"
     a: "Ese número queda fuera de forma permanente. Empieza con uno nuevo, actívale la verificación en dos pasos desde el primer día y úsalo con calma las primeras semanas."
   - q: "¿Puedo evitar que WhatsApp me vuelva a bloquear?"
     a: "No hay garantía. Pero reduces mucho el riesgo si usas solo apps oficiales, escribes a quien espera tus mensajes, evitas envíos masivos no autorizados y respetas a quien pide no recibir más comunicaciones."
-  - q: "¿WhatsApp Business y la API oficial son lo mismo?"
-    a: "No. WhatsApp Business es una app para pequeñas empresas que gestionan conversaciones desde el celular, con las mismas reglas antispam que la app personal. La API oficial conecta WhatsApp con CRMs y herramientas de automatización para operaciones con varios usuarios y más volumen."
 ---
 
 Si WhatsApp bloqueó tu cuenta sin que enviaras spam, no necesariamente hiciste algo mal. WhatsApp usa sistemas automáticos que leen patrones de comportamiento y, como cualquier sistema automático, a veces se equivoca.
@@ -31,9 +27,7 @@ No borres la app, toca "Solicitar revisión", explica en tres o cuatro líneas q
 
 En esta guía vas a encontrar los datos detrás de las dos olas de bloqueos masivos de 2026 y por qué WhatsApp bloquea cuentas que no hicieron nada malo. También el paso a paso completo para recuperar la tuya, los errores que alargan un bloqueo y cómo blindarte para que no vuelva a pasar, sobre todo si tu negocio depende de WhatsApp para vender.
 
-Para una persona, un bloqueo es frustrante. Para un negocio es un problema operativo: conversaciones, contactos y clientes de meses quedan fuera de alcance de un día para otro.
-
-*Actualizado el 25 de septiembre de 2026, tras la nueva ola de bloqueos que empezó la noche del 21 de septiembre.*
+Para una persona, un bloqueo es frustrante. Para un negocio es un problema operativo: conversaciones, contactos y clientes de meses quedan fuera de alcance de un día para otro. *Actualizado el 25 de septiembre de 2026, tras la nueva ola de bloqueos que empezó la noche del 21 de septiembre.*
 
 ## A mí también me pasó
 
@@ -203,12 +197,12 @@ Pero no migres solo como reacción a un bloqueo. Primero revisa cómo usas Whats
 
 ¿Qué pasaría con mi operación comercial si mañana pierdo acceso a mi número durante 48 horas? Si la respuesta es "perderíamos todas las conversaciones y no sabríamos a quién hacerle seguimiento", el problema no es solo WhatsApp. Es cómo está construida tu operación comercial. WhatsApp puede seguir siendo tu canal principal, pero la información y el proceso deberían pertenecer a tu empresa, no a un teléfono.
 
-## Cómo ayuda Livvo
+## Que un bloqueo no se lleve tus conversaciones
 
-En Livvo ayudamos a inmobiliarias, desarrolladoras y constructoras a organizar su operación comercial alrededor de WhatsApp, Facebook e Instagram. Conectamos la atención de leads con procesos comerciales, CRM y automatizaciones. Así tu equipo gestiona conversaciones, contactos, negocios y propiedades sin que toda la información quede guardada en el celular de cada asesor.
+La idea no es enviar más mensajes, sino que cada conversación tenga un lugar dentro de tu proceso comercial. WhatsApp puede ser donde empieza el chat, pero la operación debería vivir en tu empresa y no en el celular de un asesor. En Livvo lo resolvemos sobre la API oficial de WhatsApp Business:
 
-La idea no es enviar más mensajes. Es que cada conversación tenga un lugar dentro de tu proceso comercial.
-WhatsApp puede ser donde empieza la conversación. Pero la operación comercial debería vivir en tu empresa.
+- [Luisa](/agentes-ia), nuestra agente de IA, atiende, califica y agenda las visitas de cada lead, de modo que ningún chat dependa de que un asesor esté conectado.
+- [Livvo Chat](/plataforma-de-atencion-al-cliente) reúne las conversaciones, contactos, negocios y propiedades en una bandeja compartida, así que el historial queda en la empresa aunque un número o un asesor se caiga.
 
 Si el WhatsApp que te preocupa es el de tu inmobiliaria o negocio, la siguiente lectura es [Cómo evitar bloqueos en WhatsApp Business: guía para inmobiliarias](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria). Ahí está el paso a paso para cuidar la calidad de tu número comercial.
 

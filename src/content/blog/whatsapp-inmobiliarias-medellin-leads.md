@@ -83,7 +83,7 @@ El lead de Medellín no espera al lunes, y la inmobiliaria que responde primero 
 - [Luisa IA](/agentes-ia) responde en segundos, 24/7, califica cada lead por zona y presupuesto y agenda la visita en Google Calendar.
 - [Livvo Chat](/plataforma-de-atencion-al-cliente) reúne a todo tu equipo en una bandeja compartida, con embudo inmobiliario, gestor de propiedades y campañas con plantillas aprobadas.
 
-Calcula tu caso con el [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp) antes de decidir.
+Antes de decidir, calcula tu caso con el [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp), que usa las tarifas vigentes de Meta para Colombia.
 
 **¿Quieres que Luisa atienda los leads de tu inmobiliaria en Medellín?** [Escríbenos y te mostramos cómo funciona](https://wa.me/573144267806?text=Hola%20equipo%20livvo%2C%20quiero%20atender%20los%20leads%20de%20mi%20inmobiliaria%20en%20Medell%C3%ADn%20con%20Luisa).
 

@@ -33,7 +33,7 @@ Tres rasgos del mercado bogotano cambian la forma de usar WhatsApp:
 - **Distancias largas:** una visita en Usaquén y otra en Kennedy el mismo día no caben, así que la agenda se arma por sector.
 - **Lead comparador:** pregunta lo mismo a varias inmobiliarias y se queda con quien responde primero y con más claridad.
 
-Por eso el orden de la conversación importa: primero calificar, luego mostrar opciones y solo al final coordinar la visita.
+Por eso el orden de la conversación importa. Primero se califica, luego se muestran opciones y solo al final se coordina la visita.
 
 ## Qué pregunta cada zona en el primer mensaje
 
@@ -58,9 +58,7 @@ Con volumen alto, la disciplina en la conversación ahorra más que cualquier he
 
 ## Un ejemplo de conversación con volumen
 
-Un lead llega desde un portal preguntando por un apartamento en Chapinero un sábado en la tarde, y el asesor está en otra visita. Luisa responde en segundos con canon, administración y requisitos, pregunta la fecha de mudanza y propone dos horarios de visita el lunes. El asesor entra al chat ya con el lead calificado y la cita casi cerrada.
-
-Sin ese primer filtro, el mensaje habría esperado a que el asesor saliera de su visita, y el lead ya estaría en otra conversación.
+Un lead llega desde un portal preguntando por un apartamento en Chapinero un sábado en la tarde, y el asesor está en otra visita. Luisa responde en segundos con canon, administración y requisitos, pregunta la fecha de mudanza y propone dos horarios de visita el lunes. El asesor entra al chat ya con el lead calificado y la cita casi cerrada. Sin ese primer filtro, el mensaje habría esperado a que el asesor saliera de su visita, y el lead ya estaría en otra conversación.
 
 ## Cuánto cuesta atender por la API en Colombia
 
@@ -83,7 +81,7 @@ Cuando entran decenas de leads al día, el cuello de botella es el primer minuto
 - [Luisa IA](/agentes-ia) responde en segundos, 24/7, califica cada lead por zona y presupuesto y agenda la visita en Google Calendar.
 - [Livvo Chat](/plataforma-de-atencion-al-cliente) reúne a todo tu equipo en una bandeja compartida, con embudo inmobiliario, gestor de propiedades y reportes de tiempos de respuesta por asesor.
 
-Calcula tu caso con el [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp) antes de decidir.
+Antes de decidir, calcula tu caso con el [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp), que usa las tarifas vigentes de Meta para Colombia.
 
 **¿Quieres que Luisa atienda los leads de tu inmobiliaria en Bogotá?** [Escríbenos y te mostramos cómo funciona](https://wa.me/573144267806?text=Hola%20equipo%20livvo%2C%20quiero%20atender%20los%20leads%20de%20mi%20inmobiliaria%20en%20Bogot%C3%A1%20con%20Luisa).
 

@@ -35,7 +35,7 @@ Para una inmobiliaria las plantillas son la forma correcta de reabrir una conver
 
 ## 5 plantillas de utilidad (unos $3 pesos)
 
-Todas parten de algo que el cliente ya pidió o acordó contigo.
+Todas parten de algo que el cliente ya pidió o acordó contigo. Por eso no deben incluir ninguna promoción, o Meta las recategoriza como marketing.
 
 ### 1. Confirmación de visita
 
@@ -59,7 +59,7 @@ Todas parten de algo que el cliente ya pidió o acordó contigo.
 
 ## 5 plantillas de marketing (unos $41 pesos)
 
-Estas promueven algo nuevo, así que van solo a contactos que ya te escribieron o aceptaron recibir mensajes.
+Estas promueven algo nuevo, así que van solo a contactos que ya te escribieron o aceptaron recibir mensajes. Incluye siempre una salida, como el botón "No me interesa".
 
 ### 6. Proyecto nuevo
 

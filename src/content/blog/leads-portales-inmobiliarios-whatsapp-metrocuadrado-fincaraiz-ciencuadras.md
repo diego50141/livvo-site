@@ -47,6 +47,8 @@ Cómo llega el contacto depende del portal y de tu plan, así que conviene revis
 
 La tabla es una guía práctica, no una descripción oficial de cada portal. Lo importante es que los tres canales terminen en la misma bandeja, con el portal de origen anotado.
 
+En Livvo Chat, los leads de Fincaraíz, Metrocuadrado, Ciencuadras o tu propia página web caen en esa bandeja compartida y reciben respuesta sin importar la hora. Así el asesor no tiene que revisar cada portal por separado, y el equipo ve todos los leads en un solo lugar.
+
 ## Cómo responder un lead de portal en la práctica
 
 Con volumen alto, la disciplina en el primer mensaje ahorra más que cualquier herramienta. Estas reglas funcionan en la práctica:
@@ -88,7 +90,7 @@ Si hoy cada asesor recibe los leads de portal en su celular, se reparten al azar
 El portal te da el contacto, pero la visita se gana en los primeros minutos de conversación. En Livvo lo resolvemos sobre la API oficial de WhatsApp Business:
 
 - [Luisa IA](/agentes-ia) responde en segundos, 24/7, menciona el inmueble, califica cada lead por zona y presupuesto y agenda la visita en Google Calendar.
-- [Livvo Chat](/plataforma-de-atencion-al-cliente) reúne los leads de todos los portales en una bandeja compartida, con el portal de origen en cada conversación y el embudo inmobiliario por etapa.
+- [Livvo Chat](/plataforma-de-atencion-al-cliente) reúne los leads de todos los portales en una bandeja compartida, con etiquetas para marcar el portal de origen y el embudo inmobiliario por etapa.
 
 Antes de decidir, calcula tu caso con el [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp). Usa las tarifas vigentes de Meta para Colombia y te muestra el costo mensual de tu operación.
 

@@ -74,7 +74,7 @@ Tarifas de Meta para Colombia vigentes desde el 1 de octubre de 2026, con la TRM
 
 ## Del celular de cada asesor a una operación con datos
 
-Si hoy cada asesor atiende desde su celular, el número de los avisos depende de una sola persona y los chats se van con ella. Con la Coexistencia de Meta puedes pasar ese mismo número a la API sin perder el historial, tal como explicamos en [WhatsApp Business vs. API](/blog/whatsapp-business-vs-api-inmobiliaria). Y para no arriesgar el número al hacer campañas, revisa [Cómo evitar bloqueos en WhatsApp Business](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria).
+Si hoy cada asesor atiende desde su celular, el número de los avisos depende de una sola persona y los chats se van con ella. Con la Coexistencia de Meta puedes pasar ese mismo número a la API sin perder el historial, tal como explicamos en [WhatsApp Business vs. API](/blog/whatsapp-business-vs-api-inmobiliaria). Y para no arriesgar el número al hacer campañas, revisa [Cómo evitar bloqueos en WhatsApp Business](/blog/evitar-bloqueos-whatsapp-business-inmobiliaria). Si además operas en otras ciudades, la misma lógica aplica en [Cali](/blog/whatsapp-inmobiliarias-cali-leads), [Barranquilla](/blog/whatsapp-inmobiliarias-barranquilla-leads), [Bucaramanga](/blog/whatsapp-inmobiliarias-bucaramanga-leads) y [Bogotá](/blog/whatsapp-inmobiliarias-bogota-leads), con las preguntas propias de cada zona.
 
 ## Atender Medellín las 24 horas sin ampliar el equipo
 
@@ -83,7 +83,7 @@ El lead de Medellín no espera al lunes, y la inmobiliaria que responde primero 
 - [Luisa IA](/agentes-ia) responde en segundos, 24/7, califica cada lead por zona y presupuesto y agenda la visita en Google Calendar.
 - [Livvo Chat](/plataforma-de-atencion-al-cliente) reúne a todo tu equipo en una bandeja compartida, con embudo inmobiliario, gestor de propiedades y campañas con plantillas aprobadas.
 
-Antes de decidir, calcula tu caso con el [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp), que usa las tarifas vigentes de Meta para Colombia.
+Antes de decidir, calcula tu caso con el [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp). Usa las tarifas vigentes de Meta para Colombia y te muestra el costo mensual de tu operación.
 
 **¿Quieres que Luisa atienda los leads de tu inmobiliaria en Medellín?** [Escríbenos y te mostramos cómo funciona](https://wa.me/573144267806?text=Hola%20equipo%20livvo%2C%20quiero%20atender%20los%20leads%20de%20mi%20inmobiliaria%20en%20Medell%C3%ADn%20con%20Luisa).
 

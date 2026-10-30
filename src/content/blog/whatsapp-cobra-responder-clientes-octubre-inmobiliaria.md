@@ -83,7 +83,7 @@ Con el cobro de octubre, la regla para una inmobiliaria es simple: el lead que s
 - [Luisa IA](/agentes-ia) responde en segundos, 24/7, califica cada lead y agenda la visita dentro de la ventana, incluso a medianoche o un domingo.
 - [Livvo Chat](/plataforma-de-atencion-al-cliente) pone a todo tu equipo en una bandeja compartida, con campañas de plantillas aprobadas y reportes de tiempos de respuesta por asesor.
 
-Antes de decidir, calcula tu caso con nuestro [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp), que usa las tarifas vigentes de Meta para Colombia.
+Antes de decidir, calcula tu caso con nuestro [Simulador de Costos de WhatsApp](/herramientas/simulador-costos-whatsapp). Usa las tarifas vigentes de Meta para Colombia y te muestra el costo mensual de tu operación.
 
 **¿Quieres saber cuánto te cuesta tu operación desde octubre?** [Escríbenos y lo calculamos contigo](https://wa.me/573144267806?text=Hola%20equipo%20livvo%2C%20quiero%20saber%20cu%C3%A1nto%20me%20costar%C3%A1%20WhatsApp%20desde%20octubre%20en%20mi%20inmobiliaria).
 

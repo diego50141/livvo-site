@@ -50,7 +50,7 @@ Por eso en Livvo llamamos a esto **Agentes IA** y no "chatbot" ni "empleado virt
 
 ## Cómo se ve en la práctica
 
-[Luisa](/agentes-ia), la agente de IA de Livvo, responde en segundos, califica cada lead, recomienda propiedades del catálogo real de la inmobiliaria, agenda visitas automáticamente y sabe cuándo escalar la conversación a un asesor humano — todo dentro de la misma bandeja de [Livvo Chat](/plataforma-de-atencion-al-cliente) donde el equipo ve el resto de la operación.
+[Luisa](/agentes-ia), la agente de IA de Livvo, responde en segundos, califica cada lead, recomienda propiedades del catálogo real de la inmobiliaria, agenda visitas automáticamente y sabe cuándo escalar la conversación a un asesor humano — todo dentro de la misma bandeja de [Livvo Chat](/plataforma-de-atencion-al-cliente) donde el equipo ve el resto de la operación. No reemplaza al equipo: toma la primera conversación y le entrega al asesor un lead listo para visitar.
 
 Si tu inmobiliaria ya probó un chatbot y no funcionó, vale la pena revisar si el problema fue la idea o la herramienta. Probablemente era la segunda.
 

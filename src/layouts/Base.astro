@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 
 interface Props {
   title?: string;
@@ -164,6 +165,8 @@ const extraSchemas = structuredData
 
     <!-- Vercel Web Analytics -->
     <Analytics />
+    <!-- Vercel Speed Insights: Core Web Vitals de usuarios reales (LCP, INP, CLS) -->
+    <SpeedInsights />
   </head>
   <body>
     <slot />

@@ -256,7 +256,10 @@ const faqItems = [
       'Plataforma de WhatsApp con IA para inmobiliarias: Luisa (agente de IA que prospecta, agenda citas y atiende 24/7) y Livvo Chat (bandeja compartida, CRM inmobiliario, campañas y reportes).',
     offers: {
       '@type': 'Offer',
+      price: '199000', // plan Estándar desde 1 asesor, por mes (ver /planes)
       priceCurrency: 'COP',
+      priceValidUntil: '2027-12-31',
+      availability: 'https://schema.org/InStock',
       url: 'https://livvo.tech/planes',
     },
   }}
@@ -406,7 +409,7 @@ const faqItems = [
           con atención 24 horas, 7 días a la semana.
         </p>
       </div>
-      <Button href="/agentes-ia" variant="outline" size="lg">Más información →</Button>
+      <Button href="/agentes-ia" variant="outline" size="lg">Conoce a Luisa IA →</Button>
     </div>
   </Section>
 
@@ -439,7 +442,7 @@ const faqItems = [
         </p>
       </div>
       <Button href="/plataforma-de-atencion-al-cliente" variant="outline" size="lg">
-        Más información →
+        Conoce Livvo Chat →
       </Button>
     </div>
   </Section>
@@ -461,7 +464,7 @@ const faqItems = [
           <p class="product-card__desc">{desc}</p>
           <div class="product-card__cta">
             <Button href={href} target={external ? '_blank' : undefined} variant="outline">
-              Más información →
+              Conoce {name} →
             </Button>
           </div>
         </article>

@@ -6,9 +6,11 @@ interface Props {
   subtitle?: string;
   alt?: boolean; // fondo alterno (--gray-bg)
   dark?: boolean; // sección en navy oscuro (ritmo dark/white tipo Nexiu)
+  h1?: boolean; // el título es el <h1> de la página (páginas sin hero propio)
 }
 
-const { id, eyebrow, title, subtitle, alt = false, dark = false } = Astro.props;
+const { id, eyebrow, title, subtitle, alt = false, dark = false, h1 = false } = Astro.props;
+const Heading = h1 ? 'h1' : 'h2';
 ---
 
 <section
@@ -20,7 +22,7 @@ const { id, eyebrow, title, subtitle, alt = false, dark = false } = Astro.props;
       (eyebrow || title) && (
         <div class="section__head fade-up">
           {eyebrow && <span class="eyebrow">{eyebrow}</span>}
-          {title && <h2>{title}</h2>}
+          {title && <Heading>{title}</Heading>}
           {subtitle && <p class="section__subtitle">{subtitle}</p>}
         </div>
       )
@@ -45,6 +47,7 @@ const { id, eyebrow, title, subtitle, alt = false, dark = false } = Astro.props;
     margin: 0 auto 64px;
   }
   /* mismo tamaño de título en TODAS las secciones */
+  .section__head h1,
   .section__head h2 {
     margin-top: var(--space-4);
     font-size: clamp(32px, 4vw, 44px);

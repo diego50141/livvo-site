@@ -1,5 +1,6 @@
 ---
 title: "Meta One en Colombia: precio de cada plan y qué incluye el agente de IA"
+seoTitle: "Meta One en Colombia: precios y qué incluye"
 description: "Meta One ya tiene precios oficiales: cuánto cuesta cada plan en pesos, qué hace de verdad el agente de IA de WhatsApp Business y por qué una inmobiliaria probablemente necesita algo más especializado."
 pubDate: 2026-09-26
 category: "Actualidad del sector"

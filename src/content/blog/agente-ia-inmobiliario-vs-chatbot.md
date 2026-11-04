@@ -1,5 +1,6 @@
 ---
 title: "Agente de IA inmobiliario vs. chatbot: en qué se diferencian de verdad"
+seoTitle: "Agente de IA inmobiliario vs. chatbot: diferencias"
 description: "'Chatbot' y 'agente de IA' no son sinónimos, y la diferencia importa cuando de eso depende si un lead se agenda una visita o se pierde en un menú de opciones."
 pubDate: 2026-09-17
 category: "Agentes de IA"

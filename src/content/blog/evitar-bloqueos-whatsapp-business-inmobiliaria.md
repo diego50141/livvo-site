@@ -1,5 +1,6 @@
 ---
 title: "Cómo evitar bloqueos en WhatsApp Business: guía para inmobiliarias"
+seoTitle: "Cómo evitar bloqueos en WhatsApp Business"
 description: "Por qué Meta restringe números de WhatsApp Business, cómo cuidar la calidad de tu línea y las 7 reglas para escribir, enviar campañas y responder sin generar reportes en tu inmobiliaria."
 pubDate: 2026-09-25
 category: "WhatsApp para inmobiliarias"

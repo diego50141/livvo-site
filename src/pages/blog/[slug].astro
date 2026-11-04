@@ -46,13 +46,51 @@ const faqJsonLd =
         })),
       }
     : null;
+
+const site = Astro.site!.toString().replace(/\/$/, '');
+const postUrl = `${site}/blog/${post.id}/`;
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+  headline: post.data.title,
+  description: post.data.description,
+  image: `${site}${post.data.image ?? '/og.png'}`,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  inLanguage: 'es-CO',
+  articleSection: post.data.category,
+  keywords: post.data.tags.join(', '),
+  author: { '@type': 'Person', name: post.data.author },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Livvo',
+    logo: { '@type': 'ImageObject', url: `${site}/Livvo_logo.svg` },
+  },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site}/blog/` },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: postUrl },
+  ],
+};
+
+const structuredData = [articleJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])];
 ---
 
 <Base
-  title={`${post.data.seoTitle ?? post.data.title} — Blog Livvo`}
+  title={`${post.data.seoTitle ?? post.data.title} | Livvo`}
   description={post.data.description}
   ogImage={post.data.image}
-  structuredData={faqJsonLd ?? undefined}
+  ogType="article"
+  publishedTime={post.data.pubDate}
+  modifiedTime={post.data.updatedDate}
+  structuredData={structuredData}
 >
   <Navbar />
 

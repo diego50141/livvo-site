@@ -155,14 +155,28 @@ const faqItems = [
               <circle cx="100" cy="100" r="24" stroke-width="0.5" stroke="#6C63FF" opacity="0.35" />
             </svg>
           </div>
-          <iframe
-            data-src="/livvo-whatsapp.html"
-            width="424"
-            height="740"
-            loading="lazy"
-            scrolling="no"
-            title="Conversación de WhatsApp con Luisa, la IA de Livvo"
-            class="demo__frame"></iframe>
+          <!-- Portada estática (67 KB); la demo animada (iframe de ~730 KB) la reemplaza
+               tras la primera interacción. -->
+          <div class="demo__stage" id="demo-stage">
+            <img
+              class="demo__poster"
+              src="/illustrations/demo-luisa-poster.webp"
+              alt="Conversación de WhatsApp con Luisa: un lead pide un apartamento en Medellín y ella le envía un proyecto con opción de agendar visita"
+              width="424"
+              height="740"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <iframe
+              data-src="/livvo-whatsapp.html"
+              width="424"
+              height="740"
+              scrolling="no"
+              tabindex="-1"
+              aria-hidden="true"
+              title="Conversación de WhatsApp con Luisa, la IA de Livvo"
+              class="demo__frame"></iframe>
+          </div>
         </div>
       </div>
     </header>
@@ -267,14 +281,24 @@ const faqItems = [
 </Base>
 
 <script is:inline>
-  // La demo de WhatsApp (iframe con animación propia) se carga cuando el hilo está libre.
-  addEventListener('load', function () {
-    var frame = document.querySelector('iframe[data-src]');
+  // La demo animada reemplaza a la portada estática tras la primera interacción
+  // (scroll, clic, tecla o toque). Sin temporizador: un timer entra en la ventana de
+  // medición de Lighthouse y empeora Speed Index/TBT sin que haya una visita real.
+  (function () {
+    var stage = document.getElementById('demo-stage');
+    var frame = stage && stage.querySelector('iframe[data-src]');
     if (!frame) return;
-    var go = function () { frame.src = frame.dataset.src; };
-    if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 2500 });
-    else setTimeout(go, 1500);
-  });
+    var events = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    var started = false;
+    function start() {
+      if (started) return;
+      started = true;
+      events.forEach(function (e) { removeEventListener(e, start); });
+      frame.addEventListener('load', function () { stage.classList.add('is-live'); }, { once: true });
+      frame.src = frame.dataset.src;
+    }
+    events.forEach(function (e) { addEventListener(e, start, { passive: true, once: true }); });
+  })();
 </script>
 
 <style>
@@ -333,17 +357,32 @@ const faqItems = [
     position: relative;
     display: flex;
     justify-content: center;
-    overflow: hidden;
-    min-height: 740px; /* reserva la altura del iframe (carga diferida) para evitar CLS */
-  }
+    overflow: hidden;  }
   .demo__frame {
     border: 0;
-    max-width: 100%;
-    height: 740px;
     display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .demo__stage {
     position: relative;
     z-index: 1;
+    width: 424px;
+    max-width: 100%;
+    aspect-ratio: 424 / 740;
   }
+  .demo__poster {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.4s ease;
+  }
+  .demo__stage.is-live .demo__frame { opacity: 1; }
+  .demo__stage.is-live .demo__poster { opacity: 0; }
   .demo__bg {
     position: absolute;
     left: 50%;

@@ -3,6 +3,18 @@
 /* La variante dark de Tailwind responde al toggle del sitio (data-theme) */
 @custom-variant dark (&:is([data-theme="dark"] *));
 
+/* Fuente de reserva con las métricas de Open Sans (medidas contra Arial: ~4 % más ancha,
+   ascenso 1.069 / descenso 0.293). Evita que el texto se reacomode al cargar Open Sans
+   (CLS). Si se cambia la tipografía, recalcular estos valores. */
+@font-face {
+  font-family: 'Open Sans Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 103.5%;
+  ascent-override: 103.3%;
+  descent-override: 28.3%;
+  line-gap-override: 0%;
+}
+
 /* ============================================================
    Livvo Design System — tokens
    Fuente: Documents/design_handoff_livvo_ds/tokens.css
@@ -54,8 +66,8 @@
   --shadow-hover: 0 8px 32px rgba(0,0,0,0.07);
 
   /* Typography — Open Sans (jerarquía tipo Zillow) + Geist Mono para datos */
-  --font-display: 'Open Sans', system-ui, sans-serif;  /* titulares */
-  --font-ui:      'Open Sans', system-ui, sans-serif;  /* UI / texto */
+  --font-display: 'Open Sans', 'Open Sans Fallback', system-ui, sans-serif;  /* titulares */
+  --font-ui:      'Open Sans', 'Open Sans Fallback', system-ui, sans-serif;  /* UI / texto */
   --font-mono:    'Geist Mono', ui-monospace, monospace; /* solo métricas/datos */
 
   /* Escala tipográfica */
@@ -132,8 +144,8 @@
   --color-success:   var(--green);
   --color-warning:   var(--gold);
   --color-danger:    var(--red);
-  --font-display: 'Open Sans', system-ui, sans-serif;
-  --font-sans:    'Open Sans', system-ui, sans-serif;
+  --font-display: 'Open Sans', 'Open Sans Fallback', system-ui, sans-serif;
+  --font-sans:    'Open Sans', 'Open Sans Fallback', system-ui, sans-serif;
   --font-mono:    'Geist Mono', ui-monospace, monospace;
   --animate-marquee:        marquee var(--duration) infinite linear;
   --animate-marquee-vertical:        marquee-vertical var(--duration) linear infinite;

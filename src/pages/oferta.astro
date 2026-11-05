@@ -1,0 +1,273 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Button from '../components/Button.astro';
+import Section from '../components/Section.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_NUMBER } from '../config';
+
+// Oferta post-demo (nov 2026): 50 % de descuento en el primer mes del plan Estándar con
+// 1 asesor ($199.000 → $99.500 COP). El cobro NO sale de esta página: cada cliente recibe
+// después de la demo un link de pago único de Wompi con vencimiento de 48 horas (ver
+// "Link pago personalizado" en comercios.wompi.co). Por eso la página es noindex, no se
+// enlaza desde el sitio y su CTA es WhatsApp, no el checkout (que es de un solo uso).
+const PRICE_LIST = '$199.000';
+const PRICE_OFFER = '$99.500';
+const OFFER_CONVERSATIONS = 500;
+
+const OFFER_WHATSAPP_URL =
+  `https://wa.me/${WHATSAPP_NUMBER}?text=` +
+  encodeURIComponent('Hola equipo livvo, tengo una duda sobre la oferta del 50 % en el primer mes');
+---
+
+<Base
+  title="Oferta: 50 % de descuento en tu primer mes — Livvo"
+  description="Activa Livvo con 50 % de descuento en tu primer mes: plataforma, Luisa IA y 500 conversaciones de WhatsApp incluidas. Garantía de 7 días y sin permanencia."
+  noindex
+>
+  <Navbar />
+
+  <main>
+    <Section
+      id="oferta"
+      h1
+      eyebrow="Oferta post-demo"
+      title="Tu primer mes de Livvo con 50 % de descuento."
+    >
+      <div class="offer-card fade-up">
+        <span class="offer-card__badge">−50 % primer mes</span>
+
+        <div class="offer-card__price">
+          <span class="offer-card__amount">{PRICE_OFFER}</span>
+          <span class="offer-card__period">COP</span>
+        </div>
+        <p class="offer-card__was">
+          En lugar de <s>{PRICE_LIST}</s> · plan Estándar, 1 asesor
+        </p>
+
+        <div class="offer-card__activate" data-offer-activate hidden>
+          <Button href="#" target="_blank" size="lg" id="offer-activate-top">
+            Activar con 50 % de descuento →
+          </Button>
+          <p class="offer-card__assure">Garantía de 7 días · Sin permanencia</p>
+        </div>
+
+        <hr class="offer-card__divider" />
+        <p class="offer-card__includes">Todo lo que incluye</p>
+        <ul class="offer-card__features">
+          <li><span class="offer-card__check">✓</span>Livvo Chat: bandeja compartida, CRM y gestor de propiedades</li>
+          <li><span class="offer-card__check">✓</span>Luisa IA atendiendo, calificando y agendando citas 24/7</li>
+          <li>
+            <span class="offer-card__check">✓</span>Hasta {OFFER_CONVERSATIONS} conversaciones de WhatsApp, con los
+            costos de Meta incluidos
+          </li>
+        </ul>
+      </div>
+
+      <div class="offer-terms fade-up">
+        <h2>Las condiciones, sin letra pequeña</h2>
+        <ul>
+          <li>
+            <strong>Vigencia de 48 horas.</strong> El descuento se activa con el link de pago que recibes
+            al terminar la demo y vence a las 48 horas.
+          </li>
+          <li>
+            <strong>Garantía de 7 días.</strong> Si Livvo no te convence en la primera semana, te
+            devolvemos el pago completo.
+          </li>
+          <li>
+            <strong>Sin permanencia.</strong> Cancelas cuando quieras, sin contrato ni penalidad.
+          </li>
+          <li>
+            <strong>Qué cuenta como conversación.</strong> Una conversación es una ventana de 24 horas con
+            un mismo contacto, igual que la mide Meta.
+          </li>
+          <li>
+            <strong>Al llegar a {OFFER_CONVERSATIONS} conversaciones</strong>, Luisa se pausa y te avisamos.
+            Tu equipo sigue atendiendo desde la bandeja y tú decides si reactivas a Luisa y cómo continuar.
+          </li>
+          <li>
+            <strong>Después del primer mes</strong> el plan sigue al precio de lista de {PRICE_LIST} COP al
+            mes para 1 asesor, con la facturación en pesos colombianos.
+          </li>
+        </ul>
+      </div>
+
+      <div class="offer-cta fade-up">
+        <!-- Solo aparece si la URL trae ?l=<id del link de Wompi>; el script arma el href -->
+        <div class="offer-cta__activate" data-offer-activate hidden>
+          <Button id="offer-activate-btn" href="#" target="_blank" size="lg">
+            Activar con 50 % de descuento →
+          </Button>
+          <p class="offer-cta__note">Pago seguro con Wompi. Tu descuento vence a las 48 horas de la demo.</p>
+        </div>
+        <p>¿Tienes una duda antes de activar? Escríbenos y te respondemos hoy.</p>
+        <Button id="offer-help-btn" variant="outline" href={OFFER_WHATSAPP_URL} target="_blank" size="lg">
+          Hablar con el equipo →
+        </Button>
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  // Cada cliente recibe livvo.tech/oferta/?l=<id> con el id de SU link de pago de Wompi
+  // (pago único, vence a las 48 h). Solo se aceptan letras y números para no abrir
+  // redirecciones a otros dominios: el destino siempre es checkout.wompi.co/l/<id>.
+  const id = new URLSearchParams(window.location.search).get('l');
+  if (id && /^[A-Za-z0-9]{4,20}$/.test(id)) {
+    const checkout = `https://checkout.wompi.co/l/${id}`;
+    // Botones de la página (tarjeta de arriba y cierre): aparecen y apuntan al link del cliente
+    document.querySelectorAll('[data-offer-activate]').forEach((box) => {
+      box.querySelector('a')?.setAttribute('href', checkout);
+      box.hidden = false;
+    });
+    // CTA del navbar: en esta página reemplaza "Prueba 15 días gratis" por la oferta
+    const navCta = document.getElementById('nav-demo-cta');
+    if (navCta) {
+      navCta.setAttribute('href', checkout);
+      navCta.textContent = 'Activar con 50 % de descuento';
+    }
+  }
+</script>
+
+<style>
+  /* Tarjeta alineada con la de /planes: borde teal, brillo, precio en mono, todo centrado */
+  .offer-card {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: var(--space-10, 40px) var(--space-8);
+    text-align: center;
+    background: var(--white);
+    border: 2px solid var(--teal);
+    box-shadow: var(--shadow-glow);
+    border-radius: var(--radius-card);
+  }
+  .offer-card__badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(0, 199, 180, 0.12);
+    color: var(--teal-dark, #00867a);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .offer-card__price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5, 20px);
+  }
+  .offer-card__amount {
+    font-family: var(--font-mono);
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+  }
+  .offer-card__period {
+    font-size: 16px;
+    color: var(--muted);
+  }
+  .offer-card__was {
+    margin: var(--space-3) 0 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .offer-card__activate {
+    margin-top: var(--space-6);
+  }
+  .offer-card__activate[hidden] {
+    display: none;
+  }
+  .offer-card__activate :global(.btn) {
+    width: 100%;
+  }
+  .offer-card .offer-card__assure {
+    margin: var(--space-3) 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .offer-card__divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: var(--space-8) 0 var(--space-6);
+  }
+  .offer-card__includes {
+    margin: 0 0 var(--space-4);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .offer-card__features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+    text-align: left;
+    font-size: 15px;
+  }
+  .offer-card__features li {
+    display: flex;
+    gap: var(--space-2);
+    line-height: 1.5;
+  }
+  .offer-card__check {
+    flex: none;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .offer-card { padding: var(--space-8) var(--space-5, 20px); }
+    .offer-card__amount { font-size: 52px; }
+  }
+
+  .offer-terms {
+    max-width: 620px;
+    margin: var(--space-12) auto 0;
+  }
+  .offer-terms h2 {
+    font-size: 22px;
+    margin: 0 0 var(--space-4);
+  }
+  .offer-terms ul {
+    margin: 0;
+    padding-left: var(--space-6);
+    display: grid;
+    gap: var(--space-3);
+    line-height: 1.6;
+  }
+
+  .offer-cta {
+    text-align: center;
+    max-width: 620px;
+    margin: var(--space-12) auto 0;
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--border);
+  }
+  .offer-cta__activate {
+    margin-bottom: var(--space-12);
+  }
+  .offer-cta__activate[hidden] {
+    display: none;
+  }
+  .offer-cta .offer-cta__note {
+    margin: var(--space-4) 0 0;
+    font-size: 13px;
+  }
+  .offer-cta p {
+    font-size: var(--text-body);
+    color: var(--muted);
+    margin: 0 0 var(--space-6);
+  }
+</style>

@@ -77,7 +77,7 @@ export default defineConfig({
         if (slug && blogDates[slug]) item.lastmod = new Date(blogDates[slug]).toISOString();
         return item;
       },
-      filter: (page) => !page.includes('/design-system') && !page.includes('/presentacion'),
+      filter: (page) => !page.includes('/design-system') && !page.includes('/presentacion') && !page.includes('/oferta'),
     }),
   ],
 });

@@ -68,6 +68,48 @@ function othersLast<T extends { name: string }>(rows: T[]): T[] {
   );
 }
 
+// Canal legible a partir del referrer y/o de utm_source (la UTM manda sobre el referrer).
+// Asistentes de IA: cada uno es su propio canal. Van antes que "google" porque
+// gemini.google.com también contiene "google".
+const AI_CHANNELS: [string[], string][] = [
+  [['chatgpt', 'openai'], 'ChatGPT'],
+  [['gemini', 'bard.google'], 'Gemini'],
+  [['claude'], 'Claude'],
+  [['perplexity'], 'Perplexity'],
+  [['copilot', 'bing.com/chat'], 'Copilot'],
+];
+
+function channelOf(host: string, utmSource: string): string {
+  const src = utmSource.toLowerCase().trim();
+  const h = host.toLowerCase().trim();
+  const key = src || h;
+  if (!key) return 'Directo / sin referrer';
+  if (key === 'others') return 'Others';
+  const ai = AI_CHANNELS.find(([hints]) => hints.some((x) => key.includes(x)));
+  if (ai) return ai[1];
+  if (key.includes('instagram') || key === 'ig') return 'Instagram';
+  if (key.includes('linkedin') || key.includes('lnkd')) return 'LinkedIn';
+  if (key.includes('facebook') || key === 'fb' || key.includes('fb.com')) return 'Facebook';
+  if (key.includes('whatsapp') || key.includes('wa.me')) return 'WhatsApp';
+  if (key.includes('google')) return 'Google';
+  if (key.includes('youtube') || key === 'yt') return 'YouTube';
+  if (key === 't.co' || key.includes('twitter') || key === 'x.com') return 'X / Twitter';
+  if (key.includes('mail') || key.includes('correo') || key.includes('email')) return 'Correo';
+  return src ? src.charAt(0).toUpperCase() + src.slice(1) : h;
+}
+
+function groupChannels(rows: Row[]): { name: string; visitors: number }[] {
+  const acc = new Map<string, number>();
+  for (const r of rows) {
+    const name = channelOf(String(r.referrerHostname ?? ''), String(r.utmSource ?? ''));
+    acc.set(name, (acc.get(name) ?? 0) + Number(r.visitors ?? 0));
+  }
+  const sorted = [...acc.entries()]
+    .map(([name, visitors]) => ({ name, visitors }))
+    .sort((a, b) => b.visitors - a.visitors);
+  return othersLast(sorted);
+}
+
 type Traffic = {
   today: number;
   todayViews: number;
@@ -75,7 +117,8 @@ type Traffic = {
   last7: number;
   last7Views: number;
   completeDays: { day: string; visitors: number }[]; // días completos (sin hoy), más reciente primero
-  referrers: { name: string; visitors: number }[];
+  referrers: { name: string; visitors: number }[]; // canales agrupados
+  campaigns: { source: string; campaign: string; visitors: number }[] | null; // null = no disponible
   pages: { name: string; views: number }[];
 };
 
@@ -86,11 +129,19 @@ async function loadTraffic(now: number): Promise<Source<Traffic>> {
     const iso = (ms: number) => new Date(ms).toISOString();
     const since48 = iso(now - 48 * HOUR);
     const since7 = iso(now - 7 * DAY);
-    const [hours, days, refs, paths] = await Promise.all([
+    const [hours, days, refs, paths, refsUtm, utmRows] = await Promise.all([
       vercelQuery({ by: 'hour', since: since48, until: iso(now), limit: '100' }),
       vercelQuery({ by: 'day', since: since7, until: iso(now), limit: '100' }),
-      vercelQuery({ by: 'referrerHostname', since: since7, until: iso(now), limit: '8' }),
+      vercelQuery({ by: 'referrerHostname', since: since7, until: iso(now), limit: '30' }),
       vercelQuery({ by: 'requestPath', since: since7, until: iso(now), limit: '8' }),
+      // Dos dimensiones a la vez (referrer + utm_source) y campañas: si la API no las
+      // acepta, el reporte sigue con lo básico en vez de fallar.
+      vercelQuery({ by: 'referrerHostname,utmSource', since: since7, until: iso(now), limit: '100' }).catch(
+        () => null
+      ),
+      vercelQuery({ by: 'utmSource,utmCampaign', since: since7, until: iso(now), limit: '20' }).catch(
+        () => null
+      ),
     ]);
 
     // Agrupar las horas por día de Bogotá
@@ -121,12 +172,16 @@ async function loadTraffic(now: number): Promise<Source<Traffic>> {
         last7Views: days.reduce((s, r) => s + Number(r.pageviews ?? 0), 0),
         completeDays,
         // La API agrupa lo menos frecuente en una fila "Others": se muestra al final.
-        referrers: othersLast(
-          refs.map((r) => ({
-            name: String(r.referrerHostname || 'Directo / sin referrer'),
-            visitors: Number(r.visitors ?? 0),
-          }))
-        ),
+        referrers: groupChannels(refsUtm ?? refs),
+        campaigns: utmRows
+          ? utmRows
+              .filter((r) => String(r.utmSource ?? '') || String(r.utmCampaign ?? ''))
+              .map((r) => ({
+                source: String(r.utmSource ?? '') || '—',
+                campaign: String(r.utmCampaign ?? '') || '—',
+                visitors: Number(r.visitors ?? 0),
+              }))
+          : null,
         pages: othersLast(
           paths.map((r) => ({
             name: String(r.requestPath ?? ''),
@@ -598,7 +653,19 @@ ${
         t.referrers.map((r) => ({ name: r.name, n: r.visitors }))
       )}</div><div><h2>Páginas · 7 días</h2>${bars(
         t.pages.map((p) => ({ name: p.name, n: p.views }))
-      )}</div></div>`
+      )}</div></div>
+<h2>Campañas (UTM) · 7 días</h2>${
+        t.campaigns === null
+          ? '<p class="muted">No se pudo leer el desglose por UTM.</p>'
+          : t.campaigns.length
+            ? `<table>${t.campaigns
+                .map(
+                  (c) =>
+                    `<tr><td>${esc(c.source)}</td><td style="text-align:left">${esc(c.campaign)}</td><td>${c.visitors}</td></tr>`
+                )
+                .join('')}</table>`
+            : '<p class="muted">Aún no hay visitas con UTM. Añade <code>?utm_source=…&amp;utm_medium=…&amp;utm_campaign=…</code> a los enlaces que compartes.</p>'
+      }`
     : ''
 }
 

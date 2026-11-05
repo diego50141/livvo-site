@@ -70,7 +70,14 @@ const articleJsonLd = {
   inLanguage: 'es-CO',
   articleSection: post.data.category,
   keywords: post.data.tags.join(', '),
-  author: { '@type': 'Person', name: post.data.author, url: `${site}/blog/` },
+  author: {
+    '@type': 'Person',
+    name: post.data.author,
+    url: `${site}/blog/`,
+    ...(post.data.author === 'Diego Alfonso' && {
+      sameAs: ['https://www.linkedin.com/in/diegoalejandroalfonso/'],
+    }),
+  },
   publisher: {
     '@type': 'Organization',
     name: 'Livvo',

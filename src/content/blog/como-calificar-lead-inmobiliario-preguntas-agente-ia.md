@@ -1,7 +1,7 @@
 ---
 title: "Cómo calificar un lead inmobiliario: las 5 preguntas que debe hacer tu agente de IA"
 seoTitle: "Cómo calificar un lead inmobiliario: 5 preguntas"
-description: "Calificar un lead inmobiliario es saber, antes de la visita, qué busca, dónde, con cuánto, para cuándo y cómo decide. Las 5 preguntas, cómo puntuar la respuesta y cómo automatizarlo con un agente de IA."
+description: "Las 5 preguntas para calificar un lead inmobiliario antes de la visita, cómo puntuar cada respuesta y cómo automatizarlo con un agente de IA."
 pubDate: 2026-09-30
 category: "Agentes de IA"
 tags: ["calificar leads", "agente de ia", "leads inmobiliarios"]

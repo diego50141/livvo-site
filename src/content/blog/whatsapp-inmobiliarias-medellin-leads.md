@@ -1,7 +1,7 @@
 ---
 title: "WhatsApp para inmobiliarias en Medellín: cómo atender leads de El Poblado, Laureles y Envigado"
 seoTitle: "WhatsApp para inmobiliarias en Medellín"
-description: "En Medellín cada zona pregunta cosas distintas y muchos leads escriben de noche o desde otro país. Cómo responder en minutos, qué resolver en el primer mensaje y cuánto cuesta atender por la API de WhatsApp."
+description: "En Medellín cada zona pregunta distinto y muchos leads escriben de noche. Cómo responder en minutos y cuánto cuesta atender por la API de WhatsApp."
 pubDate: 2026-09-30
 category: "WhatsApp para inmobiliarias"
 tags: ["medellín", "leads inmobiliarios", "api de whatsapp"]

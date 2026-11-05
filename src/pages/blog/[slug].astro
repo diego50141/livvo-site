@@ -50,13 +50,18 @@ const faqJsonLd =
 const site = Astro.site!.toString().replace(/\/$/, '');
 const postUrl = `${site}/blog/${post.id}/`;
 
+// Imagen para compartir: la del frontmatter si existe; si no, la generada en build
+// (src/pages/blog/og/[slug].png.ts → /blog/og/<slug>.png, 1200×630).
+const ogImagePath = post.data.image ?? `/blog/og/${post.id}.png`;
+const ogImageAlt = `Portada del artículo: ${post.data.title}`;
+
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
   headline: post.data.title,
   description: post.data.description,
-  image: `${site}${post.data.image ?? '/og.png'}`,
+  image: `${site}${ogImagePath}`,
   datePublished: post.data.pubDate.toISOString(),
   dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
   inLanguage: 'es-CO',
@@ -86,7 +91,10 @@ const structuredData = [articleJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJso
 <Base
   title={`${post.data.seoTitle ?? post.data.title} | Livvo`}
   description={post.data.description}
-  ogImage={post.data.image}
+  ogImage={ogImagePath}
+  ogImageAlt={ogImageAlt}
+  articleSection={post.data.category}
+  articleTags={post.data.tags}
   ogType="article"
   publishedTime={post.data.pubDate}
   modifiedTime={post.data.updatedDate}
@@ -120,6 +128,16 @@ const structuredData = [articleJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJso
         <div class="prose fade-up">
           <Content />
         </div>
+
+        {
+          post.data.tags.length > 0 && (
+            <ul class="post-tags fade-up" aria-label="Etiquetas del artículo">
+              {post.data.tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          )
+        }
 
         {
           faq.length > 0 && (
@@ -268,6 +286,25 @@ const structuredData = [articleJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJso
     color: var(--navy);
     font-family: var(--font-ui);
     white-space: nowrap;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 720px;
+    margin: 0 auto var(--space-8);
+    padding: 0;
+    list-style: none;
+  }
+  .post-tags li {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--gray-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 12px;
   }
 
   .post-faq {

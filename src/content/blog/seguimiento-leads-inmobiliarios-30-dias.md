@@ -1,7 +1,7 @@
 ---
 title: "Seguimiento de leads inmobiliarios: qué hacer en los primeros 30 días y cuándo soltar el lead"
 seoTitle: "Seguimiento de leads inmobiliarios en 30 días"
-description: "Casi todos los leads se pierden por falta de seguimiento, no por falta de interés. Una cadencia de 30 días para dar seguimiento sin ser pesado, qué decir en cada contacto y cuándo cerrar el caso."
+description: "Casi todos los leads se pierden por falta de seguimiento. Una cadencia de 30 días, qué decir en cada contacto y cuándo cerrar el caso."
 pubDate: 2026-10-29
 category: "Guías y casos de uso"
 tags: ["seguimiento de leads", "ventas inmobiliarias", "cadencia"]

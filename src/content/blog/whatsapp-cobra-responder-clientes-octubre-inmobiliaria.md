@@ -1,7 +1,7 @@
 ---
 title: "WhatsApp cobra por responder a tus clientes desde el 1 de octubre: qué cambia para tu inmobiliaria en Colombia"
 seoTitle: "WhatsApp cobra por responder desde octubre"
-description: "Desde el 1 de octubre de 2026 Meta cobra las respuestas dentro de la ventana de 24 horas: en Colombia son US$0,0008 (unos $3 pesos) y 1.000 mensajes gratis al mes por número. Qué cambia y cómo pagar menos."
+description: "Desde octubre de 2026 Meta cobra las respuestas en la ventana de 24 horas: US$0,0008 en Colombia y 1.000 gratis al mes. Qué cambia y cómo pagar menos."
 pubDate: 2026-09-29
 category: "Actualidad del sector"
 tags: ["precios whatsapp", "api de whatsapp", "meta"]

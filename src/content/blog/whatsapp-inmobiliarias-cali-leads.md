@@ -1,7 +1,7 @@
 ---
 title: "WhatsApp para inmobiliarias en Cali: cómo atender leads del sur, Ciudad Jardín y Jamundí"
 seoTitle: "WhatsApp para inmobiliarias en Cali"
-description: "En Cali el lead pregunta por conjunto, zonas comunes y cercanía al sur, y compara rápido. Cómo responder en minutos, qué resolver en el primer mensaje y cuánto cuesta atender por la API de WhatsApp."
+description: "En Cali el lead pregunta por conjunto, zonas comunes y cercanía al sur. Cómo responder en minutos y cuánto cuesta atender por la API de WhatsApp."
 pubDate: 2026-10-29
 category: "WhatsApp para inmobiliarias"
 tags: ["cali", "leads inmobiliarios", "api de whatsapp"]

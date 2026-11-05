@@ -1,7 +1,7 @@
 ---
 title: "WhatsApp para inmobiliarias en Bucaramanga: cómo atender leads de Cabecera, Cañaveral y Floridablanca"
 seoTitle: "WhatsApp para inmobiliarias en Bucaramanga"
-description: "En Bucaramanga se mezclan familias, estudiantes y profesionales, y cada uno pregunta distinto. Cómo responder en minutos, qué resolver en el primer mensaje y cuánto cuesta atender por la API de WhatsApp."
+description: "En Bucaramanga conviven familias, estudiantes y profesionales. Cómo responder en minutos y cuánto cuesta atender por la API de WhatsApp."
 pubDate: 2026-10-29
 category: "WhatsApp para inmobiliarias"
 tags: ["bucaramanga", "leads inmobiliarios", "api de whatsapp"]

@@ -1,7 +1,7 @@
 ---
 title: "WhatsApp para inmobiliarias en Bogotá: cómo atender leads de Chicó, Usaquén y Chapinero"
 seoTitle: "WhatsApp para inmobiliarias en Bogotá"
-description: "En Bogotá el volumen de leads es alto, las zonas quedan lejos entre sí y el lead compara rápido. Cómo responder en minutos, agendar visitas por sector y cuánto cuesta atender por la API de WhatsApp."
+description: "En Bogotá hay muchos leads y las zonas quedan lejos. Cómo responder en minutos, agendar por sector y cuánto cuesta atender por la API de WhatsApp."
 pubDate: 2026-09-30
 category: "WhatsApp para inmobiliarias"
 tags: ["bogotá", "leads inmobiliarios", "api de whatsapp"]

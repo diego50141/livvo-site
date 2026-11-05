@@ -1,7 +1,7 @@
 ---
 title: "Leads de Metrocuadrado, Fincaraíz y Ciencuadras: cómo responderlos por WhatsApp antes que la competencia"
 seoTitle: "Leads de portales inmobiliarios por WhatsApp"
-description: "El lead de un portal contacta a varias inmobiliarias a la vez. Cómo responderlo por WhatsApp en minutos, medir qué portal rinde y cuánto cuesta atenderlo sobre la API oficial en Colombia."
+description: "Cómo responder por WhatsApp en minutos al lead de un portal que escribe a varias inmobiliarias, medir qué portal rinde y cuánto cuesta."
 pubDate: 2026-10-29
 category: "WhatsApp para inmobiliarias"
 tags: ["portales inmobiliarios", "leads inmobiliarios", "api de whatsapp"]

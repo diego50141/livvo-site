@@ -6,10 +6,10 @@ Referencia para escribir o adaptar posts en `src/content/blog/*.md`. Todos los p
 
 ```yaml
 title: "Gancho: especificidad"        # sin año entre paréntesis
-description: "1-2 frases, ~150-220 caracteres, con el dato clave"
+description: "1-2 frases, 120-155 caracteres (Google corta en ~155), con el dato clave al principio"
 pubDate: YYYY-MM-DD
 category: "..."                        # una de las 5 fijas, ver content.config.ts
-tags: ["...", "..."]                   # 2-4, minúsculas
+tags: ["...", "..."]                   # 2-4, minúsculas, un solo nombre por concepto (p. ej. "agente de ia", nunca "agente ia"); se muestran como chips y salen como article:tag
 author: "Diego Alfonso"
 faq:
   - q: "..."
@@ -17,6 +17,7 @@ faq:
 ```
 
 - No se usa el campo `image`: el cover sale automático por categoría vía `BlogCoverArt.astro` (`src/components/BlogCoverArt.astro`). Solo se pasa `image` si un post necesita una imagen específica que reemplace el cover procedural.
+- **Imagen para compartir (Open Graph)**: se genera sola en cada build para cada post, a partir de `title` + `category` (`src/lib/og-image.ts`, endpoint `src/pages/blog/og/[slug].png.ts` → `/blog/og/<slug>.png`, 1200×630, ~100 KB). No hay que subir ni crear nada: publicar el post basta. El `og:image:alt` sale como "Portada del artículo: {título}". Si el post define `image`, esa tiene prioridad. Para cambiar el diseño se edita solo `og-image.ts`; los títulos muy largos (>80 caracteres) bajan de tamaño automáticamente.
 - `faq`: 5-6 pares. Se renderizan aparte al final de la página (no los repitas en el cuerpo del post).
 
 ## Categorías (`src/content.config.ts`)

@@ -1,7 +1,7 @@
 ---
 title: "WhatsApp para inmobiliarias en Barranquilla: cómo atender leads de Alto Prado, Riomar y Puerto Colombia"
 seoTitle: "WhatsApp para inmobiliarias en Barranquilla"
-description: "En Barranquilla el lead escribe a toda hora, pregunta por ventilación, vista y administración, y compara rápido. Cómo responder en minutos y cuánto cuesta atender por la API de WhatsApp."
+description: "En Barranquilla el lead escribe a toda hora y compara rápido. Cómo responder en minutos y cuánto cuesta atender por la API de WhatsApp."
 pubDate: 2026-10-29
 category: "WhatsApp para inmobiliarias"
 tags: ["barranquilla", "leads inmobiliarios", "api de whatsapp"]

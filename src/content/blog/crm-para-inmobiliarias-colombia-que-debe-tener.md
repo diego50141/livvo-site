@@ -1,7 +1,7 @@
 ---
 title: "CRM para inmobiliarias en Colombia: qué debe tener y cómo elegir el correcto"
 seoTitle: "CRM para inmobiliarias en Colombia: qué debe tener"
-description: "Un CRM genérico se queda corto en una inmobiliaria. Qué debe tener el tuyo: embudo con etapas del sector, portafolio ligado al lead, WhatsApp dentro, reportes por asesor y una checklist para elegir."
+description: "Qué debe tener un CRM para inmobiliarias: embudo con etapas del sector, portafolio ligado al lead, WhatsApp dentro y reportes por asesor."
 pubDate: 2026-10-29
 category: "Plataforma Livvo"
 tags: ["crm inmobiliario", "embudo de ventas", "gestor de propiedades"]

@@ -1,7 +1,7 @@
 ---
 title: "Plantillas de WhatsApp para inmobiliarias: 10 mensajes listos para enviar a aprobación de Meta"
 seoTitle: "10 plantillas de WhatsApp para inmobiliarias"
-description: "10 plantillas de WhatsApp para arriendo y venta, con su categoría (utilidad o marketing), su costo en Colombia y las reglas para que Meta las apruebe a la primera. Copia, adapta y envía."
+description: "10 plantillas de WhatsApp para arriendo y venta, con su categoría, su costo en Colombia y las reglas para que Meta las apruebe a la primera."
 pubDate: 2026-09-30
 category: "WhatsApp para inmobiliarias"
 tags: ["plantillas de whatsapp", "api de whatsapp", "arriendo y venta"]

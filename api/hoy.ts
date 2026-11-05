@@ -348,8 +348,9 @@ async function loadSearch(now: number): Promise<Source<Search>> {
     for (const post of posts) {
       if (now - post.ts >= 7 * DAY && !seen.has(post.path))
         todo.push({
-          title: 'Post sin ninguna impresión en 28 días',
-          detail: 'Revisa en Search Console si está indexado y pide la indexación.',
+          title: 'Post publicado sin ninguna impresión en 28 días',
+          detail:
+            'Puede estar indexado y aun así no aparecer en búsquedas. Enlázalo desde posts relacionados y revisa que su título responda una búsqueda real; si dudas, comprueba su estado con Inspección de URL.',
           path: post.path,
           score: 5,
         });

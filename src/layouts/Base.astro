@@ -258,6 +258,30 @@ const extraSchemas = structuredData
           });
         });
 
+        // whatsapp_clicked — cualquier enlace a wa.me (delegado: cubre todos los botones)
+        document.addEventListener('click', (e) => {
+          const a = (e.target as Element | null)?.closest?.('a[href*="wa.me"]');
+          if (!a) return;
+          ph.capture('whatsapp_clicked', {
+            page: location.pathname,
+            button_id: a.id || null,
+            label: a.textContent?.trim().slice(0, 60) || null,
+            theme: currentTheme(),
+          });
+        });
+
+        // demo_form_submitted — envío del formulario embebido de HubSpot
+        window.addEventListener('message', (ev) => {
+          const d = ev.data;
+          if (d && d.type === 'hsFormCallback' && d.eventName === 'onFormSubmitted') {
+            ph.capture('demo_form_submitted', {
+              page: location.pathname,
+              form_id: d.id ?? null,
+              theme: currentTheme(),
+            });
+          }
+        });
+
         // theme_toggled — para comparar conversión claro vs oscuro
         document.getElementById('theme-toggle')?.addEventListener('click', () => {
           setTimeout(() => ph.capture('theme_toggled', { theme: currentTheme() }), 0);

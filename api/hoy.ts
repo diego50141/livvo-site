@@ -47,11 +47,15 @@ type Source<T> = { ok: true; data: T } | { ok: false; reason: string; missing?: 
 
 type Row = Record<string, string | number>;
 
-async function vercelQuery(params: Record<string, string>): Promise<Row[]> {
+async function vercelQuery(
+  params: Record<string, string>,
+  customize?: (u: URL) => void
+): Promise<Row[]> {
   const url = new URL('https://api.vercel.com/v1/query/web-analytics/visits/aggregate');
   url.searchParams.set('projectId', env('VERCEL_PROJECT_ID') || 'prj_pqhGoEOOxnJdNKSEOAVN0xChrnuO');
   url.searchParams.set('teamId', env('VERCEL_TEAM_ID') || 'team_ClsuvLCecHsKlCFi442gayGb');
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+  customize?.(url);
   const res = await fetch(url, {
     headers: { Authorization: `Bearer ${env('VERCEL_API_TOKEN')}` },
     signal: AbortSignal.timeout(10_000),
@@ -59,6 +63,25 @@ async function vercelQuery(params: Record<string, string>): Promise<Row[]> {
   if (!res.ok) throw new Error(`HTTP ${res.status} ${(await res.text()).slice(0, 160)}`);
   const json = (await res.json()) as { data?: Row[]; result?: { data?: Row[] } };
   return json.data ?? json.result?.data ?? [];
+}
+
+// Consulta con 2 dimensiones: la API documenta `by` como lista; se prueban las codificaciones
+// habituales (parámetro repetido, corchetes, coma) y se devuelve la primera que funcione.
+let lastMultiError = '';
+async function vercelQueryMulti(by: string[], params: Record<string, string>): Promise<Row[] | null> {
+  const attempts: ((u: URL) => void)[] = [
+    (u) => by.forEach((b) => u.searchParams.append('by', b)),
+    (u) => by.forEach((b) => u.searchParams.append('by[]', b)),
+    (u) => u.searchParams.set('by', by.join(',')),
+  ];
+  for (const apply of attempts) {
+    try {
+      return await vercelQuery(params, apply);
+    } catch (e) {
+      lastMultiError = (e as Error).message;
+    }
+  }
+  return null;
 }
 
 function othersLast<T extends { name: string }>(rows: T[]): T[] {
@@ -136,12 +159,12 @@ async function loadTraffic(now: number): Promise<Source<Traffic>> {
       vercelQuery({ by: 'requestPath', since: since7, until: iso(now), limit: '8' }),
       // Dos dimensiones a la vez (referrer + utm_source) y campañas: si la API no las
       // acepta, el reporte sigue con lo básico en vez de fallar.
-      vercelQuery({ by: 'referrerHostname,utmSource', since: since7, until: iso(now), limit: '100' }).catch(
-        () => null
-      ),
-      vercelQuery({ by: 'utmSource,utmCampaign', since: since7, until: iso(now), limit: '20' }).catch(
-        () => null
-      ),
+      vercelQueryMulti(['referrerHostname', 'utmSource'], {
+        since: since7,
+        until: iso(now),
+        limit: '100',
+      }),
+      vercelQueryMulti(['utmSource', 'utmCampaign'], { since: since7, until: iso(now), limit: '20' }),
     ]);
 
     // Agrupar las horas por día de Bogotá
@@ -656,7 +679,7 @@ ${
       )}</div></div>
 <h2>Campañas (UTM) · 7 días</h2>${
         t.campaigns === null
-          ? '<p class="muted">No se pudo leer el desglose por UTM.</p>'
+          ? `<p class="muted">No se pudo leer el desglose por UTM (${esc(lastMultiError || 'sin detalle')}).</p>`
           : t.campaigns.length
             ? `<table>${t.campaigns
                 .map(

@@ -20,6 +20,10 @@ const blogDates = Object.fromEntries(
 export default defineConfig({
   site: 'https://livvo.tech',
 
+  // Una sola forma de URL (con barra final): canonical y sitemap ya la usan; en Vercel
+  // la redirección 308 de la otra forma la da "trailingSlash" en vercel.json.
+  trailingSlash: 'always',
+
   // La URL vieja de Agentes IA; en Vercel el 308 real lo da vercel.json
   redirects: {
     '/empleados-ia': '/agentes-ia',

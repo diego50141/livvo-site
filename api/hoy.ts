@@ -9,9 +9,10 @@
 //   VERCEL_API_TOKEN    visitas/canales/páginas (Vercel Web Analytics)
 //   POSTHOG_API_KEY     clics a WhatsApp y formularios (Personal API key, solo lectura)
 //   POSTHOG_PROJECT_ID  id numérico del proyecto en PostHog
-//   (opcionales) VERCEL_PROJECT_ID, VERCEL_TEAM_ID, POSTHOG_HOST
+//   GSC_SERVICE_ACCOUNT_JSON  JSON completo de una cuenta de servicio con acceso de lectura a Search Console
+//   (opcionales) VERCEL_PROJECT_ID, VERCEL_TEAM_ID, POSTHOG_HOST, GSC_SITE_URL
 
-import { timingSafeEqual } from 'node:crypto';
+import { createSign, timingSafeEqual } from 'node:crypto';
 
 const SITE = 'https://livvo.tech';
 const TZ_OFFSET_MS = -5 * 3600 * 1000; // Bogotá = UTC-5, sin horario de verano
@@ -205,6 +206,172 @@ async function loadLeads(): Promise<Source<Leads>> {
   }
 }
 
+// ---------- fuente: Google Search Console + sugerencias "Para hoy" ----------
+
+type Todo = { title: string; detail: string; path?: string; score: number };
+
+type Search = {
+  clicks: number;
+  impressions: number;
+  position: number;
+  topQueries: { name: string; n: number }[];
+  todo: Todo[];
+  through: string; // última fecha con datos
+};
+
+const b64url = (b: Buffer | string) => Buffer.from(b).toString('base64url');
+
+async function googleToken(sa: { client_email: string; private_key: string }): Promise<string> {
+  const iat = Math.floor(Date.now() / 1000);
+  const unsigned =
+    b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' })) +
+    '.' +
+    b64url(
+      JSON.stringify({
+        iss: sa.client_email,
+        scope: 'https://www.googleapis.com/auth/webmasters.readonly',
+        aud: 'https://oauth2.googleapis.com/token',
+        iat,
+        exp: iat + 3600,
+      })
+    );
+  const sig = createSign('RSA-SHA256').update(unsigned).sign(sa.private_key);
+  const res = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: `${unsigned}.${b64url(sig)}`,
+    }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) throw new Error(`token HTTP ${res.status} ${(await res.text()).slice(0, 140)}`);
+  return ((await res.json()) as { access_token: string }).access_token;
+}
+
+type GscRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+
+async function gscFetch<T>(token: string, url: string, body?: unknown): Promise<T> {
+  const res = await fetch(url, {
+    method: body ? 'POST' : 'GET',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(12_000),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${(await res.text()).slice(0, 160)}`);
+  return (await res.json()) as T;
+}
+
+// Posts publicados según el sitemap (lastmod = fecha del post).
+async function blogPostsFromSitemap(): Promise<{ path: string; ts: number }[]> {
+  try {
+    const xml = await (await fetch(`${SITE}/sitemap-0.xml`, { signal: AbortSignal.timeout(8_000) })).text();
+    const out: { path: string; ts: number }[] = [];
+    for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g)) {
+      const path = new URL(m[1]).pathname;
+      if (/^\/blog\/[^/]+\/$/.test(path) && !path.startsWith('/blog/etiqueta/'))
+        out.push({ path, ts: Date.parse(m[2]) });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
+async function loadSearch(now: number): Promise<Source<Search>> {
+  const raw = env('GSC_SERVICE_ACCOUNT_JSON');
+  if (!raw) return { ok: false, missing: true, reason: 'Falta GSC_SERVICE_ACCOUNT_JSON (Search Console)' };
+  try {
+    const sa = JSON.parse(raw) as { client_email: string; private_key: string };
+    const token = await googleToken(sa);
+
+    let siteUrl = env('GSC_SITE_URL');
+    if (!siteUrl) {
+      const { siteEntry = [] } = await gscFetch<{ siteEntry?: { siteUrl: string }[] }>(
+        token,
+        'https://www.googleapis.com/webmasters/v3/sites'
+      );
+      const mine = siteEntry.map((e) => e.siteUrl).filter((u) => u.includes('livvo.tech'));
+      siteUrl = mine.find((u) => u.startsWith('sc-domain:')) ?? mine[0] ?? '';
+      if (!siteUrl)
+        throw new Error(
+          `la cuenta de servicio no tiene acceso a livvo.tech en Search Console (${sa.client_email})`
+        );
+    }
+
+    // Search Console llega con ~2 días de retraso.
+    const end = new Date(now - 2 * DAY + TZ_OFFSET_MS).toISOString().slice(0, 10);
+    const start = new Date(now - 29 * DAY + TZ_OFFSET_MS).toISOString().slice(0, 10);
+    const endpoint = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`;
+    const q = (dimensions: string[], rowLimit: number) =>
+      gscFetch<{ rows?: GscRow[] }>(token, endpoint, { startDate: start, endDate: end, dimensions, rowLimit });
+
+    const [total, pages, queries, posts] = await Promise.all([
+      q([], 1),
+      q(['page'], 200),
+      q(['query'], 200),
+      blogPostsFromSitemap(),
+    ]);
+
+    const t = total.rows?.[0];
+    const pageRows = (pages.rows ?? []).map((r) => ({ ...r, path: new URL(r.keys[0]).pathname }));
+    const todo: Todo[] = [];
+
+    // Con poco volumen los umbrales son bajos; se suben cuando crezca el sitio.
+    for (const r of pageRows) {
+      if (r.impressions >= 10 && r.position > 8 && r.position <= 20)
+        todo.push({
+          title: 'Sube esta página de la posición 8–20 a la primera página',
+          detail: `${r.impressions} impresiones, posición ${r.position.toFixed(1)}. Refuerza enlaces internos hacia ella y revisa el título.`,
+          path: r.path,
+          score: r.impressions,
+        });
+      else if (r.impressions >= 20 && r.position <= 10 && r.ctr < 0.02)
+        todo.push({
+          title: 'Buena posición pero casi nadie hace clic',
+          detail: `${r.impressions} impresiones, CTR ${(r.ctr * 100).toFixed(1)} %. Reescribe el título y la metadescripción.`,
+          path: r.path,
+          score: r.impressions * 0.8,
+        });
+    }
+
+    for (const r of queries.rows ?? []) {
+      if (r.impressions >= 10 && r.position > 20)
+        todo.push({
+          title: `Consulta sin buen contenido: «${r.keys[0]}»`,
+          detail: `${r.impressions} impresiones en posición ${r.position.toFixed(0)}. Considera un post que la responda directamente.`,
+          score: r.impressions * 0.5,
+        });
+    }
+
+    const seen = new Set(pageRows.map((r) => r.path));
+    for (const post of posts) {
+      if (now - post.ts >= 7 * DAY && !seen.has(post.path))
+        todo.push({
+          title: 'Post sin ninguna impresión en 28 días',
+          detail: 'Revisa en Search Console si está indexado y pide la indexación.',
+          path: post.path,
+          score: 5,
+        });
+    }
+
+    todo.sort((a, b) => b.score - a.score);
+    return {
+      ok: true,
+      data: {
+        clicks: t?.clicks ?? 0,
+        impressions: t?.impressions ?? 0,
+        position: t?.position ?? 0,
+        topQueries: (queries.rows ?? []).slice(0, 8).map((r) => ({ name: r.keys[0], n: r.impressions })),
+        todo: todo.slice(0, 3),
+        through: end,
+      },
+    };
+  } catch (e) {
+    return { ok: false, reason: `Search Console: ${(e as Error).message}` };
+  }
+}
+
 // ---------- fuente: salud del sitio (sin credenciales) ----------
 
 type Check = { name: string; url: string; status: number; ms: number; ok: boolean; slow: boolean };
@@ -237,7 +404,8 @@ type Light = 'green' | 'yellow' | 'red';
 function verdict(
   checks: Check[],
   traffic: Source<Traffic>,
-  leads: Source<Leads>
+  leads: Source<Leads>,
+  search: Source<Search>
 ): { light: Light; text: string } {
   const down = checks.filter((c) => !c.ok);
   if (down.length)
@@ -251,12 +419,12 @@ function verdict(
     return { light: 'yellow', text: `Lento (>3 s): ${slow.map((c) => c.name).join(', ')}` };
 
   // Fuente con error (no solo sin configurar): no se puede afirmar que todo está normal.
-  const failed = [traffic, leads].filter((s) => !s.ok && !s.missing);
+  const failed = [traffic, leads, search].filter((s) => !s.ok && !s.missing);
   if (failed.length)
     return { light: 'yellow', text: 'Una fuente de datos está fallando (ver abajo)' };
 
   const l = leads.ok ? leads.data.whatsapp24h + leads.data.forms24h : 0;
-  const partial = [traffic, leads].some((s) => !s.ok) ? ' · datos incompletos' : '';
+  const partial = [traffic, leads, search].some((s) => !s.ok) ? ' · datos incompletos' : '';
   const leadsTxt = l > 0 ? ` · ${l} lead${l === 1 ? '' : 's'} en 24 h` : '';
   return { light: 'green', text: `Todo normal${leadsTxt}${partial}` };
 }
@@ -298,8 +466,10 @@ function render(
   v: { light: Light; text: string },
   checks: Check[],
   traffic: Source<Traffic>,
-  leads: Source<Leads>
+  leads: Source<Leads>,
+  search: Source<Search>
 ) {
+  const g = search.ok ? search.data : null;
   const t = traffic.ok ? traffic.data : null;
   const l = leads.ok ? leads.data : null;
   const leadCount = l ? l.whatsapp24h + l.forms24h : 0;
@@ -357,6 +527,7 @@ h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 table{width:100%;border-collapse:collapse;font-size:13px}
 td{padding:7px 4px;border-bottom:1px solid var(--border)}
 td:last-child{text-align:right;font-family:ui-monospace,Menlo,monospace;color:var(--muted)}
+.todo{margin:0;padding-left:20px}.todo li{margin:0 0 12px}.todo a{color:var(--tealdeep);font-size:13px;word-break:break-all}
 .ok{color:var(--tealdeep)}.bad{color:var(--red);font-weight:700}.slow{color:var(--amber);font-weight:700}
 </style></head><body><main>
 <div class="top"><h1>Hoy · Livvo</h1><span class="when">${esc(day)} · actualizado ${esc(
@@ -365,6 +536,25 @@ td:last-child{text-align:right;font-family:ui-monospace,Menlo,monospace;color:va
 
 <div class="light light--${v.light}"><span class="dot"></span><span class="light__t">${esc(v.text)}</span></div>
 ${leadBanner}
+
+<h2>Para hoy</h2>
+${
+  g
+    ? g.todo.length
+      ? `<ol class="todo">${g.todo
+          .map(
+            (x) =>
+              `<li><b>${esc(x.title)}</b><br><span class="muted">${esc(x.detail)}</span>${
+                x.path
+                  ? `<br><a href="${esc(SITE + x.path)}" target="_blank" rel="noopener">${esc(x.path)}</a>`
+                  : ''
+              }</li>`
+          )
+          .join('')}</ol>`
+      : '<p class="muted">Nada urgente hoy.</p>'
+    : ''
+}
+${note(search)}
 
 <h2>Visitas</h2>
 ${
@@ -411,6 +601,16 @@ ${
     : ''
 }
 
+${
+  g
+    ? `<h2>Google · últimos 28 días (hasta ${esc(g.through)})</h2><div class="grid">${stat(
+        'Impresiones',
+        g.impressions
+      )}${stat('Clics', g.clicks)}${stat('Posición media', g.position ? g.position.toFixed(1) : '—')}</div>
+<h2>Consultas · impresiones</h2>${bars(g.topQueries.map((x) => ({ name: x.name, n: x.n })))}`
+    : ''
+}
+
 <h2>Salud del sitio</h2>
 <table>${checks
     .map(
@@ -445,14 +645,15 @@ export async function GET(request: Request): Promise<Response> {
     return new Response('No encontrado', { status: 404, headers: HEADERS });
 
   const now = Date.now();
-  const [traffic, leads, checks] = await Promise.all([
+  const [traffic, leads, search, checks] = await Promise.all([
     loadTraffic(now),
     loadLeads(),
+    loadSearch(now),
     Promise.all(CHECKS.map(runCheck)),
   ]);
 
-  return new Response(render(now, verdict(checks, traffic, leads), checks, traffic, leads), {
-    status: 200,
-    headers: HEADERS,
-  });
+  return new Response(
+    render(now, verdict(checks, traffic, leads, search), checks, traffic, leads, search),
+    { status: 200, headers: HEADERS }
+  );
 }

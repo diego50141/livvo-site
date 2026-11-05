@@ -74,13 +74,15 @@ async function vercelQueryMulti(by: string[], params: Record<string, string>): P
     (u) => by.forEach((b) => u.searchParams.append('by[]', b)),
     (u) => u.searchParams.set('by', by.join(',')),
   ];
-  for (const apply of attempts) {
+  const errors: string[] = [];
+  for (const [i, apply] of attempts.entries()) {
     try {
       return await vercelQuery(params, apply);
     } catch (e) {
-      lastMultiError = (e as Error).message;
+      errors.push(`#${i + 1}: ${(e as Error).message.slice(0, 90)}`);
     }
   }
+  lastMultiError = errors.join(' · ');
   return null;
 }
 

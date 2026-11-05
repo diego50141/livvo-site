@@ -1,0 +1,264 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Button from '../components/Button.astro';
+import Section from '../components/Section.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_NUMBER } from '../config';
+
+// Pago de implementación (nov 2026): primer 50 % de la implementación de Livvo
+// ($1.199.000 → $599.500 COP). Igual que /oferta, el cobro NO sale de esta página: cada
+// cliente recibe un link de pago único de Wompi ("Link pago personalizado" en
+// comercios.wompi.co) y entra aquí como livvo.tech/pago/?l=<id>. La página es noindex, no se
+// enlaza desde el sitio y el botón de pago solo aparece si la URL trae un id válido.
+const PRICE_FIRST_PAYMENT = '$599.500';
+const PRICE_IMPLEMENTATION = '$1.199.000';
+const PRICE_MONTHLY = '$299.000';
+
+const HELP_WHATSAPP_URL =
+  `https://wa.me/${WHATSAPP_NUMBER}?text=` +
+  encodeURIComponent('Hola equipo livvo, tengo una duda sobre el pago de la implementación');
+---
+
+<Base
+  title="Pago de la implementación — Livvo"
+  description="Primer pago (50 %) de la implementación de Livvo: CRM, conexión oficial de WhatsApp, leads de portales y portafolio sincronizado."
+  noindex
+>
+  <Navbar />
+
+  <main>
+    <Section
+      id="pago"
+      h1
+      eyebrow="Implementación"
+      title="Primer pago de tu implementación de Livvo."
+    >
+      <div class="pay-card fade-up">
+        <span class="pay-card__badge">Primer pago · 50 %</span>
+
+        <div class="pay-card__price">
+          <span class="pay-card__amount">{PRICE_FIRST_PAYMENT}</span>
+          <span class="pay-card__period">COP</span>
+        </div>
+        <p class="pay-card__total">
+          Mitad de la implementación completa de {PRICE_IMPLEMENTATION} COP, en pago único
+        </p>
+
+        <div class="pay-card__activate" data-pay-activate hidden>
+          <Button href="#" target="_blank" size="lg" id="pay-activate-top">
+            Pagar con Wompi →
+          </Button>
+          <p class="pay-card__assure">Pago seguro con Wompi · Tarjeta, PSE y Nequi</p>
+        </div>
+
+        <hr class="pay-card__divider" />
+        <p class="pay-card__includes">Qué incluye la implementación</p>
+        <ul class="pay-card__features">
+          <li><span class="pay-card__check">✓</span>Sesión de descubrimiento con tu equipo: portafolio, proceso comercial y criterios de calificación</li>
+          <li><span class="pay-card__check">✓</span>CRM de Livvo configurado con las etapas de tu proceso comercial</li>
+          <li><span class="pay-card__check">✓</span>Conexión oficial de tu número de WhatsApp con Meta, que sigues usando desde el celular</li>
+          <li><span class="pay-card__check">✓</span>Leads de los portales inmobiliarios registrados directamente en Livvo, sin pasarlos a mano</li>
+          <li><span class="pay-card__check">✓</span>Portafolio de propiedades sincronizado entre tu página web y Livvo</li>
+          <li><span class="pay-card__check">✓</span>Respuesta automática inicial para quienes te escriben</li>
+        </ul>
+      </div>
+
+      <div class="pay-terms fade-up">
+        <h2>Cómo funciona el pago</h2>
+        <ul>
+          <li>
+            <strong>Este es el primer 50 %.</strong> Se paga {PRICE_FIRST_PAYMENT} COP para arrancar y los
+            otros {PRICE_FIRST_PAYMENT} COP al finalizar la implementación, cuando todo lo anterior esté
+            funcionando.
+          </li>
+          <li>
+            <strong>Plan mensual.</strong> Después de la implementación, el plan Inicia cuesta {PRICE_MONTHLY}
+            COP al mes y empieza a cobrarse desde el mes 3.
+          </li>
+          <li>
+            <strong>Tiempo de entrega.</strong> Desde la sesión de descubrimiento hasta el arranque toma entre
+            3 y 5 días hábiles.
+          </li>
+          <li>
+            <strong>Link de un solo uso.</strong> Este link de pago es personal y vence a las 48 horas de
+            recibirlo. Si vence, escríbenos y te enviamos uno nuevo.
+          </li>
+        </ul>
+      </div>
+
+      <div class="pay-cta fade-up">
+        <div class="pay-cta__activate" data-pay-activate hidden>
+          <Button id="pay-activate-btn" href="#" target="_blank" size="lg">
+            Pagar {PRICE_FIRST_PAYMENT} con Wompi →
+          </Button>
+          <p class="pay-cta__note">Pago seguro con Wompi, procesado por Bancolombia.</p>
+        </div>
+        <p>¿Tienes una duda antes de pagar? Escríbenos y te respondemos hoy.</p>
+        <Button id="pay-help-btn" variant="outline" href={HELP_WHATSAPP_URL} target="_blank" size="lg">
+          Hablar con el equipo →
+        </Button>
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  // Cada cliente recibe livvo.tech/pago/?l=<id> con el id de SU link de pago de Wompi
+  // (pago único, vence a las 48 h). Solo se aceptan letras y números para no abrir
+  // redirecciones a otros dominios: el destino siempre es checkout.wompi.co/l/<id>.
+  const id = new URLSearchParams(window.location.search).get('l');
+  if (id && /^[A-Za-z0-9]{4,20}$/.test(id)) {
+    const checkout = `https://checkout.wompi.co/l/${id}`;
+    document.querySelectorAll('[data-pay-activate]').forEach((box) => {
+      box.querySelector('a')?.setAttribute('href', checkout);
+      (box as HTMLElement).hidden = false;
+    });
+    // CTA del navbar: en esta página reemplaza "Solicitar demo" por el pago
+    const navCta = document.getElementById('nav-demo-cta');
+    if (navCta) {
+      navCta.setAttribute('href', checkout);
+      navCta.textContent = 'Pagar implementación';
+    }
+  }
+</script>
+
+<style>
+  .pay-card {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: var(--space-10, 40px) var(--space-8);
+    text-align: center;
+    background: var(--white);
+    border: 2px solid var(--teal);
+    box-shadow: var(--shadow-glow);
+    border-radius: var(--radius-card);
+  }
+  .pay-card__badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(0, 199, 180, 0.12);
+    color: var(--teal-dark, #00867a);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .pay-card__price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5, 20px);
+  }
+  .pay-card__amount {
+    font-family: var(--font-mono);
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+  }
+  .pay-card__period {
+    font-size: 16px;
+    color: var(--muted);
+  }
+  .pay-card__total {
+    margin: var(--space-3) 0 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .pay-card__activate {
+    margin-top: var(--space-6);
+  }
+  .pay-card__activate[hidden] {
+    display: none;
+  }
+  .pay-card__activate :global(.btn) {
+    width: 100%;
+  }
+  .pay-card .pay-card__assure {
+    margin: var(--space-3) 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .pay-card__divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: var(--space-8) 0 var(--space-6);
+  }
+  .pay-card__includes {
+    margin: 0 0 var(--space-4);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pay-card__features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+    text-align: left;
+    font-size: 15px;
+  }
+  .pay-card__features li {
+    display: flex;
+    gap: var(--space-2);
+    line-height: 1.5;
+  }
+  .pay-card__check {
+    flex: none;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .pay-card { padding: var(--space-8) var(--space-5, 20px); }
+    .pay-card__amount { font-size: 52px; }
+  }
+
+  .pay-terms {
+    max-width: 620px;
+    margin: var(--space-12) auto 0;
+  }
+  .pay-terms h2 {
+    font-size: 22px;
+    margin: 0 0 var(--space-4);
+  }
+  .pay-terms ul {
+    margin: 0;
+    padding-left: var(--space-6);
+    display: grid;
+    gap: var(--space-3);
+    line-height: 1.6;
+  }
+
+  .pay-cta {
+    text-align: center;
+    max-width: 620px;
+    margin: var(--space-12) auto 0;
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--border);
+  }
+  .pay-cta__activate {
+    margin-bottom: var(--space-12);
+  }
+  .pay-cta__activate[hidden] {
+    display: none;
+  }
+  .pay-cta .pay-cta__note {
+    margin: var(--space-4) 0 0;
+    font-size: 13px;
+  }
+  .pay-cta p {
+    font-size: var(--text-body);
+    color: var(--muted);
+    margin: 0 0 var(--space-6);
+  }
+</style>

@@ -65,26 +65,8 @@ async function vercelQuery(
   return json.data ?? json.result?.data ?? [];
 }
 
-// Consulta con 2 dimensiones: la API documenta `by` como lista; se prueban las codificaciones
-// habituales (parámetro repetido, corchetes, coma) y se devuelve la primera que funcione.
-let lastMultiError = '';
-async function vercelQueryMulti(by: string[], params: Record<string, string>): Promise<Row[] | null> {
-  const attempts: ((u: URL) => void)[] = [
-    (u) => by.forEach((b) => u.searchParams.append('by', b)),
-    (u) => by.forEach((b) => u.searchParams.append('by[]', b)),
-    (u) => u.searchParams.set('by', by.join(',')),
-  ];
-  const errors: string[] = [];
-  for (const [i, apply] of attempts.entries()) {
-    try {
-      return await vercelQuery(params, apply);
-    } catch (e) {
-      errors.push(`#${i + 1}: ${(e as Error).message.slice(0, 90)}`);
-    }
-  }
-  lastMultiError = errors.join(' · ');
-  return null;
-}
+// Nota: la API de Vercel solo ofrece las dimensiones UTM en el plan Enterprise (HTTP 402),
+// por eso las campañas UTM se leen de PostHog (ver loadLeads).
 
 function othersLast<T extends { name: string }>(rows: T[]): T[] {
   const rename = (r: T) => (r.name === 'Others' ? { ...r, name: 'Otras (menos vistas)' } : r);
@@ -143,7 +125,6 @@ type Traffic = {
   last7Views: number;
   completeDays: { day: string; visitors: number }[]; // días completos (sin hoy), más reciente primero
   referrers: { name: string; visitors: number }[]; // canales agrupados
-  campaigns: { source: string; campaign: string; visitors: number }[] | null; // null = no disponible
   pages: { name: string; views: number }[];
 };
 
@@ -154,19 +135,11 @@ async function loadTraffic(now: number): Promise<Source<Traffic>> {
     const iso = (ms: number) => new Date(ms).toISOString();
     const since48 = iso(now - 48 * HOUR);
     const since7 = iso(now - 7 * DAY);
-    const [hours, days, refs, paths, refsUtm, utmRows] = await Promise.all([
+    const [hours, days, refs, paths] = await Promise.all([
       vercelQuery({ by: 'hour', since: since48, until: iso(now), limit: '100' }),
       vercelQuery({ by: 'day', since: since7, until: iso(now), limit: '100' }),
       vercelQuery({ by: 'referrerHostname', since: since7, until: iso(now), limit: '30' }),
       vercelQuery({ by: 'requestPath', since: since7, until: iso(now), limit: '8' }),
-      // Dos dimensiones a la vez (referrer + utm_source) y campañas: si la API no las
-      // acepta, el reporte sigue con lo básico en vez de fallar.
-      vercelQueryMulti(['referrerHostname', 'utmSource'], {
-        since: since7,
-        until: iso(now),
-        limit: '100',
-      }),
-      vercelQueryMulti(['utmSource', 'utmCampaign'], { since: since7, until: iso(now), limit: '20' }),
     ]);
 
     // Agrupar las horas por día de Bogotá
@@ -197,16 +170,7 @@ async function loadTraffic(now: number): Promise<Source<Traffic>> {
         last7Views: days.reduce((s, r) => s + Number(r.pageviews ?? 0), 0),
         completeDays,
         // La API agrupa lo menos frecuente en una fila "Others": se muestra al final.
-        referrers: groupChannels(refsUtm ?? refs),
-        campaigns: utmRows
-          ? utmRows
-              .filter((r) => String(r.utmSource ?? '') || String(r.utmCampaign ?? ''))
-              .map((r) => ({
-                source: String(r.utmSource ?? '') || '—',
-                campaign: String(r.utmCampaign ?? '') || '—',
-                visitors: Number(r.visitors ?? 0),
-              }))
-          : null,
+        referrers: groupChannels(refs),
         pages: othersLast(
           paths.map((r) => ({
             name: String(r.requestPath ?? ''),
@@ -228,6 +192,7 @@ type Leads = {
   whatsapp7d: number;
   forms7d: number;
   recent: { when: number; event: string; page: string }[];
+  campaigns: { source: string; campaign: string; visitors: number }[] | null; // null = no se pudo leer
 };
 
 async function hogql(query: string): Promise<unknown[][]> {
@@ -251,7 +216,7 @@ async function loadLeads(): Promise<Source<Leads>> {
     return { ok: false, missing: true, reason: 'Faltan POSTHOG_API_KEY y POSTHOG_PROJECT_ID' };
   try {
     const events = `('whatsapp_clicked', 'demo_form_submitted')`;
-    const [counts, recent] = await Promise.all([
+    const [counts, recent, utm] = await Promise.all([
       hogql(`
         SELECT event,
                countIf(timestamp > now() - INTERVAL 1 DAY),
@@ -264,6 +229,14 @@ async function loadLeads(): Promise<Source<Leads>> {
         FROM events
         WHERE event IN ${events} AND timestamp > now() - INTERVAL 7 DAY
         ORDER BY timestamp DESC LIMIT 6`),
+      // Visitas con UTM (el sitio las envía en page_viewed). Si falla, el resto del bloque sigue.
+      hogql(`
+        SELECT properties.utm_source, properties.utm_campaign, count(DISTINCT distinct_id)
+        FROM events
+        WHERE event = 'page_viewed' AND timestamp > now() - INTERVAL 7 DAY
+          AND (properties.utm_source IS NOT NULL OR properties.utm_campaign IS NOT NULL)
+        GROUP BY properties.utm_source, properties.utm_campaign
+        ORDER BY count(DISTINCT distinct_id) DESC LIMIT 15`).catch(() => null),
     ]);
     const get = (ev: string, i: 1 | 2) =>
       Number(counts.find((r) => r[0] === ev)?.[i] ?? 0);
@@ -279,10 +252,17 @@ async function loadLeads(): Promise<Source<Leads>> {
           event: String(r[1]),
           page: String(r[2] ?? ''),
         })),
+        campaigns: utm
+          ? utm.map((r) => ({
+              source: String(r[0] ?? '') || '—',
+              campaign: String(r[1] ?? '') || '—',
+              visitors: Number(r[2] ?? 0),
+            }))
+          : null,
       },
     };
   } catch (e) {
-    return { ok: false, reason: `PostHog: ${(e as Error).message}` };
+    return { ok: false, reason: `PostHog:${(e as Error).message}` };
   }
 }
 
@@ -678,17 +658,23 @@ ${
         t.referrers.map((r) => ({ name: r.name, n: r.visitors }))
       )}</div><div><h2>Páginas · 7 días</h2>${bars(
         t.pages.map((p) => ({ name: p.name, n: p.views }))
-      )}</div></div>
-<h2>Campañas (UTM) · 7 días</h2>${
-        t.campaigns === null
-          ? `<p class="muted">No se pudo leer el desglose por UTM (${esc(lastMultiError || 'sin detalle')}).</p>`
-          : t.campaigns.length
-            ? `<table>${t.campaigns
+      )}</div></div>`
+    : ''
+}
+
+${
+  l
+    ? `<h2>Campañas (UTM) · 7 días</h2>${
+        l.campaigns === null
+          ? '<p class="muted">No se pudo leer el desglose por UTM desde PostHog.</p>'
+          : l.campaigns.length
+            ? `<table>${l.campaigns
                 .map(
                   (c) =>
-                    `<tr><td>${esc(c.source)}</td><td style="text-align:left">${esc(c.campaign)}</td><td>${c.visitors}</td></tr>`
+                    `<tr><td>${esc(c.source)}</td><td style="text-align:left">${esc(c.campaign)}</td><td>${c.visitors} visitante${c.visitors === 1 ? '' : 's'}</td></tr>`
                 )
-                .join('')}</table>`
+                .join('')}</table>
+<p class="muted">Contadas por PostHog, que carga tras la primera interacción: puede quedar algo por debajo de Vercel.</p>`
             : '<p class="muted">Aún no hay visitas con UTM. Añade <code>?utm_source=…&amp;utm_medium=…&amp;utm_campaign=…</code> a los enlaces que compartes.</p>'
       }`
     : ''

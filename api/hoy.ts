@@ -60,6 +60,13 @@ async function vercelQuery(params: Record<string, string>): Promise<Row[]> {
   return json.data ?? json.result?.data ?? [];
 }
 
+function othersLast<T extends { name: string }>(rows: T[]): T[] {
+  const rename = (r: T) => (r.name === 'Others' ? { ...r, name: 'Otras (menos vistas)' } : r);
+  return [...rows.filter((r) => r.name !== 'Others'), ...rows.filter((r) => r.name === 'Others')].map(
+    rename
+  );
+}
+
 type Traffic = {
   today: number;
   todayViews: number;
@@ -112,14 +119,19 @@ async function loadTraffic(now: number): Promise<Source<Traffic>> {
         last7: days.reduce((s, r) => s + Number(r.visitors ?? 0), 0),
         last7Views: days.reduce((s, r) => s + Number(r.pageviews ?? 0), 0),
         completeDays,
-        referrers: refs.map((r) => ({
-          name: String(r.referrerHostname || 'Directo / sin referrer'),
-          visitors: Number(r.visitors ?? 0),
-        })),
-        pages: paths.map((r) => ({
-          name: String(r.requestPath ?? ''),
-          views: Number(r.pageviews ?? 0),
-        })),
+        // La API agrupa lo menos frecuente en una fila "Others": se muestra al final.
+        referrers: othersLast(
+          refs.map((r) => ({
+            name: String(r.referrerHostname || 'Directo / sin referrer'),
+            visitors: Number(r.visitors ?? 0),
+          }))
+        ),
+        pages: othersLast(
+          paths.map((r) => ({
+            name: String(r.requestPath ?? ''),
+            views: Number(r.pageviews ?? 0),
+          }))
+        ),
       },
     };
   } catch (e) {

@@ -55,6 +55,9 @@ const postUrl = `${site}/blog/${post.id}/`;
 const ogImagePath = post.data.image ?? `/blog/og/${post.id}.png`;
 const ogImageAlt = `Portada del artículo: ${post.data.title}`;
 
+// Fecha sin hora (YYYY-MM-DD): pubDate es medianoche UTC, que en Colombia caería el día anterior.
+const isoDate = (d: Date) => d.toISOString().slice(0, 10);
+
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -62,12 +65,12 @@ const articleJsonLd = {
   headline: post.data.title,
   description: post.data.description,
   image: `${site}${ogImagePath}`,
-  datePublished: post.data.pubDate.toISOString(),
-  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  datePublished: isoDate(post.data.pubDate),
+  dateModified: isoDate(post.data.updatedDate ?? post.data.pubDate),
   inLanguage: 'es-CO',
   articleSection: post.data.category,
   keywords: post.data.tags.join(', '),
-  author: { '@type': 'Person', name: post.data.author },
+  author: { '@type': 'Person', name: post.data.author, url: `${site}/blog/` },
   publisher: {
     '@type': 'Organization',
     name: 'Livvo',

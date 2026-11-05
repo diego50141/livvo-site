@@ -23,6 +23,8 @@ export default defineConfig({
   // La URL vieja de Agentes IA; en Vercel el 308 real lo da vercel.json
   redirects: {
     '/empleados-ia': '/agentes-ia',
+    '/blog/leads-portales-inmobiliarios-whatsapp-metrocuadrado-fincaraiz-ciencuadras':
+      '/blog/leads-portales-inmobiliarios-whatsapp',
   },
 
   vite: {

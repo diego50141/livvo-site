@@ -1,5 +1,15 @@
 {
   "redirects": [
-    { "source": "/empleados-ia", "destination": "/agentes-ia", "permanent": true }
+    { "source": "/empleados-ia", "destination": "/agentes-ia", "permanent": true },
+    {
+      "source": "/blog/leads-portales-inmobiliarios-whatsapp-metrocuadrado-fincaraiz-ciencuadras",
+      "destination": "/blog/leads-portales-inmobiliarios-whatsapp/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/leads-portales-inmobiliarios-whatsapp-metrocuadrado-fincaraiz-ciencuadras/",
+      "destination": "/blog/leads-portales-inmobiliarios-whatsapp/",
+      "permanent": true
+    }
   ]
 }

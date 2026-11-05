@@ -1,0 +1,126 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import Section from '../../../components/Section.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import {
+  getReadingTime,
+  tagSlug,
+  countTags,
+  MIN_POSTS_FOR_TAG_PAGE,
+  TAG_COPY,
+} from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+  const counts = countTags(posts);
+  return [...counts.entries()]
+    .filter(([, n]) => n >= MIN_POSTS_FOR_TAG_PAGE)
+    .map(([tag]) => ({
+      params: { tag: tagSlug(tag) },
+      props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)) },
+    }));
+}
+
+const { tag, posts } = Astro.props;
+const copy = TAG_COPY[tag] ?? {
+  title: tag.charAt(0).toUpperCase() + tag.slice(1),
+  description: `Artículos del blog de Livvo sobre ${tag}: guías para inmobiliarias que venden más con WhatsApp e inteligencia artificial.`,
+};
+
+const site = Astro.site!.toString().replace(/\/$/, '');
+const url = `${site}/blog/etiqueta/${tagSlug(tag)}/`;
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${copy.title} | Blog de Livvo`,
+    description: copy.description,
+    url,
+    inLanguage: 'es-CO',
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: posts.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${site}/blog/${p.id}/`,
+        name: p.data.title,
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site}/blog/` },
+      { '@type': 'ListItem', position: 3, name: copy.title, item: url },
+    ],
+  },
+];
+---
+
+<Base
+  title={`${copy.title} — Blog de Livvo`}
+  description={copy.description}
+  structuredData={structuredData}
+>
+  <Navbar />
+
+  <main>
+    <Section id="etiqueta" h1 eyebrow={`Etiqueta · ${posts.length} artículos`} title={copy.title}>
+      <div class="blog-list fade-up">
+        {
+          posts.map((post) => (
+            <BlogCard
+              slug={post.id}
+              title={post.data.title}
+              description={post.data.description}
+              category={post.data.category}
+              pubDate={post.data.pubDate}
+              author={post.data.author}
+              readingTime={getReadingTime(post.body ?? '')}
+              image={post.data.image}
+            />
+          ))
+        }
+      </div>
+
+      <p class="tag-back fade-up"><a href="/blog/">← Ver todos los artículos del blog</a></p>
+    </Section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .blog-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+  @media (max-width: 768px) {
+    .blog-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  .tag-back {
+    margin-top: var(--space-12);
+    text-align: center;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .tag-back a {
+    color: var(--teal-deep);
+    text-decoration: none;
+  }
+  .tag-back a:hover {
+    text-decoration: underline;
+  }
+</style>

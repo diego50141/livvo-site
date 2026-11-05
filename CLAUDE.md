@@ -18,6 +18,7 @@ faq:
 
 - No se usa el campo `image`: el cover sale automático por categoría vía `BlogCoverArt.astro` (`src/components/BlogCoverArt.astro`). Solo se pasa `image` si un post necesita una imagen específica que reemplace el cover procedural.
 - **Imagen para compartir (Open Graph)**: se genera sola en cada build para cada post, a partir de `title` + `category` (`src/lib/og-image.ts`, endpoint `src/pages/blog/og/[slug].png.ts` → `/blog/og/<slug>.png`, 1200×630, ~100 KB). No hay que subir ni crear nada: publicar el post basta. El `og:image:alt` sale como "Portada del artículo: {título}". Si el post define `image`, esa tiene prioridad. Para cambiar el diseño se edita solo `og-image.ts`; los títulos muy largos (>80 caracteres) bajan de tamaño automáticamente.
+- **Páginas de etiqueta**: toda etiqueta con 3 o más posts publicados genera sola `/blog/etiqueta/<slug>/` (`src/pages/blog/etiqueta/[tag].astro`, umbral `MIN_POSTS_FOR_TAG_PAGE` en `src/lib/blog.ts`) y su chip en el post pasa a ser un enlace. Para darle H1 y descripción propios (120-155 caracteres) se agrega la etiqueta a `TAG_COPY` en `src/lib/blog.ts`; sin entrada usa una plantilla genérica. Reutiliza siempre los mismos nombres de etiqueta: una etiqueta nueva de un solo uso no crea página.
 - `faq`: 5-6 pares. Se renderizan aparte al final de la página (no los repitas en el cuerpo del post).
 
 ## Categorías (`src/content.config.ts`)

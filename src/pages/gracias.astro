@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Button from '../components/Button.astro';
+import Section from '../components/Section.astro';
+import Footer from '../components/Footer.astro';
+import { WHATSAPP_NUMBER } from '../config';
+
+// Página de gracias tras un pago con link de Wompi (se pasa como redirect_url al crear el
+// link: scripts/wompi-payment-link.mjs --redirect https://livvo.tech/gracias, en el CRM).
+// Wompi redirige tanto si el pago se aprobó como si no, y añade ?id=<transacción>&env=<ambiente>;
+// esta página NO verifica el estado, por eso el texto es neutral: la confirmación real llega
+// por WhatsApp. noindex y sin enlaces desde el sitio.
+const CONFIRM_WHATSAPP_URL =
+  `https://wa.me/${WHATSAPP_NUMBER}?text=` +
+  encodeURIComponent('Hola equipo livvo, ya hice el pago por Wompi');
+---
+
+<Base
+  title="Gracias por tu pago — Livvo"
+  description="Recibimos tu paso por el checkout de Wompi. Te confirmamos el pago por WhatsApp."
+  noindex
+>
+  <Navbar />
+
+  <main>
+    <Section id="gracias" h1 eyebrow="Pago" title="¡Gracias por tu pago!">
+      <div class="thanks fade-up">
+        <p class="thanks__text">
+          Cuando Wompi nos confirme la transacción, te escribimos por WhatsApp para
+          confirmártelo. Si prefieres, avísanos tú y lo revisamos de inmediato.
+        </p>
+        <Button href={CONFIRM_WHATSAPP_URL} target="_blank" size="lg">
+          Avisar por WhatsApp →
+        </Button>
+        <p class="thanks__note">
+          Si el pago no se completó, puedes volver a abrir el mismo link e intentarlo de nuevo
+          mientras siga vigente.
+        </p>
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .thanks {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6, 24px);
+  }
+  .thanks__text {
+    color: var(--text-secondary, inherit);
+    line-height: 1.6;
+  }
+  .thanks__note {
+    font-size: 0.85rem;
+    color: var(--text-secondary, inherit);
+  }
+</style>
